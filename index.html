@@ -1,1 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Georgia', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #2c3e50; 
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            transition: background 2s ease-in-out;
+            overflow: hidden;
+            position: relative;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
 
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.35);
+            z-index: 1;
+        }
+
+        .heart-sticker {
+            position: absolute;
+            color: #ff4757;
+            font-size: 24px;
+            pointer-events: none;
+            z-index: 2;
+            animation: floatUp 4s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            15% { opacity: 0.7; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-10vh) scale(1.2) translateX(50px); opacity: 0; }
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            padding: 40px;
+            background-color: rgba(255, 245, 245, 0.9); 
+            border-radius: 20px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3);
+            width: 85%;
+            max-width: 420px;
+            height: 280px; 
+            backdrop-filter: blur(5px);
+            box-sizing: border-box;
+            cursor: default;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 12px;
+            font-style: italic;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: #d63031;
+            margin-top: 0;
+            margin-bottom: 30px;
+        }
+
+        .btn-container {
+            position: relative;
+            width: 100%;
+            height: 120px;
+        }
+
+        button {
+            padding: 12px 35px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.1s ease, box-shadow 0.2s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+
+        #yesBtn {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            position: absolute;
+            left: 15%;
+            top: 20px;
+            z-index: 20;
+        }
+
+        #yesBtn:hover {
+            transform: scale(1.15);
+            box-shadow: 0 8px 20px rgba(46, 204, 113, 0.4);
+        }
+
+        #noBtn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            position: absolute;
+            left: 55%; 
+            top: 20px;
+            z-index: 20;
+            transition: left 0.15s ease, top 0.15s ease;
+        }
+
+        .popup-modal {
+            display: none;
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.7);
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            z-index: 100;
+            text-align: center;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 320px;
+            width: 85%;
+        }
+
+        .popup-modal.active {
+            display: block;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .popup-modal h3 { margin-top: 0; color: #d63031; font-size: 1.8rem; }
+        .popup-modal p { color: #34495e; font-size: 1.1rem; line-height: 1.5; }
+
+        .popup-btn {
+            background: #d63031;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .message-screen {
+            display: none;
+            opacity: 0;
+            transition: opacity 2s ease;
+            max-width: 600px;
+            width: 90%;
+            margin: 0 auto;
+            padding: 35px;
+            background-color: rgba(10, 6, 12, 0.75); 
+            border-radius: 20px;
+            text-align: center;
+            z-index: 10;
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(241, 196, 15, 0.2);
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .message-screen h2 {
+            font-size: 2.5rem;
+            color: #f1c40f; 
+            margin-bottom: 25px;
+            font-style: italic;
+            text-shadow: 0 2px 12px rgba(241, 196, 15, 0.4);
+        }
+
+        .message-screen p {
+            font-size: 1.15rem;
+            color: #f5f6fa;
+            line-height: 1.8;
+            letter-spacing: 0.6px;
+            white-space: pre-line;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
+        }
+    </style>
+</head>
+<body onclick="startMusicFallback()">
+
+    <audio id="romanticSong" loop preload="auto"></audio>
+
+    <div class="container" id="proposalStage">
+        <div class="subtitle">The Love Story</div>
+        <h1 id="questionText">Will you be my Forever?</h1>
+        <div class="btn-container" id="btnArea">
+            <button id="yesBtn" onclick="showPopup()">YES</button>
+            <button id="noBtn" onmouseover="moveNoButton()" onclick="moveNoButton()">NO</button>
+        </div>
+    </div>
+
+    <div class="popup-modal" id="lovePopup">
+        <h3>Yay! ❤️</h3>
+        <p>You've made me the happiest person alive! I have a small letter prepared for you...</p>
+        <button class="popup-btn" onclick="acceptProposal()">Read it ✨</button>
+    </div>
+
+    <div class="message-screen" id="successStage">
+        <h2>Forever & Always</h2>
+        <p>"If I could live life five times over…
+I'd be born beneath five different skies, breathe in the air of distant lands, and savor the flavors of the world as if each bite held a new beginning.
+I'd chase dreams with five different hearts, wear five different names, and follow five winding paths—each one shaped by its own adventures.
+
+But no matter how different those lives would be…
+In every lifetime, in every language, in every version of me
+I would find you.
+And I would fall in love with you all over again.
+Not by chance, not by fate
+But because my soul would recognize yours every single time.
+
+Five lives.
+Five stories.
+A thousand moments.
+And every one of them would end with me loving you."</p>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const btnArea = document.getElementById('btnArea');
+        const proposalStage = document.getElementById('proposalStage');
+        const successStage = document.getElementById('successStage');
+        const lovePopup = document.getElementById('lovePopup');
+        const body = document.body;
+        const song = document.getElementById('romanticSong');
+
+        let musicStarted = false;
+        const cacheBuster = "?v=" + new Date().getTime();
+
+        const imgBg1 = "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?q=80&w=2070&auto=format&fit=cover" + cacheBuster;
+        const imgBg2 = "https://images.unsplash.com/photo-1504333638930-c8787321eba0?q=80&w=2070&auto=format&fit=cover" + cacheBuster;
+
+        body.style.backgroundImage = "url('" + imgBg1 + "')";
+        song.src = "music.mp3" + cacheBuster;
+
+        function startMusicFallback() {
+            if (!musicStarted) {
+                song.play().then(() => {
+                    musicStarted = true;
+                }).catch(err => console.log("Audio waiting"));
+            }
+        }
+
+        setInterval(() => {
+            const heart = document.createElement('div');
+            heart.classList.add('heart-sticker');
+            heart.innerHTML = ['❤️','💖','✨','🌸'][Math.floor(Math.random() * 4)];
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = (Math.random() * 2 + 3) + "s";
+            body.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 5000);
+        }, 600);
+
+        function moveNoButton() {
+            startMusicFallback(); 
+            const maxX = btnArea.clientWidth - noBtn.offsetWidth;
+            const maxY = btnArea.clientHeight - noBtn.offsetHeight;
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        }
+
+        function showPopup() {
+            song.play().catch(err => console.log("Audio forced"));
+            lovePopup.classList.add('active');
+        }
+
+        function acceptProposal() {
+            lovePopup.classList.remove('active');
+            proposalStage.style.transition = 'opacity 0.5s ease';
+            proposalStage.style.opacity = '0';
+
+            setTimeout(() => {
+                proposalStage.style.display = 'none';
+                body.style.backgroundImage = "url('" + imgBg2 + "')";
+                successStage.style.display = 'block';
+                setTimeout(() => {
+                    successStage.style.opacity = '1';
+                }, 50);
+            }, 500);
+        }
+    </script>
+</body>
+</html>
