@@ -15,7 +15,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Page 1 Background: Vintage letters, keys, and hearts */
+            /* Page 1 Background: Vintage letters and romantic canvas */
             background: url('https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=2070&auto=format&fit=cover') no-repeat center center/cover;
             transition: background 2s ease-in-out;
             overflow: hidden;
@@ -66,7 +66,7 @@
             box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2);
             width: 85%;
             max-width: 420px;
-            height: 280px; /* Fixed height so "NO" button stays trapped inside */
+            height: 280px; /* Fixed height to keep "NO" trapped inside */
             backdrop-filter: blur(5px);
             box-sizing: border-box;
         }
@@ -90,7 +90,7 @@
         .btn-container {
             position: relative;
             width: 100%;
-            height: 120px; /* Area where buttons live */
+            height: 120px;
         }
 
         button {
@@ -220,7 +220,7 @@
 <body onclick="startMusicFallback()">
 
     <audio id="romanticSong" loop preload="auto">
-        <source src="https://docs.google.com/uc?export=download&id=14AtaQWjT_dhvRPaN5ycE4wx5KI4Bkhbq" type="audio/mpeg">
+        <source src="music.mp3" type="audio/mpeg">
     </audio>
 
     <div class="container" id="proposalStage">
@@ -268,12 +268,12 @@ And every one of them would end with me loving you."</p>
 
         let musicStarted = false;
 
-        // Plays music on ANY initial interaction anywhere to bypass mobile blockages
+        // Instantly streams music on any layout click or hover to force browser activation
         function startMusicFallback() {
             if (!musicStarted) {
                 song.play().then(() => {
                     musicStarted = true;
-                }).catch(err => console.log("Waiting for interactive trigger"));
+                }).catch(err => console.log("Awaiting core layout interact"));
             }
         }
 
@@ -288,7 +288,7 @@ And every one of them would end with me loving you."</p>
             setTimeout(() => { heart.remove(); }, 5000);
         }, 600);
 
-        // TRAPPED NO BUTTON: Restricted coordinates inside the white frame area 
+        // TRAPPED NO BUTTON MATH: Locks button inside the white card container boundary
         function moveNoButton() {
             startMusicFallback(); 
             
@@ -302,13 +302,13 @@ And every one of them would end with me loving you."</p>
             noBtn.style.top = randomY + 'px';
         }
 
-        // Trigger pop-up text card & lock-in audio player
+        // Trigger intermediate alert overlay
         function showPopup() {
             song.play().catch(err => console.log("Audio forced"));
             lovePopup.classList.add('active');
         }
 
-        // Transition background and reveal the poem layout
+        // Change background and reveal letter poem
         function acceptProposal() {
             lovePopup.classList.remove('active');
             proposalStage.style.transition = 'opacity 0.5s ease';
