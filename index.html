@@ -23,14 +23,14 @@
             overflow: hidden;
             position: relative;
             
-            /* Prevents any text selection or typing cursor anywhere on the screen */
+            /* Disable selection to eliminate typing cursors */
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
         }
 
-        /* Dark vignette overlay to ensure text stands out beautifully */
+        /* Dark overlay for rich text contrast */
         body::before {
             content: '';
             position: absolute;
@@ -63,7 +63,7 @@
             }
         }
 
-        /* Main Card Container */
+        /* Card Setup */
         .container {
             text-align: center;
             position: relative;
@@ -77,7 +77,7 @@
             height: 280px; 
             backdrop-filter: blur(5px);
             box-sizing: border-box;
-            cursor: default; /* Changes pointer to a standard solid arrow */
+            cursor: default;
         }
 
         .subtitle {
@@ -137,7 +137,7 @@
             transition: left 0.15s ease, top 0.15s ease;
         }
 
-        /* Custom Sweet Popup Modal */
+        /* Popup Modal */
         .popup-modal {
             display: none;
             position: fixed;
@@ -184,7 +184,7 @@
             margin-top: 15px;
         }
 
-        /* Poem View Layout */
+        /* Letter Screen Layout */
         .message-screen {
             display: none;
             opacity: 0;
@@ -271,11 +271,11 @@ And every one of them would end with me loving you."</p>
         let musicStarted = false;
         const cacheBuster = "?v=" + new Date().getTime();
 
-        // High-Quality Custom Wallpaper URLs
-        const imgBg1 = "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?q=80&w=2070&auto=format&fit=cover" + cacheBuster; // Castle in Hills
-        const imgBg2 = "https://images.unsplash.com/photo-1504333638930-c8787321eba0?q=80&w=2070&auto=format&fit=cover" + cacheBuster; // Starry Night Sky River
+        // Custom image layers matching her style preferences
+        const imgBg1 = "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?q=80&w=2070&auto=format&fit=cover" + cacheBuster;
+        const imgBg2 = "https://images.unsplash.com/photo-1504333638930-c8787321eba0?q=80&w=2070&auto=format&fit=cover" + cacheBuster;
 
-        // Inject first background immediately bypassing browser cache
+        // Apply background layers & bypass audio caching
         body.style.backgroundImage = "url('" + imgBg1 + "')";
         song.src = "music.mp3" + cacheBuster;
 
@@ -283,14 +283,51 @@ And every one of them would end with me loving you."</p>
             if (!musicStarted) {
                 song.play().then(() => {
                     musicStarted = true;
-                }).catch(err => console.log("Awaiting interaction"));
+                }).catch(err => console.log("Awaiting core interaction layer"));
             }
         }
 
-        // Floating Heart Spawner
+        // Heart Spawner
         setInterval(() => {
             const heart = document.createElement('div');
             heart.classList.add('heart-sticker');
             heart.innerHTML = ['❤️','💖','✨','🌸'][Math.floor(Math.random() * 4)];
             heart.style.left = Math.random() * 100 + "vw";
-            heart.style.animationDuration = (Math.random() *
+            heart.style.animationDuration = (Math.random() * 2 + 3) + "s";
+            body.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 5000);
+        }, 600);
+
+        // Runaway Button Boundaries Logic
+        function moveNoButton() {
+            startMusicFallback(); 
+            const maxX = btnArea.clientWidth - noBtn.offsetWidth;
+            const maxY = btnArea.clientHeight - noBtn.offsetHeight;
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        }
+
+        function showPopup() {
+            song.play().catch(err => console.log("Audio kickstart"));
+            lovePopup.classList.add('active');
+        }
+
+        function acceptProposal() {
+            lovePopup.classList.remove('active');
+            proposalStage.style.transition = 'opacity 0.5s ease';
+            proposalStage.style.opacity = '0';
+
+            setTimeout(() => {
+                proposalStage.style.display = 'none';
+                body.style.backgroundImage = "url('" + imgBg2 + "')";
+                successStage.style.display = 'block';
+                setTimeout(() => {
+                    successStage.style.opacity = '1';
+                }, 50);
+            }, 500);
+        }
+    </script>
+</body>
+</html>
