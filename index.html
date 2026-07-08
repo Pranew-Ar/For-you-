@@ -1,5 +1,3 @@
-The Love Story
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +15,8 @@ The Love Story
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #ffe6e6;
+            /* First Background: Vintage letters and heart layout */
+            background: url('https://http://googleusercontent.com/image_generation_content/317/image_4893c0.jpg') no-repeat center center/cover;
             transition: background 2s ease;
             overflow: hidden;
         }
@@ -26,12 +25,25 @@ The Love Story
             text-align: center;
             position: relative;
             z-index: 10;
-            padding: 20px;
+            padding: 30px;
+            background-color: rgba(255, 240, 240, 0.85); /* Semi-transparent warm overlay so text pops */
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            font-style: italic;
         }
 
         h1 {
             font-size: 3rem;
             color: #d63031;
+            margin-top: 0;
             margin-bottom: 40px;
             transition: color 2s ease, opacity 0.5s ease;
         }
@@ -52,7 +64,7 @@ The Love Story
             border-radius: 25px;
             cursor: pointer;
             transition: transform 0.2s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
         }
 
         #yesBtn {
@@ -68,49 +80,53 @@ The Love Story
             background-color: #e74c3c;
             color: white;
             position: absolute;
-            left: 55%; /* Initial positioning next to Yes */
-            transition: left 0.1s ease, top 0.1s ease;
+            left: 55%; 
+            transition: left 0.12s ease, top 0.12s ease;
         }
 
-        /* Success / Vintage Theme Styling */
+        /* Success / Starry Night Screen Styling */
         .message-screen {
             display: none;
             opacity: 0;
             transition: opacity 2s ease;
             max-width: 600px;
             margin: 0 auto;
+            padding: 30px;
+            background-color: rgba(0, 0, 0, 0.6); /* Dark clean overlay to keep the text perfectly readable over the stars */
+            border-radius: 15px;
+            text-align: center;
         }
 
         .message-screen h2 {
-            font-size: 2.5rem;
-            color: #dfb76c; /* Vintage Gold */
+            font-size: 2.8rem;
+            color: #f1c40f; /* Radiant Gold */
             margin-bottom: 20px;
             font-style: italic;
+            text-shadow: 0 2px 10px rgba(241, 196, 15, 0.4);
         }
 
         .message-screen p {
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             color: #f5f6fa;
             line-height: 1.8;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            white-space: pre-line; /* Keeps your poem paragraphs beautifully aligned */
         }
 
-        /* Dark Vintage Background Class */
+        /* Second Background Class triggered on YES: Silhouette couple under stars */
         body.vintage-love {
-            background: radial-gradient(circle, #2c1a1d 0%, #0f080a 100%);
+            background: url('https://http://googleusercontent.com/image_generation_content/317/image_4897bb.png') no-repeat center center/cover;
         }
     </style>
 </head>
 <body>
 
-    <!-- Audio Element (Replace URL with your choice of romantic song) -->
-    <!-- Note: Many browsers require a user click (like clicking 'YES') to allow audio to autoplay -->
     <audio id="romanticSong" loop>
-        <source src="https://drive.google.com/file/d/14AtaQWjT_dhvRPaN5ycE4wx5KI4Bkhbq/view?usp=drive_link">
+        <source src="https://docs.google.com/uc?export=download&id=14AtaQWjT_dhvRPaN5ycE4wx5KI4Bkhbq" type="audio/mpeg">
     </audio>
 
-    <!-- Main Proposal Screen -->
     <div class="container" id="proposalStage">
+        <div class="subtitle">The Love Story</div>
         <h1 id="questionText">Will you be my Forever?</h1>
         <div class="btn-container">
             <button id="yesBtn" onclick="acceptProposal()">YES</button>
@@ -118,11 +134,9 @@ The Love Story
         </div>
     </div>
 
-    <!-- Romantic Success Screen -->
     <div class="message-screen" id="successStage">
         <h2>Forever & Always</h2>
-        <p>
-            "If I could live life five times over…
+        <p>"If I could live life five times over…
 I'd be born beneath five different skies, breathe in the air of distant lands, and savor the flavors of the world as if each bite held a new beginning.
 I'd chase dreams with five different hearts, wear five different names, and follow five winding paths—each one shaped by its own adventures.
 
@@ -136,8 +150,7 @@ But because my soul would recognize yours every single time.
 Five lives.
 Five stories.
 A thousand moments.
-And every one of them would end with me loving you."
-        </p>
+And every one of them would end with me loving you."</p>
     </div>
 
     <script>
@@ -147,41 +160,34 @@ And every one of them would end with me loving you."
         const body = document.body;
         const song = document.getElementById('romanticSong');
 
-        // Function to run away when hovering or trying to click 'NO'
         function moveNoButton() {
-            // Calculate random positions within the visible window boundaries
             const padding = 100; 
             const maxX = window.innerWidth - noBtn.offsetWidth - padding;
             const maxY = window.innerHeight - noBtn.offsetHeight - padding;
 
-            // Generate random coordinates
             const randomX = Math.floor(Math.random() * maxX);
             const randomY = Math.floor(Math.random() * maxY);
 
-            // Apply new coordinates
             noBtn.style.position = 'fixed';
             noBtn.style.left = randomX + 'px';
             noBtn.style.top = randomY + 'px';
         }
 
-        // Function when 'YES' is clicked
         function acceptProposal() {
-            // 1. Play the music
+            // Play the Google Drive converted direct audio link
             song.play().catch(error => {
-                console.log("Audio playback failed or needs user interaction permission:", error);
+                console.log("Audio playback notice:", error);
             });
 
-            // 2. Hide the proposal elements smoothly
             proposalStage.style.transition = 'opacity 0.5s ease';
             proposalStage.style.opacity = '0';
 
             setTimeout(() => {
                 proposalStage.style.display = 'none';
                 
-                // 3. Switch to Romantic Dark Vintage theme
+                // Switch background to the starry sky image dynamically
                 body.classList.add('vintage-love');
                 
-                // 4. Reveal the beautiful message
                 successStage.style.display = 'block';
                 setTimeout(() => {
                     successStage.style.opacity = '1';
