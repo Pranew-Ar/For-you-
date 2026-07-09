@@ -19,10 +19,10 @@
             /* Page 1 Background with an ambient shifting soft heart particle layer */
             background: radial-gradient(circle at 20% 30%, rgba(255, 71, 87, 0.04) 1px, transparent 1px),
                         radial-gradient(circle at 75% 60%, rgba(255, 107, 129, 0.06) 2px, transparent 2px),
-                        url('castle.jpg') no-repeat center center;
+                        url('castle.jpg') no-repeat center bottom; /* Positioned at the bottom */
             
-            /* ZOOM OUT CONTROL: Set to 75% to pull the camera back further and show the whole picture */
-            background-size: 100% 100%, 100% 100%, 75%;
+            /* FIXED: 'cover' fills the entire screen width to remove gray bars */
+            background-size: 100% 100%, 100% 100%, cover;
             
             transition: background 2s ease-in-out;
             overflow: hidden;
@@ -32,8 +32,8 @@
 
         /* Ambient subtle shift background animation */
         @keyframes ambientFloat {
-            0% { background-position: 0 0, 0 0, center center; }
-            100% { background-position: 30px -60px, -50px -90px, center center; }
+            0% { background-position: 0 0, 0 0, center bottom; }
+            100% { background-position: 30px -60px, -50px -90px, center bottom; }
         }
 
         /* Dark vignette overlay */
@@ -178,7 +178,7 @@
             line-height: 1.5;
         }
 
-        .popup-btn {
+        .popup-modal btn {
             background: #d63031;
             color: white;
             border: none;
