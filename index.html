@@ -15,22 +15,15 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Page 1 Fallback: Atmospheric rainy misty gradient + Castle Image */
-            background: linear-gradient(135deg, #2c3e50, #bdc3c7), 
-                        url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=cover&w=1920&q=80') no-repeat center center/cover;
-            background-blend-mode: multiply;
-            transition: background 2.5s ease-in-out;
+            
+            /* PAGE 1 BACKGROUND: Moody, Rainy Castle Landscape */
+            background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), 
+                        url('https://images.imagesverse.com/wp-content/uploads/2024/02/Rainy-Castle-Background.jpg') no-repeat center center/cover,
+                        linear-gradient(135deg, #2c3e50, #1a252f); /* Ultra-safe ultimate dark color fallback */
+            
+            transition: background 2s ease-in-out;
             overflow: hidden;
             position: relative;
-        }
-
-        /* Subtle dark vignette overlay so the white card pops */
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.35);
-            z-index: 1;
         }
 
         /* Interactive Floating Hearts Container */
@@ -68,7 +61,7 @@
             box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3);
             width: 85%;
             max-width: 420px;
-            height: 280px; /* Fixed height to keep "NO" trapped inside */
+            height: 280px;
             backdrop-filter: blur(5px);
             box-sizing: border-box;
         }
@@ -186,7 +179,7 @@
             width: 90%;
             margin: 0 auto;
             padding: 35px;
-            background-color: rgba(11, 10, 18, 0.88); 
+            background-color: rgba(11, 10, 18, 0.9); 
             border-radius: 20px;
             text-align: center;
             z-index: 10;
@@ -213,92 +206,8 @@
             text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
         }
 
-        /* Page 2 Background Style: Deep night view, star gazing over mountain lake fallback */
+        /* PAGE 2 BACKGROUND STYLE: Starry Mountain Night Sky Landscape */
         body.vintage-love {
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364), 
-                        url('https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=cover&w=1920&q=80') no-repeat center center/cover;
-            background-blend-mode: multiply;
-        }
-    </style>
-</head>
-<body onclick="startMusicFallback()">
-
-    <audio id="romanticSong" loop preload="auto"></audio>
-
-    <div class="container" id="proposalStage">
-        <div class="subtitle">Begining of our Love Story</div>
-        <h1 id="questionText">Will you be my Forever?</h1>
-        <div class="btn-container" id="btnArea">
-            <button id="yesBtn" onclick="showPopup()">YES</button>
-            <button id="noBtn" onmouseover="moveNoButton()" onclick="moveNoButton()">NO</button>
-        </div>
-    </div>
-
-    <div class="popup-modal" id="lovePopup">
-        <h3>Yay! ❤️</h3>
-        <p>You've made me the happiest person alive! I have a small letter prepared for you...</p>
-        <button class="popup-btn" onclick="acceptProposal()">Read it ✨</button>
-    </div>
-
-    <div class="message-screen" id="successStage">
-        <h2>Forever & Always</h2>
-        <p>"If I could live life five times over…
-I'd be born beneath five different skies, breathe in the air of distant lands, and savor the flavors of the world as if each bite held a new beginning.
-I'd chase dreams with five different hearts, wear five different names, and follow five winding paths—each one shaped by its own adventures.
-
-But no matter how different those lives would be…
-In every lifetime, in every language, in every version of me
-I would find you.
-And I would fall in love with you all over again.
-Not by chance, not by fate
-But because my soul would recognize yours every single time.
-
-Five lives.
-Five stories.
-A thousand moments.
-And every one of them would end with me loving you."</p>
-    </div>
-
-    <script>
-        const noBtn = document.getElementById('noBtn');
-        const btnArea = document.getElementById('btnArea');
-        const proposalStage = document.getElementById('proposalStage');
-        const successStage = document.getElementById('successStage');
-        const lovePopup = document.getElementById('lovePopup');
-        const body = document.body;
-        const song = document.getElementById('romanticSong');
-
-        let musicStarted = false;
-
-        // Force Cache Bypass on the music file using a unique timestamp
-        song.src = "music.mp3?v=" + new Date().getTime();
-
-        // Plays music on ANY initial interaction anywhere to bypass mobile blockages
-        function startMusicFallback() {
-            if (!musicStarted) {
-                song.play().then(() => {
-                    musicStarted = true;
-                }).catch(err => console.log("Awaiting core layout interact"));
-            }
-        }
-
-        // Automatic Heart Sticker Spawner
-        setInterval(() => {
-            const heart = document.createElement('div');
-            heart.classList.add('heart-sticker');
-            heart.innerHTML = ['❤️','💖','✨','🌸'][Math.floor(Math.random() * 4)];
-            heart.style.left = Math.random() * 100 + "vw";
-            heart.style.animationDuration = (Math.random() * 2 + 3) + "s";
-            body.appendChild(heart);
-            setTimeout(() => { heart.remove(); }, 5000);
-        }, 600);
-
-        // TRAPPED NO BUTTON MATH: Locks button inside the white card container boundary
-        function moveNoButton() {
-            startMusicFallback(); 
-            
-            const maxX = btnArea.clientWidth - noBtn.offsetWidth;
-            const maxY = btnArea.clientHeight - noBtn.offsetHeight;
-
-            const randomX = Math.floor(Math.random() * maxX);
-            const randomY = Math.floor(Math.random() * maxY);
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
+                        url('https://images.hdqwalls.com/download/starry-night-at-mountains-lake-4k-xo-1920x1080.jpg') no-repeat center center/cover,
+                        linear-gradient(135deg, #0f2027, #203a43
