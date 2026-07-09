@@ -1,697 +1,355 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>For You</title>
-
     <style>
-
-        /* Base Layout */
-
+        /* Base Reset & Core Layout */
         body, html {
-
             margin: 0;
-
             padding: 0;
-
             width: 100%;
-
             height: 100%;
-
             font-family: 'Georgia', serif;
-
             display: flex;
-
             justify-content: center;
-
             align-items: center;
-
-            
-
-            /* Page 1 Background with an ambient shifting soft heart particle layer */
-
-            background: radial-gradient(circle at 20% 30%, rgba(255, 71, 87, 0.04) 1px, transparent 1px),
-
-                        radial-gradient(circle at 75% 60%, rgba(255, 107, 129, 0.06) 2px, transparent 2px),
-
-                        url('castle.jpg') no-repeat center center/cover;
-
-            background-size: 50% 50%, 50% 50%, cover;
-
-            
-
-            transition: background 2s ease-in-out;
-
+            background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.3)), url('castle.jpg') no-repeat center center/cover;
             overflow: hidden;
-
             position: relative;
-
-            animation: ambientFloat 25s linear infinite;
-
         }
-
-
-
-        /* Ambient subtle shift background animation */
-
-        @keyframes ambientFloat {
-
-            0% { background-position: 0 0, 0 0, center center; }
-
-            100% { background-position: 30px -60px, -50px -90px, center center; }
-
-        }
-
-
-
-        /* Dark vignette overlay */
-
-        body::before {
-
-            content: '';
-
-            position: absolute;
-
-            top: 0; left: 0; width: 100%; height: 100%;
-
-            background: rgba(0, 0, 0, 0.2);
-
-            z-index: 1;
-
-        }
-
-
 
         /* Interactive Floating Hearts Container */
-
         .heart-sticker {
-
             position: absolute;
-
             color: #ff4757;
-
             font-size: 24px;
-
             pointer-events: none;
-
             z-index: 2;
-
             animation: floatUp 4s linear infinite;
-
             opacity: 0;
-
         }
-
-
 
         @keyframes floatUp {
-
-            0% {
-
-                transform: translateY(100vh) scale(0.5);
-
-                opacity: 0;
-
-            }
-
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
             15% { opacity: 0.7; }
-
             90% { opacity: 0.4; }
-
-            100% {
-
-                transform: translateY(-10vh) scale(1.2) translateX(50px);
-
-                opacity: 0;
-
-            }
-
+            100% { transform: translateY(-10vh) scale(1.2) translateX(50px); opacity: 0; }
         }
 
-
-
-        /* Main Proposal Container */
-
+        /* Main Proposal Box */
         .container {
-
             text-align: center;
-
             position: relative;
-
             z-index: 10;
-
-            padding: 40px;
-
-            background-color: rgba(255, 245, 245, 0.9); 
-
+            padding: 40px 30px;
+            background-color: rgba(255, 245, 245, 0.95); 
             border-radius: 20px;
-
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2);
-
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3);
             width: 85%;
-
             max-width: 420px;
-
-            height: 280px;
-
             backdrop-filter: blur(5px);
-
             box-sizing: border-box;
-
         }
-
-
 
         .subtitle {
-
-            font-size: 1.1rem;
-
+            font-size: 0.95rem;
             color: #7f8c8d;
-
             text-transform: uppercase;
-
-            letter-spacing: 4px;
-
-            margin-bottom: 12px;
-
+            letter-spacing: 3px;
+            margin-bottom: 15px;
             font-style: italic;
-
         }
-
-
 
         h1 {
-
-            font-size: 2.2rem;
-
+            font-size: 2rem;
             color: #d63031;
-
             margin-top: 0;
-
-            margin-bottom: 30px;
-
+            margin-bottom: 35px;
+            line-height: 1.3;
         }
 
-
-
+        /* Flexbox-based Button Container to ensure zero overlapping */
         .btn-container {
-
             position: relative;
-
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
             width: 100%;
-
-            height: 120px;
-
+            height: 100px;
         }
-
-
 
         button {
-
             padding: 12px 35px;
-
             font-size: 1.1rem;
-
             font-weight: bold;
-
             border: none;
-
             border-radius: 25px;
-
             cursor: pointer;
-
-            transition: transform 0.1s ease, box-shadow 0.2s ease;
-
             box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-
         }
-
-
 
         #yesBtn {
-
             background: linear-gradient(135deg, #2ecc71, #27ae60);
-
             color: white;
-
-            position: absolute;
-
-            left: 15%;
-
-            top: 20px;
-
-            z-index: 20;
-
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-
-
 
         #yesBtn:hover {
-
             transform: scale(1.15);
-
             box-shadow: 0 8px 20px rgba(46, 204, 113, 0.4);
-
         }
-
-
 
         #noBtn {
-
             background: linear-gradient(135deg, #e74c3c, #c0392b);
-
             color: white;
-
             position: absolute;
-
-            left: 55%; 
-
-            top: 20px;
-
-            z-index: 20;
-
-            transition: left 0.15s ease, top 0.15s ease;
-
+            left: 55%;
+            transition: left 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275), top 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-
-
-        /* Custom Sweet Popup Modal */
-
+        /* Alert / Confirmation Modal */
         .popup-modal {
-
             display: none;
-
             position: fixed;
-
             top: 50%; left: 50%;
-
             transform: translate(-50%, -50%) scale(0.7);
-
             background: white;
-
             padding: 30px;
-
             border-radius: 20px;
-
-            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
             z-index: 100;
-
             text-align: center;
-
             opacity: 0;
-
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-
             max-width: 320px;
-
             width: 85%;
-
         }
-
-
 
         .popup-modal.active {
-
             display: block;
-
             opacity: 1;
-
             transform: translate(-50%, -50%) scale(1);
-
         }
-
-
 
         .popup-modal h3 {
-
             margin-top: 0;
-
             color: #d63031;
-
             font-size: 1.8rem;
-
+            margin-bottom: 10px;
         }
-
-
 
         .popup-modal p {
-
             color: #34495e;
-
             font-size: 1.1rem;
-
             line-height: 1.5;
-
+            margin-bottom: 20px;
         }
-
-
 
         .popup-btn {
-
             background: #d63031;
-
             color: white;
-
             border: none;
-
-            padding: 10px 25px;
-
+            padding: 12px 30px;
             border-radius: 20px;
-
             font-weight: bold;
-
             cursor: pointer;
-
-            margin-top: 15px;
-
         }
 
-
-
-        /* Page 2 Text Styling (Poem Screen) */
-
+        /* Final Letter Display */
         .message-screen {
-
             display: none;
-
             opacity: 0;
-
-            transition: opacity 2s ease;
-
+            transition: opacity 1.5s ease;
             max-width: 600px;
-
             width: 90%;
-
             margin: 0 auto;
-
             padding: 35px;
-
-            background-color: rgba(10, 6, 12, 0.75); 
-
+            background-color: rgba(10, 6, 12, 0.88); 
             border-radius: 20px;
-
             text-align: center;
-
             z-index: 10;
-
-            backdrop-filter: blur(6px);
-
+            backdrop-filter: blur(8px);
             border: 1px solid rgba(241, 196, 15, 0.2);
-
             max-height: 85vh;
-
             overflow-y: auto;
-
+            box-sizing: border-box;
         }
-
-
 
         .message-screen h2 {
-
-            font-size: 2.5rem;
-
+            font-size: 2.3rem;
             color: #f1c40f; 
-
+            margin-top: 0;
             margin-bottom: 25px;
-
             font-style: italic;
-
             text-shadow: 0 2px 12px rgba(241, 196, 15, 0.4);
-
         }
-
-
 
         .message-screen p {
-
-            font-size: 1.15rem;
-
+            font-size: 1.2rem;
             color: #f5f6fa;
-
             line-height: 1.8;
-
             letter-spacing: 0.6px;
-
             white-space: pre-line;
-
             text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
-
+            display: inline;
         }
 
+        /* Blinking typing indicator */
+        .cursor {
+            font-size: 1.3rem;
+            color: #f1c40f;
+            animation: blink 0.8s infinite;
+            font-weight: bold;
+            margin-left: 3px;
+        }
 
-
-        /* Page 2 Background Style with an added Twinkling Star animation filter overlay */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
 
         body.vintage-love {
-
-            background: linear-gradient(rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.15)), 
-
-                        url('lake.jpg') no-repeat center center/cover;
-
-            animation: starTwinkle 5s ease-in-out infinite alternate;
-
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('lake.jpg') no-repeat center center/cover;
         }
-
-
-
-        @keyframes starTwinkle {
-
-            0% { filter: brightness(0.95) contrast(1); }
-
-            100% { filter: brightness(1.1) contrast(1.04); }
-
-        }
-
     </style>
-
 </head>
-
-<body onclick="startMusicFallback()">
-
-
+<body>
 
     <audio id="romanticSong" loop preload="auto">
-
         <source src="music.mp3" type="audio/mpeg">
-
     </audio>
 
-
-
     <div class="container" id="proposalStage">
-
-        <div class="subtitle">BEGINING OF OUR LOVE STORY</div>
-
+        <div class="subtitle">BEGINNING OF OUR LOVE STORY</div>
         <h1 id="questionText">Will you be my Forever?</h1>
-
         <div class="btn-container" id="btnArea">
-
             <button id="yesBtn" onclick="showPopup()">YES</button>
-
             <button id="noBtn" onmouseover="moveNoButton()" onclick="moveNoButton()">NO</button>
-
         </div>
-
     </div>
-
-
 
     <div class="popup-modal" id="lovePopup">
-
         <h3>Yay! ❤️</h3>
-
         <p>You've made me the happiest person alive! I have a small letter prepared for you...</p>
-
         <button class="popup-btn" onclick="acceptProposal()">Read it ✨</button>
-
     </div>
-
-
 
     <div class="message-screen" id="successStage">
-
         <h2>Forever & Always</h2>
-
-        <p>"If I could live life seven times over…
-
-I'd be born beneath seven different skies, breathe in the air of distant lands, and savor the flavors of the world as if each bite held a new beginning.
-
-I'd chase dreams with seven different hearts, wear seven different names, and follow seven winding paths—each one shaped by its own adventures.
-
-
-
-But no matter how different those lives would be…
-
-In every lifetime, in every language, in every version of me
-
-I would find you.
-
-And I would fall in love with you all over again.
-
-Not by chance, not by fate
-
-But because my soul would recognize yours every single time.
-
-
-
-Seven lives.
-
-Seven stories.
-
-A thousand moments.
-
-And every one of them would end with me loving you."</p>
-
+        <p id="typewriterText"></p><span class="cursor" id="cursor">|</span>
     </div>
 
-
-
     <script>
-
         const noBtn = document.getElementById('noBtn');
-
         const btnArea = document.getElementById('btnArea');
-
         const proposalStage = document.getElementById('proposalStage');
-
         const successStage = document.getElementById('successStage');
-
         const lovePopup = document.getElementById('lovePopup');
-
-        const body = document.body;
-
         const song = document.getElementById('romanticSong');
-
-
 
         let musicStarted = false;
 
+        const poemText = `If I could live life seven times over…
+I'd be born beneath seven different skies, breathe in the air of distant lands, and savor the flavors of the world as if each bite held a new beginning.
+I'd chase dreams with seven different hearts, wear seven different names, and follow seven winding paths—each one shaped by its own adventures.
 
+But no matter how different those lives would be…
+In every lifetime, in every language, in every version of me
+I would find you.
+And I would fall in love with you all over again.
+Not by chance, not by fate
+But because my soul would recognize yours every single time.
 
-        function startMusicFallback() {
+Seven lives.
+Seven stories.
+A thousand moments.
+And every one of them would end with me loving you.`;
 
-            if (!musicStarted) {
-
-                song.play().then(() => {
-
-                    musicStarted = true;
-
-                }).catch(err => console.log("Awaiting gesture interaction"));
-
+        // Safely triggers music playback on a physical user gesture
+        function triggerMusic() {
+            if (!musicStarted && song) {
+                song.play()
+                    .then(() => { musicStarted = true; })
+                    .catch(e => console.log("Audio waiting on interaction context"));
             }
-
         }
 
-
-
-        // Heart Spawner
-
+        // Heart Spawner Loop
         setInterval(() => {
-
             const heart = document.createElement('div');
-
             heart.classList.add('heart-sticker');
-
             heart.innerHTML = ['❤️','💖','✨','🌸'][Math.floor(Math.random() * 4)];
-
             heart.style.left = Math.random() * 100 + "vw";
-
             heart.style.animationDuration = (Math.random() * 2 + 3) + "s";
-
-            body.appendChild(heart);
-
-            setTimeout(() => { heart.remove(); }, 5000);
-
+            document.body.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 4000);
         }, 600);
 
-
-
-        // Your Original Safe Button Container Math
-
+        // Runs away smoothly inside its boundaries
         function moveNoButton() {
-
-            startMusicFallback(); 
-
+            triggerMusic(); 
             
-
             const areaWidth = btnArea.clientWidth;
-
             const areaHeight = btnArea.clientHeight;
-
             const btnWidth = noBtn.offsetWidth;
-
             const btnHeight = noBtn.offsetHeight;
 
-
-
             const maxX = areaWidth - btnWidth;
-
             const maxY = areaHeight - btnHeight;
 
-
-
+            // Compute precise safe positions
             const targetX = maxX > 0 ? Math.floor(Math.random() * maxX) : 10;
-
-            const targetY = maxY > 0 ? Math.floor(Math.random() * maxY) : 20;
-
-
+            const targetY = maxY > 0 ? Math.floor(Math.random() * (maxY - 10)) : 10;
 
             noBtn.style.left = targetX + 'px';
-
             noBtn.style.top = targetY + 'px';
-
         }
-
-
 
         function showPopup() {
-
-            song.play().catch(err => console.log("Forced background trigger"));
-
-            lovePopup.classList.add('active');
-
+            triggerMusic();
+            if (lovePopup) {
+                lovePopup.classList.add('active');
+            }
         }
-
-
 
         function acceptProposal() {
-
-            lovePopup.classList.remove('active');
-
-            proposalStage.style.transition = 'opacity 0.5s ease';
-
+            if (lovePopup) lovePopup.classList.remove('active');
+            
+            proposalStage.style.transition = 'opacity 0.4s ease';
             proposalStage.style.opacity = '0';
 
-
-
             setTimeout(() => {
-
                 proposalStage.style.display = 'none';
-
-                body.classList.add('vintage-love');
-
+                document.body.className = 'vintage-love'; // Update styling cleanly
                 successStage.style.display = 'block';
-
+                
                 setTimeout(() => {
-
                     successStage.style.opacity = '1';
-
+                    typeWriter(poemText, 0, document.getElementById('typewriterText'));
                 }, 50);
-
-            }, 500);
-
+            }, 400);
         }
 
+        // Dynamic, responsive typewriter engine
+        function typeWriter(text, index, element) {
+            if (!element) return;
+            if (index < text.length) {
+                element.innerHTML += text.charAt(index);
+                
+                let delay = 40; // Clean, readable base typing speed
+                if (text.charAt(index) === '…' || text.charAt(index) === '.') delay = 600;
+                if (text.charAt(index) === ',') delay = 250;
+
+                setTimeout(() => {
+                    typeWriter(text, index + 1, element);
+                }, delay);
+            } else {
+                const cursor = document.getElementById('cursor');
+                if (cursor) cursor.style.display = 'none';
+            }
+        }
     </script>
-
 </body>
-
 </html>
