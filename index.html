@@ -18,8 +18,7 @@
             
             /* PAGE 1 BACKGROUND: Moody, Rainy Castle Landscape */
             background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), 
-                        url('https://images.imagesverse.com/wp-content/uploads/2024/02/Rainy-Castle-Background.jpg') no-repeat center center/cover,
-                        linear-gradient(135deg, #2c3e50, #1a252f); /* Ultra-safe ultimate dark color fallback */
+                        url('https://images.imagesverse.com/wp-content/uploads/2024/02/Rainy-Castle-Background.jpg') no-repeat center center/cover;
             
             transition: background 2s ease-in-out;
             overflow: hidden;
@@ -83,9 +82,12 @@
         }
 
         .btn-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 20px;
+            height: 80px;
             position: relative;
-            width: 100%;
-            height: 120px;
         }
 
         button {
@@ -95,17 +97,14 @@
             border: none;
             border-radius: 25px;
             cursor: pointer;
-            transition: transform 0.1s ease, box-shadow 0.2s ease;
             box-shadow: 0 5px 15px rgba(0,0,0,0.15);
         }
 
         #yesBtn {
             background: linear-gradient(135deg, #2ecc71, #27ae60);
             color: white;
-            position: absolute;
-            left: 15%;
-            top: 20px;
-            z-index: 20;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            z-index: 25;
         }
 
         #yesBtn:hover {
@@ -116,11 +115,10 @@
         #noBtn {
             background: linear-gradient(135deg, #e74c3c, #c0392b);
             color: white;
-            position: absolute;
-            left: 55%; 
-            top: 20px;
+            position: relative;
             z-index: 20;
-            transition: left 0.15s ease, top 0.15s ease;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            will-change: transform;
         }
 
         /* Custom Sweet Popup Modal */
@@ -209,5 +207,4 @@
         /* PAGE 2 BACKGROUND STYLE: Starry Mountain Night Sky Landscape */
         body.vintage-love {
             background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
-                        url('https://images.hdqwalls.com/download/starry-night-at-mountains-lake-4k-xo-1920x1080.jpg') no-repeat center center/cover,
-                        linear-gradient(135deg, #0f2027, #203a43
+                        url('https://
