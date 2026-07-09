@@ -70,7 +70,7 @@
             line-height: 1.3;
         }
 
-        /* FIXED: Sturdy, perfectly centered container for absolute symmetry */
+        /* Sturdy, perfectly centered container for absolute symmetry */
         .btn-container {
             position: relative;
             width: 100%;
@@ -91,7 +91,7 @@
             transform: translateY(-50%);
         }
 
-        /* FIXED: Placed perfectly on the left side */
+        /* Placed perfectly on the left side */
         #yesBtn {
             background: linear-gradient(135deg, #2ecc71, #27ae60);
             color: white;
@@ -104,7 +104,7 @@
             box-shadow: 0 8px 20px rgba(46, 204, 113, 0.4);
         }
 
-        /* FIXED: Placed perfectly on the right side with transition logic mapped to inline overrides */
+        /* Placed perfectly on the right side initially */
         #noBtn {
             background: linear-gradient(135deg, #e74c3c, #c0392b);
             color: white;
@@ -112,42 +112,47 @@
             transition: left 0.15s ease, top 0.15s ease, right 0.15s ease;
         }
 
-        /* Alert / Confirmation Modal - Redesigned Romantic Anime Style */
+        /* FIXED: Re-architected Modal to completely drop display properties */
         .popup-modal {
-            display: none;
             position: fixed;
             top: 50%; left: 50%;
-            transform: translate(-50%, -50%) scale(0.7);
-            background: #fffdf9; /* Soft romantic cream paper tone */
+            background: #fffdf9; 
             padding: 35px 25px;
             border-radius: 16px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.4);
             z-index: 100;
             max-width: 340px;
             width: 85%;
-            border: 2px dashed #e74c3c; /* Anime letter border style */
-            opacity: 0;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px dashed #e74c3c;
             box-sizing: border-box;
 
-            /* FIXED: Forces layout to stack cleanly with vertical flow to fix text overlapping */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px; 
+            /* Strict vertical alignment layout stack */
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 20px !important;
+
+            /* Hidden state animation rules */
+            opacity: 0;
+            pointer-events: none;
+            transform: translate(-50%, -50%) scale(0.7);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
         }
 
+        /* FIXED: Clean active visibility toggle */
         .popup-modal.active {
-            display: flex !important; /* Overrides default layout cleanly */
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            transform: translate(-50%, -50%) scale(1) !important;
         }
 
         .letter-seal {
             font-size: 3rem;
-            margin: 0;
+            margin: 0 !important;
+            padding: 0 !important;
             animation: heartBeat 2s infinite ease-in-out;
-            display: inline-block;
+            line-height: 1;
         }
 
         @keyframes heartBeat {
@@ -156,44 +161,50 @@
         }
 
         .popup-modal h3 {
-            margin: 0;
+            margin: 0 !important;
+            padding: 0 !important;
             color: #d63031;
             font-family: 'Georgia', serif;
             font-size: 1.6rem;
             font-style: italic;
             letter-spacing: 1px;
+            line-height: 1.2;
         }
 
         .popup-modal p {
             color: #4a5568;
             font-size: 1.05rem;
             line-height: 1.6;
-            margin: 0;
+            margin: 0 !important;
+            padding: 0 !important;
             font-style: italic;
             text-align: center;
         }
 
-        /* FIXED: Stripped global absolute positioning inheritance leaks */
-        .popup-btn {
+        /* FIXED: Strong internal isolation reset explicitly killing parent style leaks */
+        .popup-modal .popup-btn {
             position: relative !important; 
             top: auto !important;
+            left: auto !important;
+            right: auto !important;
             transform: none !important;
-            background: linear-gradient(135deg, #ff4757, #d63031);
-            color: white;
-            border: none;
-            padding: 12px 35px;
-            border-radius: 25px;
-            font-weight: bold;
-            font-size: 1.05rem;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(214, 48, 49, 0.3);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            margin-top: 10px;
+            display: inline-block !important;
+            background: linear-gradient(135deg, #ff4757, #d63031) !important;
+            color: white !important;
+            border: none !important;
+            padding: 12px 35px !important;
+            border-radius: 25px !important;
+            font-weight: bold !important;
+            font-size: 1.05rem !important;
+            cursor: pointer !important;
+            box-shadow: 0 5px 15px rgba(214, 48, 49, 0.3) !important;
+            transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+            margin-top: 5px !important;
         }
 
-        .popup-btn:hover {
+        .popup-modal .popup-btn:hover {
             transform: scale(1.05) !important;
-            box-shadow: 0 8px 20px rgba(214, 48, 49, 0.4);
+            box-shadow: 0 8px 20px rgba(214, 48, 49, 0.4) !important;
         }
 
         /* Final Letter Display */
@@ -269,7 +280,6 @@
         </div>
     </div>
 
-    <!-- Redesigned Anime Letter Popup -->
     <div class="popup-modal" id="lovePopup">
         <div class="letter-seal">✉️</div>
         <h3>I Found You... ❤️</h3>
@@ -332,9 +342,8 @@ And every one of them would end with me loving you.`;
         function moveNoButton() {
             triggerMusic(); 
             
-            // Clean breakdown calculation on first interaction to avoid sudden snapping jumps
             if (isFirstMove) {
-                noBtn.style.right = 'auto'; // Clear right property alignment
+                noBtn.style.right = 'auto'; 
                 isFirstMove = false;
             }
             
@@ -346,7 +355,6 @@ And every one of them would end with me loving you.`;
             const maxX = areaWidth - btnWidth;
             const maxY = areaHeight - btnHeight;
 
-            // Compute precise safe positions within bounding box
             const targetX = maxX > 0 ? Math.floor(Math.random() * maxX) : 10;
             const targetY = maxY > 0 ? Math.floor(Math.random() * maxY) : 10;
 
