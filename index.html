@@ -15,8 +15,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Page 1 Background: Moody, Rainy Castle in the Hills */
-            background: url('https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?q=80&w=2070&auto=format&fit=cover') no-repeat center center/cover;
+            /* Page 1 Fallback: Atmospheric rainy misty gradient + Castle Image */
+            background: linear-gradient(135deg, #2c3e50, #bdc3c7), 
+                        url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=cover&w=1920&q=80') no-repeat center center/cover;
+            background-blend-mode: multiply;
             transition: background 2.5s ease-in-out;
             overflow: hidden;
             position: relative;
@@ -27,7 +29,7 @@
             content: '';
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.35);
             z-index: 1;
         }
 
@@ -184,7 +186,7 @@
             width: 90%;
             margin: 0 auto;
             padding: 35px;
-            background-color: rgba(15, 12, 24, 0.85); 
+            background-color: rgba(11, 10, 18, 0.88); 
             border-radius: 20px;
             text-align: center;
             z-index: 10;
@@ -211,9 +213,11 @@
             text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
         }
 
-        /* Page 2 Background Style: Deep night view, star gazing over mountain lake */
+        /* Page 2 Background Style: Deep night view, star gazing over mountain lake fallback */
         body.vintage-love {
-            background: url('https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?q=80&w=2070&auto=format&fit=cover') no-repeat center center/cover;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364), 
+                        url('https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=cover&w=1920&q=80') no-repeat center center/cover;
+            background-blend-mode: multiply;
         }
     </style>
 </head>
@@ -222,7 +226,7 @@
     <audio id="romanticSong" loop preload="auto"></audio>
 
     <div class="container" id="proposalStage">
-        <div class="subtitle">The Love Story</div>
+        <div class="subtitle">Begining of our Love Story</div>
         <h1 id="questionText">Will you be my Forever?</h1>
         <div class="btn-container" id="btnArea">
             <button id="yesBtn" onclick="showPopup()">YES</button>
@@ -298,32 +302,3 @@ And every one of them would end with me loving you."</p>
 
             const randomX = Math.floor(Math.random() * maxX);
             const randomY = Math.floor(Math.random() * maxY);
-
-            noBtn.style.left = randomX + 'px';
-            noBtn.style.top = randomY + 'px';
-        }
-
-        // Trigger intermediate alert overlay
-        function showPopup() {
-            song.play().catch(err => console.log("Audio forced"));
-            lovePopup.classList.add('active');
-        }
-
-        // Change background and reveal letter poem
-        function acceptProposal() {
-            lovePopup.classList.remove('active');
-            proposalStage.style.transition = 'opacity 0.5s ease';
-            proposalStage.style.opacity = '0';
-
-            setTimeout(() => {
-                proposalStage.style.display = 'none';
-                body.classList.add('vintage-love');
-                successStage.style.display = 'block';
-                setTimeout(() => {
-                    successStage.style.opacity = '1';
-                }, 50);
-            }, 500);
-        }
-    </script>
-</body>
-</html>
