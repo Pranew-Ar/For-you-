@@ -21,8 +21,8 @@
                         radial-gradient(circle at 75% 60%, rgba(255, 107, 129, 0.06) 2px, transparent 2px),
                         url('castle.jpg') no-repeat center center;
             
-            /* ZOOM CONTROL: 140% zooms in tightly on the castle image */
-            background-size: 100% 100%, 100% 100%, 140%;
+            /* ZOOM OUT CONTROL: Changing this from 140% down to cover pulls the camera back safely */
+            background-size: 100% 100%, 100% 100%, cover;
             
             transition: background 2s ease-in-out;
             overflow: hidden;
