@@ -15,14 +15,20 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            
-            /* PAGE 1 BACKGROUND: Moody, Rainy Castle Landscape */
-            background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), 
-                        url('https://images.imagesverse.com/wp-content/uploads/2024/02/Rainy-Castle-Background.jpg') no-repeat center center/cover;
-            
+            /* Pointing directly to your GitHub folder asset */
+            background: url('castle.jpg') no-repeat center center/cover;
             transition: background 2s ease-in-out;
             overflow: hidden;
             position: relative;
+        }
+
+        /* Dark vignette overlay */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            z-index: 1;
         }
 
         /* Interactive Floating Hearts Container */
@@ -55,9 +61,9 @@
             position: relative;
             z-index: 10;
             padding: 40px;
-            background-color: rgba(255, 245, 245, 0.95); 
+            background-color: rgba(255, 245, 245, 0.9); 
             border-radius: 20px;
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2);
             width: 85%;
             max-width: 420px;
             height: 280px;
@@ -82,12 +88,9 @@
         }
 
         .btn-container {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            margin-top: 20px;
-            height: 80px;
             position: relative;
+            width: 100%;
+            height: 120px;
         }
 
         button {
@@ -97,14 +100,17 @@
             border: none;
             border-radius: 25px;
             cursor: pointer;
+            transition: transform 0.1s ease, box-shadow 0.2s ease;
             box-shadow: 0 5px 15px rgba(0,0,0,0.15);
         }
 
         #yesBtn {
             background: linear-gradient(135deg, #2ecc71, #27ae60);
             color: white;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            z-index: 25;
+            position: absolute;
+            left: 15%;
+            top: 20px;
+            z-index: 20;
         }
 
         #yesBtn:hover {
@@ -115,10 +121,11 @@
         #noBtn {
             background: linear-gradient(135deg, #e74c3c, #c0392b);
             color: white;
-            position: relative;
+            position: absolute;
+            left: 55%; 
+            top: 20px;
             z-index: 20;
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            will-change: transform;
+            transition: left 0.15s ease, top 0.15s ease;
         }
 
         /* Custom Sweet Popup Modal */
@@ -177,11 +184,11 @@
             width: 90%;
             margin: 0 auto;
             padding: 35px;
-            background-color: rgba(11, 10, 18, 0.9); 
+            background-color: rgba(10, 6, 12, 0.75); 
             border-radius: 20px;
             text-align: center;
             z-index: 10;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(6px);
             border: 1px solid rgba(241, 196, 15, 0.2);
             max-height: 85vh;
             overflow-y: auto;
@@ -204,7 +211,121 @@
             text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
         }
 
-        /* PAGE 2 BACKGROUND STYLE: Starry Mountain Night Sky Landscape */
+        /* Page 2 Background Style */
         body.vintage-love {
-            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
-                        url('https://
+            background: url('lake.jpg') no-repeat center center/cover;
+        }
+    </style>
+</head>
+<body onclick="startMusicFallback()">
+
+    <audio id="romanticSong" loop preload="auto">
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="container" id="proposalStage">
+        <div class="subtitle">BEGINING OF OUR LOVE STORY</div>
+        <h1 id="questionText">Will you be my Forever?</h1>
+        <div class="btn-container" id="btnArea">
+            <button id="yesBtn" onclick="showPopup()">YES</button>
+            <button id="noBtn" onmouseover="moveNoButton()" onclick="moveNoButton()">NO</button>
+        </div>
+    </div>
+
+    <div class="popup-modal" id="lovePopup">
+        <h3>Yay! ❤️</h3>
+        <p>You've made me the happiest person alive! I have a small letter prepared for you...</p>
+        <button class="popup-btn" onclick="acceptProposal()">Read it ✨</button>
+    </div>
+
+    <div class="message-screen" id="successStage">
+        <h2>Forever & Always</h2>
+        <p>"If I could live life five times over…
+I'd be born beneath five different skies, breathe in the air of distant lands, and savor the flavors of the world as if each bite held a new beginning.
+I'd chase dreams with five different hearts, wear five different names, and follow five winding paths—each one shaped by its own adventures.
+
+But no matter how different those lives would be…
+In every lifetime, in every language, in every version of me
+I would find you.
+And I would fall in love with you all over again.
+Not by chance, not by fate
+But because my soul would recognize yours every single time.
+
+Five lives.
+Five stories.
+A thousand moments.
+And every one of them would end with me loving you."</p>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const btnArea = document.getElementById('btnArea');
+        const proposalStage = document.getElementById('proposalStage');
+        const successStage = document.getElementById('successStage');
+        const lovePopup = document.getElementById('lovePopup');
+        const body = document.body;
+        const song = document.getElementById('romanticSong');
+
+        let musicStarted = false;
+
+        function startMusicFallback() {
+            if (!musicStarted) {
+                song.play().then(() => {
+                    musicStarted = true;
+                }).catch(err => console.log("Awaiting user gesture"));
+            }
+        }
+
+        // Heart Spawner
+        setInterval(() => {
+            const heart = document.createElement('div');
+            heart.classList.add('heart-sticker');
+            heart.innerHTML = ['❤️','💖','✨','🌸'][Math.floor(Math.random() * 4)];
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = (Math.random() * 2 + 3) + "s";
+            body.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 5000);
+        }, 600);
+
+        // Safe Absolute No-Button Math (Prevents browser lockups)
+        function moveNoButton() {
+            startMusicFallback(); 
+            
+            const areaWidth = btnArea.clientWidth;
+            const areaHeight = btnArea.clientHeight;
+            const btnWidth = noBtn.offsetWidth;
+            const btnHeight = noBtn.offsetHeight;
+
+            const maxX = areaWidth - btnWidth;
+            const maxY = areaHeight - btnHeight;
+
+            // Ensures calculations never fall below zero
+            const targetX = maxX > 0 ? Math.floor(Math.random() * maxX) : 10;
+            const targetY = maxY > 0 ? Math.floor(Math.random() * maxY) : 20;
+
+            noBtn.style.left = targetX + 'px';
+            noBtn.style.top = targetY + 'px';
+        }
+
+        function showPopup() {
+            song.play().catch(err => console.log("Forced play"));
+            lovePopup.classList.add('active');
+        }
+
+        function acceptProposal() {
+            lovePopup.classList.remove('active');
+            proposalStage.style.transition = 'opacity 0.5s ease';
+            proposalStage.style.opacity = '0';
+
+            setTimeout(() => {
+                proposalStage.style.display = 'none';
+                body.classList.add('vintage-love');
+                successStage.style.display = 'block';
+                setTimeout(() => {
+                    successStage.style.opacity = '1';
+                }, 50);
+            }, 500);
+        }
+    </script>
+</body>
+</html>
