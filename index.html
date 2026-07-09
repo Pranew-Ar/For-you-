@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For You</title>
     <style>
+        /* Base Reset & Core Layout */
         body, html {
             margin: 0;
             padding: 0;
@@ -19,6 +20,7 @@
             position: relative;
         }
 
+        /* Interactive Floating Hearts Container */
         .heart-sticker {
             position: absolute;
             color: #ff4757;
@@ -36,6 +38,7 @@
             100% { transform: translateY(-10vh) scale(1.2) translateX(50px); opacity: 0; }
         }
 
+        /* Main Proposal Box */
         .container {
             text-align: center;
             position: relative;
@@ -67,6 +70,7 @@
             line-height: 1.3;
         }
 
+        /* FIXED: Sturdy, perfectly centered container for absolute symmetry */
         .btn-container {
             position: relative;
             width: 100%;
@@ -87,6 +91,7 @@
             transform: translateY(-50%);
         }
 
+        /* FIXED: Placed perfectly on the left side */
         #yesBtn {
             background: linear-gradient(135deg, #2ecc71, #27ae60);
             color: white;
@@ -99,6 +104,7 @@
             box-shadow: 0 8px 20px rgba(46, 204, 113, 0.4);
         }
 
+        /* FIXED: Placed perfectly on the right side with transition logic mapped to inline overrides */
         #noBtn {
             background: linear-gradient(135deg, #e74c3c, #c0392b);
             color: white;
@@ -144,11 +150,12 @@
             margin-bottom: 20px;
         }
 
-        /* FIX: Prevents the global 'button' rules from locking this element in the middle of the box */
-        .popup-modal button {
+        /* FIX: Overwrite the global button styles ONLY inside the popup modal */
+        .popup-modal .popup-btn {
             position: relative !important;
             top: auto !important;
             transform: none !important;
+            display: inline-block !important;
             background: #d63031;
             color: white;
             border: none;
@@ -156,10 +163,10 @@
             border-radius: 20px;
             font-weight: bold;
             cursor: pointer;
-            display: inline-block;
             box-shadow: 0 5px 15px rgba(0,0,0,0.15);
         }
 
+        /* Final Letter Display */
         .message-screen {
             display: none;
             opacity: 0;
@@ -198,6 +205,7 @@
             display: inline;
         }
 
+        /* Blinking typing indicator */
         .cursor {
             font-size: 1.3rem;
             color: #f1c40f;
@@ -233,8 +241,8 @@
 
     <div class="popup-modal" id="lovePopup">
         <h3>I Found You... ❤️</h3>
-        <p>"I knew it the second I saw you. Even if we were born in different worlds, or separated by a thousand skies... my heart would still recognize yours. This letter is everything I've been wanting to say to you."</p>
-        <button onclick="acceptProposal()">Read it ✨</button>
+        <p>I knew it the second I saw you. Even if we were born in different worlds, or separated by a thousand skies... my heart would still recognize yours. This letter is everything I've been wanting to say to you.</p>
+        <button class="popup-btn" onclick="acceptProposal()">Read it ✨</button>
     </div>
 
     <div class="message-screen" id="successStage">
@@ -277,6 +285,7 @@ And every one of them would end with me loving you.`;
             }
         }
 
+        // Heart Spawner Loop
         setInterval(() => {
             const heart = document.createElement('div');
             heart.classList.add('heart-sticker');
@@ -287,11 +296,13 @@ And every one of them would end with me loving you.`;
             setTimeout(() => { heart.remove(); }, 4000);
         }, 600);
 
+        // Runs away smoothly inside its boundaries
         function moveNoButton() {
             triggerMusic(); 
             
+            // Clean breakdown calculation on first interaction to avoid sudden snapping jumps
             if (isFirstMove) {
-                noBtn.style.right = 'auto'; 
+                noBtn.style.right = 'auto'; // Clear right property alignment
                 isFirstMove = false;
             }
             
@@ -303,12 +314,15 @@ And every one of them would end with me loving you.`;
             const maxX = areaWidth - btnWidth;
             const maxY = areaHeight - btnHeight;
 
+            // Compute precise safe positions within bounding box
             const targetX = maxX > 0 ? Math.floor(Math.random() * maxX) : 10;
             const targetY = maxY > 0 ? Math.floor(Math.random() * maxY) : 10;
 
             noBtn.style.left = targetX + 'px';
             noBtn.style.top = targetY + 'px';
         }
+
+        document.getElementById('yesBtn').addEventListener('click', showPopup);
 
         function showPopup() {
             triggerMusic();
@@ -335,6 +349,7 @@ And every one of them would end with me loving you.`;
             }, 400);
         }
 
+        // Typewriter Engine
         function typeWriter(text, index, element) {
             if (!element) return;
             if (index < text.length) {
