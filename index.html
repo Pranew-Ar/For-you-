@@ -196,7 +196,7 @@
             width: 90%;
             margin: 0 auto;
             padding: 35px;
-            background-color: rgba(10, 6, 12, 0.75); 
+            background-color: rgba(10, 6, 12, 0.85); 
             border-radius: 20px;
             text-align: center;
             z-index: 10;
@@ -215,15 +215,30 @@
         }
 
         .message-screen p {
-            font-size: 1.15rem;
+            font-size: 1.25rem;
             color: #f5f6fa;
             line-height: 1.8;
             letter-spacing: 0.6px;
             white-space: pre-line;
             text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
+            display: inline;
         }
 
-        /* Page 2 Background Style with an added Twinkling Star animation filter overlay */
+        /* Glowing blinking cursor effect */
+        .cursor {
+            font-size: 1.3rem;
+            color: #f1c40f;
+            animation: blink 0.8s infinite;
+            font-weight: bold;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Page 2 Background Style */
         body.vintage-love {
             background: linear-gradient(rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.15)), 
                         url('lake.jpg') no-repeat center center/cover;
@@ -243,7 +258,7 @@
     </audio>
 
     <div class="container" id="proposalStage">
-        <div class="subtitle">BEGINING OF OUR LOVE STORY</div>
+        <div class="subtitle">BEGINNING OF OUR LOVE STORY</div>
         <h1 id="questionText">Will you be my Forever?</h1>
         <div class="btn-container" id="btnArea">
             <button id="yesBtn" onclick="showPopup()">YES</button>
@@ -259,7 +274,22 @@
 
     <div class="message-screen" id="successStage">
         <h2>Forever & Always</h2>
-        <p>"If I could live life seven times over…
+        <p id="typewriterText"></p><span class="cursor" id="cursor">|</span>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const btnArea = document.getElementById('btnArea');
+        const proposalStage = document.getElementById('proposalStage');
+        const successStage = document.getElementById('successStage');
+        const lovePopup = document.getElementById('lovePopup');
+        const body = document.body;
+        const song = document.getElementById('romanticSong');
+
+        let musicStarted = false;
+
+        // The poem configuration
+        const poemText = `If I could live life seven times over…
 I'd be born beneath seven different skies, breathe in the air of distant lands, and savor the flavors of the world as if each bite held a new beginning.
 I'd chase dreams with seven different hearts, wear seven different names, and follow seven winding paths—each one shaped by its own adventures.
 
@@ -273,19 +303,7 @@ But because my soul would recognize yours every single time.
 Seven lives.
 Seven stories.
 A thousand moments.
-And every one of them would end with me loving you."</p>
-    </div>
-
-    <script>
-        const noBtn = document.getElementById('noBtn');
-        const btnArea = document.getElementById('btnArea');
-        const proposalStage = document.getElementById('proposalStage');
-        const successStage = document.getElementById('successStage');
-        const lovePopup = document.getElementById('lovePopup');
-        const body = document.body;
-        const song = document.getElementById('romanticSong');
-
-        let musicStarted = false;
+And every one of them would end with me loving you.`;
 
         function startMusicFallback() {
             if (!musicStarted) {
@@ -306,7 +324,6 @@ And every one of them would end with me loving you."</p>
             setTimeout(() => { heart.remove(); }, 5000);
         }, 600);
 
-        // Your Original Safe Button Container Math
         function moveNoButton() {
             startMusicFallback(); 
             
@@ -339,11 +356,4 @@ And every one of them would end with me loving you."</p>
                 proposalStage.style.display = 'none';
                 body.classList.add('vintage-love');
                 successStage.style.display = 'block';
-                setTimeout(() => {
-                    successStage.style.opacity = '1';
-                }, 50);
-            }, 500);
-        }
-    </script>
-</body>
-</html>
+                setTimeout(()
