@@ -15,14 +15,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Pointing directly to your GitHub folder asset */
-            background: url('castle.jpg') no-repeat center center/cover;
+            /* Page 1 Background: Vintage letters and romantic canvas */
+            background: url('https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=2070&auto=format&fit=cover') no-repeat center center/cover;
             transition: background 2s ease-in-out;
             overflow: hidden;
             position: relative;
         }
 
-        /* Dark vignette overlay */
+        /* Subtle dark vignette overlay */
         body::before {
             content: '';
             position: absolute;
@@ -66,7 +66,7 @@
             box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2);
             width: 85%;
             max-width: 420px;
-            height: 280px;
+            height: 280px; /* Fixed height to keep "NO" trapped inside */
             backdrop-filter: blur(5px);
             box-sizing: border-box;
         }
@@ -211,20 +211,18 @@
             text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
         }
 
-        /* Page 2 Background Style */
+        /* Page 2 Background Style: Silhouette couple under stars */
         body.vintage-love {
-            background: url('lake.jpg') no-repeat center center/cover;
+            background: url('https://images.unsplash.com/photo-1532798369041-b33eb576ef16?q=80&w=2070&auto=format&fit=cover') no-repeat center center/cover;
         }
     </style>
 </head>
 <body onclick="startMusicFallback()">
 
-    <audio id="romanticSong" loop preload="auto">
-        <source src="music.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="romanticSong" loop preload="auto"></audio>
 
     <div class="container" id="proposalStage">
-        <div class="subtitle">BEGINING OF OUR LOVE STORY</div>
+        <div class="subtitle">The Love Story</div>
         <h1 id="questionText">Will you be my Forever?</h1>
         <div class="btn-container" id="btnArea">
             <button id="yesBtn" onclick="showPopup()">YES</button>
@@ -268,15 +266,19 @@ And every one of them would end with me loving you."</p>
 
         let musicStarted = false;
 
+        // Force Cache Bypass on the music file using a unique timestamp
+        song.src = "music.mp3?v=" + new Date().getTime();
+
+        // Plays music on ANY initial interaction anywhere to bypass mobile blockages
         function startMusicFallback() {
             if (!musicStarted) {
                 song.play().then(() => {
                     musicStarted = true;
-                }).catch(err => console.log("Awaiting user gesture"));
+                }).catch(err => console.log("Awaiting core layout interact"));
             }
         }
 
-        // Heart Spawner
+        // Automatic Heart Sticker Spawner
         setInterval(() => {
             const heart = document.createElement('div');
             heart.classList.add('heart-sticker');
@@ -287,31 +289,27 @@ And every one of them would end with me loving you."</p>
             setTimeout(() => { heart.remove(); }, 5000);
         }, 600);
 
-        // Safe Absolute No-Button Math (Prevents browser lockups)
+        // TRAPPED NO BUTTON MATH: Locks button inside the white card container boundary
         function moveNoButton() {
             startMusicFallback(); 
             
-            const areaWidth = btnArea.clientWidth;
-            const areaHeight = btnArea.clientHeight;
-            const btnWidth = noBtn.offsetWidth;
-            const btnHeight = noBtn.offsetHeight;
+            const maxX = btnArea.clientWidth - noBtn.offsetWidth;
+            const maxY = btnArea.clientHeight - noBtn.offsetHeight;
 
-            const maxX = areaWidth - btnWidth;
-            const maxY = areaHeight - btnHeight;
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
 
-            // Ensures calculations never fall below zero
-            const targetX = maxX > 0 ? Math.floor(Math.random() * maxX) : 10;
-            const targetY = maxY > 0 ? Math.floor(Math.random() * maxY) : 20;
-
-            noBtn.style.left = targetX + 'px';
-            noBtn.style.top = targetY + 'px';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
         }
 
+        // Trigger intermediate alert overlay
         function showPopup() {
-            song.play().catch(err => console.log("Forced play"));
+            song.play().catch(err => console.log("Audio forced"));
             lovePopup.classList.add('active');
         }
 
+        // Change background and reveal letter poem
         function acceptProposal() {
             lovePopup.classList.remove('active');
             proposalStage.style.transition = 'opacity 0.5s ease';
