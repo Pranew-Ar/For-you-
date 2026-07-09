@@ -16,7 +16,7 @@
             justify-content: center;
             align-items: center;
             
-            /* Page 1 Background with an ambient shifting soft heart particle layer */
+            /* Background configuration */
             background: radial-gradient(circle at 20% 30%, rgba(255, 71, 87, 0.04) 1px, transparent 1px),
                         radial-gradient(circle at 75% 60%, rgba(255, 107, 129, 0.06) 2px, transparent 2px),
                         url('castle.jpg') no-repeat center center/cover;
@@ -28,13 +28,11 @@
             animation: ambientFloat 25s linear infinite;
         }
 
-        /* Ambient subtle shift background animation */
         @keyframes ambientFloat {
             0% { background-position: 0 0, 0 0, center center; }
             100% { background-position: 30px -60px, -50px -90px, center center; }
         }
 
-        /* Dark vignette overlay */
         body::before {
             content: '';
             position: absolute;
@@ -43,7 +41,7 @@
             z-index: 1;
         }
 
-        /* Interactive Floating Hearts Container */
+        /* Floating Elements */
         .heart-sticker {
             position: absolute;
             color: #ff4757;
@@ -55,19 +53,13 @@
         }
 
         @keyframes floatUp {
-            0% {
-                transform: translateY(100vh) scale(0.5);
-                opacity: 0;
-            }
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
             15% { opacity: 0.7; }
             90% { opacity: 0.4; }
-            100% {
-                transform: translateY(-10vh) scale(1.2) translateX(50px);
-                opacity: 0;
-            }
+            100% { transform: translateY(-10vh) scale(1.2) translateX(50px); opacity: 0; }
         }
 
-        /* Main Proposal Container */
+        /* Main Container */
         .container {
             text-align: center;
             position: relative;
@@ -140,7 +132,7 @@
             transition: left 0.15s ease, top 0.15s ease;
         }
 
-        /* Custom Sweet Popup Modal */
+        /* Popup Modal */
         .popup-modal {
             display: none;
             position: fixed;
@@ -187,7 +179,7 @@
             margin-top: 15px;
         }
 
-        /* Page 2 Text Styling (Poem Screen) */
+        /* Poem Screen */
         .message-screen {
             display: none;
             opacity: 0;
@@ -224,7 +216,6 @@
             display: inline;
         }
 
-        /* Glowing blinking cursor effect */
         .cursor {
             font-size: 1.3rem;
             color: #f1c40f;
@@ -238,7 +229,6 @@
             50% { opacity: 0; }
         }
 
-        /* Page 2 Background Style */
         body.vintage-love {
             background: linear-gradient(rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.15)), 
                         url('lake.jpg') no-repeat center center/cover;
@@ -288,7 +278,6 @@
 
         let musicStarted = false;
 
-        // The poem configuration
         const poemText = `If I could live life seven times over…
 I'd be born beneath seven different skies, breathe in the air of distant lands, and savor the flavors of the world as if each bite held a new beginning.
 I'd chase dreams with seven different hearts, wear seven different names, and follow seven winding paths—each one shaped by its own adventures.
@@ -306,14 +295,14 @@ A thousand moments.
 And every one of them would end with me loving you.`;
 
         function startMusicFallback() {
-            if (!musicStarted) {
+            if (!musicStarted && song) {
                 song.play().then(() => {
                     musicStarted = true;
-                }).catch(err => console.log("Awaiting gesture interaction"));
+                }).catch(err => console.log("Awaiting interactive gesture"));
             }
         }
 
-        // Heart Spawner
+        // Floating Hearts Animation Loop
         setInterval(() => {
             const heart = document.createElement('div');
             heart.classList.add('heart-sticker');
@@ -327,33 +316,4 @@ And every one of them would end with me loving you.`;
         function moveNoButton() {
             startMusicFallback(); 
             
-            const areaWidth = btnArea.clientWidth;
-            const areaHeight = btnArea.clientHeight;
-            const btnWidth = noBtn.offsetWidth;
-            const btnHeight = noBtn.offsetHeight;
-
-            const maxX = areaWidth - btnWidth;
-            const maxY = areaHeight - btnHeight;
-
-            const targetX = maxX > 0 ? Math.floor(Math.random() * maxX) : 10;
-            const targetY = maxY > 0 ? Math.floor(Math.random() * maxY) : 20;
-
-            noBtn.style.left = targetX + 'px';
-            noBtn.style.top = targetY + 'px';
-        }
-
-        function showPopup() {
-            song.play().catch(err => console.log("Forced background trigger"));
-            lovePopup.classList.add('active');
-        }
-
-        function acceptProposal() {
-            lovePopup.classList.remove('active');
-            proposalStage.style.transition = 'opacity 0.5s ease';
-            proposalStage.style.opacity = '0';
-
-            setTimeout(() => {
-                proposalStage.style.display = 'none';
-                body.classList.add('vintage-love');
-                successStage.style.display = 'block';
-                setTimeout(()
+            const areaWidth = btn
