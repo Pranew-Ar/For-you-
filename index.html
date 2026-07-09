@@ -70,14 +70,15 @@
             line-height: 1.3;
         }
 
-        /* Flexbox-based Button Container to ensure zero overlapping */
+        /* FIXED: A sturdy container that forces them side-by-side initially */
         .btn-container {
             position: relative;
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
+            gap: 30px; /* Gives a beautiful, clean space between them */
             align-items: center;
             width: 100%;
-            height: 100px;
+            height: 120px;
         }
 
         button {
@@ -101,12 +102,11 @@
             box-shadow: 0 8px 20px rgba(46, 204, 113, 0.4);
         }
 
+        /* FIXED: Starts normally in the row, switches smoothly when moved */
         #noBtn {
             background: linear-gradient(135deg, #e74c3c, #c0392b);
             color: white;
-            position: absolute;
-            left: 55%;
-            transition: left 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275), top 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: left 0.15s ease, top 0.15s ease;
         }
 
         /* Alert / Confirmation Modal */
@@ -250,6 +250,7 @@
         const song = document.getElementById('romanticSong');
 
         let musicStarted = false;
+        let isFirstMove = true;
 
         const poemText = `If I could live life seven times over…
 I'd be born beneath seven different skies, breathe in the air of distant lands, and savor the flavors of the world as if each bite held a new beginning.
@@ -267,7 +268,6 @@ Seven stories.
 A thousand moments.
 And every one of them would end with me loving you.`;
 
-        // Safely triggers music playback on a physical user gesture
         function triggerMusic() {
             if (!musicStarted && song) {
                 song.play()
@@ -290,6 +290,12 @@ And every one of them would end with me loving you.`;
         // Runs away smoothly inside its boundaries
         function moveNoButton() {
             triggerMusic(); 
+            
+            // On the very first hover/tap, convert the button to absolute position so it can jump freely
+            if (isFirstMove) {
+                noBtn.style.position = 'absolute';
+                isFirstMove = false;
+            }
             
             const areaWidth = btnArea.clientWidth;
             const areaHeight = btnArea.clientHeight;
@@ -322,7 +328,7 @@ And every one of them would end with me loving you.`;
 
             setTimeout(() => {
                 proposalStage.style.display = 'none';
-                document.body.className = 'vintage-love'; // Update styling cleanly
+                document.body.className = 'vintage-love'; 
                 successStage.style.display = 'block';
                 
                 setTimeout(() => {
@@ -332,13 +338,13 @@ And every one of them would end with me loving you.`;
             }, 400);
         }
 
-        // Dynamic, responsive typewriter engine
+        // Typewriter Engine
         function typeWriter(text, index, element) {
             if (!element) return;
             if (index < text.length) {
                 element.innerHTML += text.charAt(index);
                 
-                let delay = 40; // Clean, readable base typing speed
+                let delay = 40; 
                 if (text.charAt(index) === '…' || text.charAt(index) === '.') delay = 600;
                 if (text.charAt(index) === ',') delay = 250;
 
