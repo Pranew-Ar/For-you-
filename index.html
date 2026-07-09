@@ -19,8 +19,10 @@
             /* Page 1 Background with an ambient shifting soft heart particle layer */
             background: radial-gradient(circle at 20% 30%, rgba(255, 71, 87, 0.04) 1px, transparent 1px),
                         radial-gradient(circle at 75% 60%, rgba(255, 107, 129, 0.06) 2px, transparent 2px),
-                        url('castle.jpg') no-repeat center center/cover;
-            background-size: 100% 100%, 100% 100%, cover;
+                        url('castle.jpg') no-repeat center center;
+            
+            /* ZOOM CONTROL: 140% zooms in tightly on the castle image */
+            background-size: 100% 100%, 100% 100%, 140%;
             
             transition: background 2s ease-in-out;
             overflow: hidden;
