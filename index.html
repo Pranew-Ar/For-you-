@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For You</title>
     <style>
-        /* Base Reset & Core Layout */
+        /* Base Setup with your new Vintage Room Image */
         body, html {
             margin: 0;
             padding: 0;
@@ -15,13 +15,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Make sure 'castle.jpg' is saved in your folder for the image to display */
-            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)), url('castle.jpg') no-repeat center center/cover;
+            background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.25)), url('vintage-room.png') no-repeat center center/cover;
             overflow: hidden;
             position: relative;
         }
 
-        /* Interactive Floating Hearts Container */
+        /* Floating Magic Sticker Effects */
         .heart-sticker {
             position: absolute;
             color: #ff4757;
@@ -39,49 +38,37 @@
             100% { transform: translateY(-10vh) scale(1.2) translateX(50px); opacity: 0; }
         }
 
-        /* Main Proposal Box - Transformed into the Lace Silk Parchment style */
+        /* Front Elegant Proposal Container */
         .container {
             text-align: center;
             position: relative;
             z-index: 10;
-            padding: 45px 30px;
-            background-color: #fcf8f2; 
+            padding: 50px 30px;
+            background-color: rgba(252, 248, 242, 0.93); 
             border: 8px double #d4af37; 
             border-radius: 4px;
-            box-shadow: 0 0 0 4px #fcf8f2, 0 15px 35px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
             width: 85%;
             max-width: 440px;
             box-sizing: border-box;
-            background-image: radial-gradient(rgba(212, 175, 55, 0.05) 1px, transparent 0);
-            background-size: 8px 8px;
+            backdrop-filter: blur(4px);
         }
 
-        /* Scattered Rose Petal Decorative Elements inside the container */
-        .container::before {
+        .container::before, .container::after {
             content: '🌸';
             position: absolute;
-            top: 15px;
-            left: 20px;
             font-size: 1.2rem;
             opacity: 0.6;
         }
-        
-        .container::after {
-            content: '🌸';
-            position: absolute;
-            bottom: 15px;
-            right: 20px;
-            font-size: 1.2rem;
-            opacity: 0.6;
-            transform: rotate(45deg);
-        }
+        .container::before { top: 15px; left: 20px; }
+        .container::after { bottom: 15px; right: 20px; transform: rotate(45deg); }
 
         .subtitle {
             font-size: 0.85rem;
             color: #8a7355;
             text-transform: uppercase;
             letter-spacing: 4px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             font-weight: bold;
         }
 
@@ -89,20 +76,20 @@
             font-size: 2.2rem;
             color: #802b2b;
             margin-top: 0;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             line-height: 1.4;
             font-style: italic;
             font-weight: normal;
         }
 
-        /* Fixed Split Column Container for Items */
         .interactive-area {
             display: flex;
             justify-content: space-around;
-            align-items: center;
-            margin-top: 15px;
+            align-items: flex-start;
+            margin-top: 20px;
             position: relative;
-            min-height: 120px;
+            width: 100%;
+            height: 120px;
         }
 
         .column-box {
@@ -110,33 +97,31 @@
             flex-direction: column;
             align-items: center;
             width: 45%;
-            gap: 10px;
+            gap: 12px;
         }
 
         .deco-icon {
-            font-size: 1.8rem;
+            font-size: 2rem;
             opacity: 0.95;
-            margin-bottom: 5px;
+            height: 35px;
         }
 
         button {
             padding: 10px 25px;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             font-weight: bold;
             border: none;
-            border-radius: 4px;
             cursor: pointer;
             font-family: 'Georgia', serif;
             letter-spacing: 1px;
             background: transparent;
+            outline: none;
         }
 
-        /* Aesthetic styling for minimalist text buttons */
         #yesBtn {
             color: #556b2f;
             transition: transform 0.2s ease;
         }
-
         #yesBtn:hover {
             transform: scale(1.15);
             text-shadow: 0 0 5px rgba(85, 107, 47, 0.3);
@@ -145,42 +130,25 @@
         #noBtn {
             color: #802b2b;
             position: absolute;
-            /* Default initial relative spot inside its column zone */
             transition: left 0.15s ease, top 0.15s ease;
+            z-index: 20;
         }
 
-        /* Antique Book Style Modal Overhaul */
+        /* Beautiful Vintage Book Structure using your Book Image */
         .popup-modal {
             display: none;
             position: fixed;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0.7);
-            background: #fdfaf4; 
-            padding: 40px 35px;
-            /* Enhanced styling to create an open vintage journal notebook appearance */
-            border-left: 20px solid #4a1525; 
-            border-top: 3px solid #d4af37;
-            border-right: 4px solid #c5a028;
-            border-bottom: 5px solid #b38f1e;
-            border-radius: 2px 8px 8px 2px;
-            box-shadow: 0 0 0 2px #4a1525, 10px 25px 50px rgba(0,0,0,0.5);
+            width: 800px;
+            height: 450px;
+            background: url('vintage-book.png') no-repeat center center/cover;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
             z-index: 100;
-            text-align: center;
             opacity: 0;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            max-width: 400px;
-            width: 85%;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-sizing: border-box;
-        }
-
-        /* Faux center book page crease shadow */
-        .popup-modal::before {
-            content: '';
-            position: absolute;
-            top: 0; bottom: 0; left: 50%;
-            width: 1px;
-            background: linear-gradient(to right, rgba(0,0,0,0.08), rgba(0,0,0,0.02) 5px, transparent);
-            pointer-events: none;
+            border-radius: 4px;
         }
 
         .popup-modal.active {
@@ -189,21 +157,35 @@
             transform: translate(-50%, -50%) scale(1);
         }
 
+        /* Content block constrained exactly to the right-side paper parchment page zone */
+        .book-right-page {
+            position: absolute;
+            top: 40px;
+            right: 45px;
+            width: 335px;
+            height: 360px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-sizing: border-box;
+            padding: 10px;
+        }
+
         .popup-modal h3 {
-            margin-top: 0;
-            color: #4a1525;
-            font-size: 2rem;
-            margin-bottom: 18px;
+            margin: 0 0 12px 0;
+            color: #362214;
+            font-size: 1.8rem;
             font-style: italic;
             font-weight: normal;
-            letter-spacing: 0.5px;
         }
 
         .popup-modal p {
-            color: #3a3a3a;
-            font-size: 1.05rem;
-            line-height: 1.75;
-            margin-bottom: 30px;
+            color: #4a3425;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin: 0 0 20px 0;
             font-style: italic;
         }
 
@@ -211,68 +193,75 @@
             background: #4a1525;
             color: #fdfaf4;
             border: 1px solid #d4af37;
-            padding: 12px 35px;
+            padding: 10px 30px;
             border-radius: 3px;
             font-weight: normal;
+            font-size: 1rem;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             transition: background 0.2s;
         }
+        .popup-modal .popup-btn:hover { background: #5c1d30; }
 
-        .popup-modal .popup-btn:hover {
-            background: #5c1d30;
-        }
-
-        /* Final Letter Display */
+        /* Final Scroll Letter Display screen */
         .message-screen {
             display: none;
             opacity: 0;
             transition: opacity 1.5s ease;
-            max-width: 600px;
+            max-width: 650px;
             width: 90%;
             margin: 0 auto;
-            padding: 35px;
-            /* Replace 'lake.jpg' in your local directory for this section background */
-            background-color: rgba(10, 6, 12, 0.88); 
-            border-radius: 20px;
+            padding: 40px;
+            background-color: rgba(23, 16, 12, 0.94); 
+            border-radius: 12px;
             text-align: center;
             z-index: 10;
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(241, 196, 15, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid #d4af37;
             max-height: 85vh;
             overflow-y: auto;
             box-sizing: border-box;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
         }
 
         .message-screen h2 {
             font-size: 2.3rem;
-            color: #f1c40f; 
+            color: #d4af37; 
             margin-top: 0;
             margin-bottom: 25px;
             font-style: italic;
-            text-shadow: 0 2px 12px rgba(241, 196, 15, 0.4);
         }
 
         .message-screen p {
-            font-size: 1.2rem;
-            color: #f5f6fa;
+            font-size: 1.15rem;
+            color: #f5f2eb;
             line-height: 1.8;
-            letter-spacing: 0.6px;
+            letter-spacing: 0.5px;
             white-space: pre-line;
-            text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
             display: block;
-            min-height: 100px;
         }
 
-        #loveVideo {
-            width: 0px;
-            height: 0px;
-            position: absolute;
-            visibility: hidden;
-        }
+        #loveVideo { display: none; }
 
         body.vintage-love {
             background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('lake.jpg') no-repeat center center/cover;
+        }
+
+        /* Responsive scale safety toggle for smaller screen views */
+        @media (max-width: 820px) {
+            .popup-modal {
+                width: 95%;
+                height: 240px;
+                background-size: 100% 100%;
+            }
+            .book-right-page {
+                top: 15px; right: 5%;
+                width: 44%; height: 210px;
+                overflow-y: auto;
+            }
+            .popup-modal h3 { font-size: 1.2rem; margin-bottom: 5px; }
+            .popup-modal p { font-size: 0.75rem; line-height: 1.3; margin-bottom: 8px; }
+            .popup-modal .popup-btn { padding: 5px 15px; font-size: 0.8rem; }
         }
     </style>
 </head>
@@ -286,20 +275,16 @@
         <source src="video.mp4" type="video/mp4">
     </video>
 
-    <!-- Proposal Container Stage -->
+    <!-- Phase 1: Main Container -->
     <div class="container" id="proposalStage">
         <div class="subtitle">BEGINNING OF OUR LOVE STORY</div>
         <h1 id="questionText">Will you be my Forever?</h1>
         
-        <!-- Interactive Layout Grid to maintain separation alignment -->
         <div class="interactive-area" id="btnArea">
-            <!-- Left Axis (YES Corner) -->
             <div class="column-box">
                 <span class="deco-icon">🌹</span>
                 <button id="yesBtn">YES</button>
             </div>
-
-            <!-- Right Axis (NO Corner) -->
             <div class="column-box" id="noColumn">
                 <span class="deco-icon">🌿</span>
                 <button id="noBtn" onmouseover="moveNoButton()" onclick="moveNoButton()">NO</button>
@@ -307,23 +292,25 @@
         </div>
     </div>
 
-    <!-- Antique Open Book Diary Modal -->
+    <!-- Phase 2: Open Book Modal overlay -->
     <div class="popup-modal" id="lovePopup">
-        <h3>I Found You... ❤️</h3>
-        <p>I knew it the second I saw you. Even if we were born in different worlds, or separated by a thousand skies... my heart would still recognize yours. This letter is everything I've been wanting to say to you.</p>
-        <button class="popup-btn" onclick="acceptProposal()">Read it ✨</button>
+        <div class="book-right-page">
+            <h3>I Found You... ❤️</h3>
+            <p>I knew it the second I saw you. Even if we were born in different worlds, or separated by a thousand skies... my heart would still recognize yours. This letter is everything I've been wanting to say to you.</p>
+            <button class="popup-btn" onclick="acceptProposal()">Read it ✨</button>
+        </div>
     </div>
 
+    <!-- Phase 3: Final Letter Screen -->
     <div class="message-screen" id="successStage">
         <h2>Forever & Always</h2>
-        <div style="margin-bottom: 15px; font-size: 1.6rem; opacity: 0.9;">✨🕯️✨</div>
+        <div style="margin-bottom: 20px; font-size: 1.6rem; color:#d4af37;">🕯️ 📖 🕯️</div>
         <p id="typewriterText"></p>
     </div>
 
     <script>
         const noBtn = document.getElementById('noBtn');
         const btnArea = document.getElementById('btnArea');
-        const noColumn = document.getElementById('noColumn');
         const proposalStage = document.getElementById('proposalStage');
         const successStage = document.getElementById('successStage');
         const lovePopup = document.getElementById('lovePopup');
@@ -335,7 +322,6 @@
         let isFirstMove = true;
         let currentActiveVideo = 1;
 
-        // Position alignment initialization for the moving button
         function initNoButtonPosition() {
             const rect = noBtn.getBoundingClientRect();
             const areaRect = btnArea.getBoundingClientRect();
@@ -370,38 +356,11 @@
             { time: 19.2, text: "I'm not going anywhere without my best friend by my side" }
         ];
 
-        const fullLetterText = `Allow me to love you at your worst
-When the world caves in upon your shoulders
-And the universe steals the breath from your lungs
-
-When the nights grow heavier than your hope
-And even your own name feels unfamiliar
-Let me be the place you fall without fear
-
-I will stand between you and destruction
-Take the impact meant for your heart
-And spend pieces of my own
-If it means you can endure a moment longer
-
-If loving you requires sacrifice, let it be mine.
-If surviving costs me everything, let it be willingly given.
-For loving you especially at your weakest, is the only strength I will ever need.
-
-***
-
-This is my promise to you:
-I am not with you for the short term.
-I'm not here to waste your time.
-I'm here to build a life, a future, and a story with you.
-I want to spend the rest of my life waking up next to you.
-I'm in it for the long haul.
-I'm not going anywhere without my best friend by my side.`;
+        const fullLetterText = `Allow me to love you at your worst\nWhen the world caves in upon your shoulders\nAnd the universe steals the breath from your lungs\n\nWhen the nights grow heavier than your hope\nAnd even your own name feels unfamiliar\nLet me be the place you fall without fear\n\nI will stand between you and destruction\nTake the impact meant for your heart\nAnd spend pieces of my own\nIf it means you can endure a moment longer\n\nIf loving you requires sacrifice, let it be mine.\nIf surviving costs me everything, let it be willingly given.\nFor loving you especially at your weakest, is the only strength I will ever need.\n\n***\n\nThis is my promise to you:\nI am not with you for the short term.\nI'm not here to waste your time.\nI'm here to build a life, a future, and a story with you.\nI want to spend the rest of my life waking up next to you.\nI'm in it for the long haul.\nI'm not going anywhere without my best friend by my side.`;
 
         function triggerMusic() {
             if (!musicStarted && song) {
-                song.play()
-                    .then(() => { musicStarted = true; })
-                    .catch(e => console.log("Audio playing context active"));
+                song.play().then(() => { musicStarted = true; }).catch(e => {});
             }
         }
 
@@ -413,46 +372,30 @@ I'm not going anywhere without my best friend by my side.`;
             heart.style.animationDuration = (Math.random() * 2 + 3) + "s";
             document.body.appendChild(heart);
             setTimeout(() => { heart.remove(); }, 4000);
-        }, 600);
+        }, 650);
 
         function moveNoButton() {
             triggerMusic(); 
-            
             if (isFirstMove) {
                 initNoButtonPosition();
                 isFirstMove = false;
             }
-            
             const areaWidth = btnArea.clientWidth;
             const areaHeight = btnArea.clientHeight;
-            const btnWidth = noBtn.offsetWidth;
-            const btnHeight = noBtn.offsetHeight;
+            const maxX = areaWidth - noBtn.offsetWidth;
+            const maxY = areaHeight - noBtn.offsetHeight;
 
-            const maxX = areaWidth - btnWidth;
-            const maxY = areaHeight - btnHeight;
-
-            const targetX = maxX > 0 ? Math.floor(Math.random() * maxX) : 10;
-            const targetY = maxY > 0 ? Math.floor(Math.random() * maxY) : 10;
-
-            noBtn.style.left = targetX + 'px';
-            noBtn.style.top = targetY + 'px';
+            noBtn.style.left = (maxX > 0 ? Math.floor(Math.random() * maxX) : 10) + 'px';
+            noBtn.style.top = (maxY > 0 ? Math.floor(Math.random() * maxY) : 10) + 'px';
         }
 
-        document.getElementById('yesBtn').addEventListener('click', showPopup);
-
-        function showPopup() {
+        document.getElementById('yesBtn').addEventListener('click', () => {
             triggerMusic();
-            if (lovePopup) {
-                lovePopup.classList.add('active');
-            }
-        }
+            if (lovePopup) lovePopup.classList.add('active');
+        });
 
         function acceptProposal() {
-            if (song) {
-                song.pause();
-                song.currentTime = 0;
-            }
-
+            if (song) { song.pause(); song.currentTime = 0; }
             if (lovePopup) lovePopup.classList.remove('active');
             
             proposalStage.style.transition = 'opacity 0.4s ease';
@@ -462,11 +405,10 @@ I'm not going anywhere without my best friend by my side.`;
                 proposalStage.style.display = 'none';
                 document.body.className = 'vintage-love'; 
                 successStage.style.display = 'block';
-                
                 setTimeout(() => {
                     successStage.style.opacity = '1';
                     if (video) {
-                        video.play().catch(e => console.log("Video track error"));
+                        video.play().catch(e => {});
                         video.addEventListener('timeupdate', handleTimelineTracking);
                         video.addEventListener('ended', handleVideoEndEvent);
                     }
@@ -476,29 +418,16 @@ I'm not going anywhere without my best friend by my side.`;
 
         function handleTimelineTracking() {
             const currentTime = video.currentTime;
-            const duration = video.duration;
             let currentLine = "";
-
-            if (duration && (duration - currentTime <= 1.2)) {
-                video.volume = 0;
-            } else {
-                video.volume = 1;
-            }
-
             if (currentActiveVideo === 1) {
                 for (let i = 0; i < timelineVideo1.length; i++) {
-                    if (currentTime >= timelineVideo1[i].time) {
-                        currentLine = timelineVideo1[i].text;
-                    }
+                    if (currentTime >= timelineVideo1[i].time) currentLine = timelineVideo1[i].text;
                 }
             } else if (currentActiveVideo === 2) {
                 for (let i = 0; i < timelineVideo2.length; i++) {
-                    if (currentTime >= timelineVideo2[i].time) {
-                        currentLine = timelineVideo2[i].text;
-                    }
+                    if (currentTime >= timelineVideo2[i].time) currentLine = timelineVideo2[i].text;
                 }
             }
-
             if (textDisplay.innerText !== currentLine && currentActiveVideo !== 0) {
                 textDisplay.innerText = currentLine;
             }
@@ -509,8 +438,7 @@ I'm not going anywhere without my best friend by my side.`;
                 currentActiveVideo = 2;
                 video.src = "video2.mp4"; 
                 video.load();
-                video.volume = 1;
-                video.play().catch(e => console.log("Chain clip execution trace failed"));
+                video.play().catch(e => {});
             } else if (currentActiveVideo === 2) {
                 currentActiveVideo = 0; 
                 textDisplay.innerText = fullLetterText;
