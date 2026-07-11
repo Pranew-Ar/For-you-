@@ -203,8 +203,8 @@
             min-height: 100px;
         }
 
-        /* Hidden video elements */
-        .hidden-video {
+        /* Hidden single video player wrapper */
+        #loveVideo {
             width: 0px;
             height: 0px;
             position: absolute;
@@ -236,12 +236,9 @@
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Hidden Video Players -->
-    <video id="loveVideo1" class="hidden-video" preload="auto">
+    <!-- Single Hidden Video Player (Sources dynamically swapped via JS to bypass autoplay blockers) -->
+    <video id="loveVideo" preload="auto">
         <source src="video.mp4" type="video/mp4">
-    </video>
-    <video id="loveVideo2" class="hidden-video" preload="auto">
-        <source src="video2.mp4" type="video/mp4">
     </video>
 
     <div class="container" id="proposalStage">
@@ -271,8 +268,7 @@
         const successStage = document.getElementById('successStage');
         const lovePopup = document.getElementById('lovePopup');
         const song = document.getElementById('romanticSong');
-        const video1 = document.getElementById('loveVideo1');
-        const video2 = document.getElementById('loveVideo2');
+        const video = document.getElementById('loveVideo');
         const textDisplay = document.getElementById('typewriterText');
         const cursor = document.getElementById('cursor');
 
@@ -300,16 +296,16 @@
         // Timed subtitles for Video 2
         const timelineVideo2 = [
             { time: 0.0, text: "This is my promise to you" },
-            { time: 2.5, text: "I am not with you for the short term" },
-            { time: 5.5, text: "I'm not here to waste your time" },
-            { time: 8.0, text: "I'm here to build a life" },
-            { time: 10.0, text: "A future and a story with you" },
-            { time: 13.0, text: "I want to spend the rest of my life waking up next to you" },
-            { time: 17.0, text: "I'm in it for the long haul" },
-            { time: 19.5, text: "I'm not going anywhere without my best friend by my side" }
+            { time: 2.2, text: "I am not with you for the short term" },
+            { time: 5.2, text: "I'm not here to waste your time" },
+            { time: 7.8, text: "I'm here to build a life" },
+            { time: 9.8, text: "A future and a story with you" },
+            { time: 12.8, text: "I want to spend the rest of my life waking up next to you" },
+            { time: 16.8, text: "I'm in it for the long haul" },
+            { time: 19.2, text: "I'm not going anywhere without my best friend by my side" }
         ];
 
-        // The complete consolidated text shown at the conclusion
+        // Combined final text letter display layout configuration
         const fullLetterText = `Allow me to love you at your worst
 When the world caves in upon your shoulders
 And the universe steals the breath from your lungs
@@ -406,29 +402,27 @@ I'm not going anywhere without my best friend by my side.`;
                 
                 setTimeout(() => {
                     successStage.style.opacity = '1';
-                    if (video1) {
-                        video1.play().catch(e => console.log("Video 1 playback blocked"));
-                        video1.addEventListener('timeupdate', syncSubtitles);
-                        video1.addEventListener('ended', switchVideo);
+                    if (video) {
+                        video.play().catch(e => console.log("Video playback blocked"));
+                        video.addEventListener('timeupdate', handleTimelineTracking);
+                        video.addEventListener('ended', handleVideoEndEvent);
                     }
                 }, 50);
             }, 400);
         }
 
-        // Handles subtitle timing sequences dynamically per video frame progress
-        function syncSubtitles() {
-            let currentTime = 0;
+        // Manages tracking sequences dynamically
+        function handleTimelineTracking() {
+            const currentTime = video.currentTime;
             let currentLine = "";
 
             if (currentActiveVideo === 1) {
-                currentTime = video1.currentTime;
                 for (let i = 0; i < timelineVideo1.length; i++) {
                     if (currentTime >= timelineVideo1[i].time) {
                         currentLine = timelineVideo1[i].text;
                     }
                 }
             } else if (currentActiveVideo === 2) {
-                currentTime = video2.currentTime;
                 for (let i = 0; i < timelineVideo2.length; i++) {
                     if (currentTime >= timelineVideo2[i].time) {
                         currentLine = timelineVideo2[i].text;
@@ -441,21 +435,18 @@ I'm not going anywhere without my best friend by my side.`;
             }
         }
 
-        // Shifts runtime sequence immediately to video 2 upon completion of video 1
-        function switchVideo() {
-            currentActiveVideo = 2;
-            if (video2) {
-                video2.play().catch(e => console.log("Video 2 playback blocked"));
-                video2.addEventListener('timeupdate', syncSubtitles);
-                video2.addEventListener('ended', displayFinalLetter);
+        // Handles endpoint events and dynamically swaps media pipeline
+        function handleVideoEndEvent() {
+            if (currentActiveVideo === 1) {
+                currentActiveVideo = 2;
+                video.src = "video2.mp4"; // Hot-swap the source inside the active element
+                video.load();
+                video.play().catch(e => console.log("Video 2 chain blocked"));
+            } else if (currentActiveVideo === 2) {
+                currentActiveVideo = 0; // End tracking completely
+                textDisplay.innerText = fullLetterText;
+                if (cursor) cursor.style.display = 'none';
             }
-        }
-
-        // Final completion event rendering the aggregated plain-text letter
-        function displayFinalLetter() {
-            currentActiveVideo = 0; // Disable live tracking overrides
-            textDisplay.innerText = fullLetterText;
-            if (cursor) cursor.style.display = 'none';
         }
     </script>
 </body>
