@@ -336,6 +336,11 @@ And every one of them would end with me loving you.`;
             proposalStage.style.transition = 'opacity 0.4s ease';
             proposalStage.style.opacity = '0';
 
+            // Pre-load voices so narration triggers instantly
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.getVoices();
+            }
+
             setTimeout(() => {
                 proposalStage.style.display = 'none';
                 document.body.className = 'vintage-love'; 
@@ -343,28 +348,89 @@ And every one of them would end with me loving you.`;
                 
                 setTimeout(() => {
                     successStage.style.opacity = '1';
-                    typeWriter(poemText, 0, document.getElementById('typewriterText'));
+                    // We split the poem by lines/sentences to narrate smoothly
+                    const paragraphs = poemText.split('\n');
+                    startPoemSequence(paragraphs, 0, document.getElementById('typewriterText'));
                 }, 50);
             }, 400);
         }
 
-        // Typewriter Engine (Updated with slower speed configuration)
-        function typeWriter(text, index, element) {
-            if (!element) return;
-            if (index < text.length) {
-                element.innerHTML += text.charAt(index);
-                
-                let delay = 75; // Slower basic typing rhythm (up from 40)
-                if (text.charAt(index) === '…' || text.charAt(index) === '.') delay = 1100; // Dramatic full-stop pause (up from 600)
-                if (text.charAt(index) === ',') delay = 550; // Natural structural pause (up from 250)
-
-                setTimeout(() => {
-                    typeWriter(text, index + 1, element);
-                }, delay);
-            } else {
+        // Sequential Controller for text rendering + emotional voice narration
+        function startPoemSequence(paragraphs, index, element) {
+            if (index >= paragraphs.length) {
                 const cursor = document.getElementById('cursor');
                 if (cursor) cursor.style.display = 'none';
+                return;
             }
+
+            let currentLine = paragraphs[index];
+
+            // If it's a completely empty line break, just wait briefly and move on
+            if (currentLine.trim() === "") {
+                element.innerHTML += "\n\n";
+                setTimeout(() => {
+                    startPoemSequence(paragraphs, index + 1, element);
+                }, 800);
+                return;
+            }
+
+            // 1. Narrate the line out loud with specialized "love" formatting parameters
+            speakLine(currentLine);
+
+            // 2. Concurrently type out the line at our slower emotional speed
+            typeLine(currentLine, 0, element, () => {
+                // Once typing finishes, append a line break and move to the next line
+                element.innerHTML += "\n";
+                
+                // Slight pause between thoughts
+                setTimeout(() => {
+                    startPoemSequence(paragraphs, index + 1, element);
+                }, 600);
+            });
+        }
+
+        // Deep Typewriter Animation for an individual line
+        function typeLine(text, charIndex, element, onComplete) {
+            if (charIndex < text.length) {
+                element.innerHTML += text.charAt(charIndex);
+                
+                let delay = 75; // Slower basic typing rhythm
+                if (text.charAt(charIndex) === '…' || text.charAt(charIndex) === '.') delay = 1100; 
+                if (text.charAt(charIndex) === ',') delay = 550; 
+
+                setTimeout(() => {
+                    typeLine(text, charIndex + 1, element, onComplete);
+                }, delay);
+            } else {
+                if (onComplete) onComplete();
+            }
+        }
+
+        // Native Narration Audio Engine
+        function speakLine(textToSpeak) {
+            if (!('speechSynthesis' in window)) return;
+
+            // Stop any previous phrase overlay errors
+            window.speechSynthesis.cancel();
+
+            // Strip styling ellipses for spoken clarity
+            const cleanText = textToSpeak.replace(/…/g, '.');
+            const utterance = new SpeechSynthesisUtterance(cleanText);
+
+            // Find a soft, premium natural voice choice if available on the user machine
+            const voices = window.speechSynthesis.getVoices();
+            let romanticVoice = voices.find(v => v.name.includes('Natural') || v.name.includes('Google US English') || v.name.includes('Zira') || v.name.includes('Samantha'));
+            
+            if (romanticVoice) {
+                utterance.voice = romanticVoice;
+            }
+
+            // Adjust tuning parameters for a gentle, warm, and romantic flow
+            utterance.rate = 0.82;   // Slightly slower tempo for a tender, thoughtful reading 
+            utterance.pitch = 1.05;  // Just a tiny bit higher pitch to sound warm and close
+            utterance.volume = 0.9;  // Soft balance with the background tracking theme
+
+            window.speechSynthesis.speak(utterance);
         }
     </script>
 </body>
