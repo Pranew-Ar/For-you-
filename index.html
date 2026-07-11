@@ -70,7 +70,7 @@
             line-height: 1.3;
         }
 
-        /* FIXED: Center container for absolute symmetry */
+        /* FIXED: Sturdy, perfectly centered container for absolute symmetry */
         .btn-container {
             position: relative;
             width: 100%;
@@ -91,6 +91,7 @@
             transform: translateY(-50%);
         }
 
+        /* FIXED: Placed perfectly on the left side */
         #yesBtn {
             background: linear-gradient(135deg, #2ecc71, #27ae60);
             color: white;
@@ -103,6 +104,7 @@
             box-shadow: 0 8px 20px rgba(46, 204, 113, 0.4);
         }
 
+        /* FIXED: Placed perfectly on the right side with transition logic mapped to inline overrides */
         #noBtn {
             background: linear-gradient(135deg, #e74c3c, #c0392b);
             color: white;
@@ -110,7 +112,7 @@
             transition: left 0.15s ease, top 0.15s ease, right 0.15s ease;
         }
 
-        /* Confirmation Modal */
+        /* Alert / Confirmation Modal */
         .popup-modal {
             display: none;
             position: fixed;
@@ -148,6 +150,7 @@
             margin-bottom: 20px;
         }
 
+        /* FIX: Overwrite the global button styles ONLY inside the popup modal */
         .popup-modal .popup-btn {
             position: relative !important;
             top: auto !important;
@@ -227,10 +230,6 @@
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <audio id="poeticNarration" preload="auto">
-        <source src="narration.mp3" type="audio/mpeg">
-    </audio>
-
     <div class="container" id="proposalStage">
         <div class="subtitle">BEGINNING OF OUR LOVE STORY</div>
         <h1 id="questionText">Will you be my Forever?</h1>
@@ -258,7 +257,6 @@
         const successStage = document.getElementById('successStage');
         const lovePopup = document.getElementById('lovePopup');
         const song = document.getElementById('romanticSong');
-        const narration = document.getElementById('poeticNarration');
 
         let musicStarted = false;
         let isFirstMove = true;
@@ -298,11 +296,12 @@ And every one of them would end with me loving you.`;
             setTimeout(() => { heart.remove(); }, 4000);
         }, 600);
 
+        // Runs away smoothly inside its boundaries
         function moveNoButton() {
             triggerMusic(); 
             
             if (isFirstMove) {
-                noBtn.style.right = 'auto';
+                noBtn.style.right = 'auto'; // Clear right property alignment
                 isFirstMove = false;
             }
             
@@ -321,6 +320,7 @@ And every one of them would end with me loving you.`;
             noBtn.style.top = targetY + 'px';
         }
 
+        // Clean event listener registration
         document.getElementById('yesBtn').addEventListener('click', showPopup);
 
         function showPopup() {
@@ -343,31 +343,20 @@ And every one of them would end with me loving you.`;
                 
                 setTimeout(() => {
                     successStage.style.opacity = '1';
-                    
-                    // 1. Lower background music volume slightly so narration stands out
-                    if (song) song.volume = 0.25; 
-
-                    // 2. Play the beautiful, emotional voice file
-                    if (narration) {
-                        narration.volume = 1.0;
-                        narration.play().catch(e => console.log("Narration audio error:", e));
-                    }
-
-                    // 3. Begin typing out the lines
                     typeWriter(poemText, 0, document.getElementById('typewriterText'));
                 }, 50);
             }, 400);
         }
 
-        // Smooth Typewriter Engine
+        // Typewriter Engine (Updated with slower speed configuration)
         function typeWriter(text, index, element) {
             if (!element) return;
             if (index < text.length) {
                 element.innerHTML += text.charAt(index);
                 
-                let delay = 60; // Clean, steady typing speed to follow human speech
-                if (text.charAt(index) === '…' || text.charAt(index) === '.') delay = 1000; 
-                if (text.charAt(index) === ',') delay = 450; 
+                let delay = 75; // Slower basic typing rhythm (up from 40)
+                if (text.charAt(index) === '…' || text.charAt(index) === '.') delay = 1100; // Dramatic full-stop pause (up from 600)
+                if (text.charAt(index) === ',') delay = 550; // Natural structural pause (up from 250)
 
                 setTimeout(() => {
                     typeWriter(text, index + 1, element);
@@ -375,8 +364,6 @@ And every one of them would end with me loving you.`;
             } else {
                 const cursor = document.getElementById('cursor');
                 if (cursor) cursor.style.display = 'none';
-                // Return background music to normal volume once poem finishes reading
-                if (song) song.volume = 0.5;
             }
         }
     </script>
