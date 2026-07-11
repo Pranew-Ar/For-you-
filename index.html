@@ -234,7 +234,7 @@
         <div class="subtitle">BEGINNING OF OUR LOVE STORY</div>
         <h1 id="questionText">Will you be my Forever?</h1>
         <div class="btn-container" id="btnArea">
-            <button id="yesBtn" onclick="showPopup()">YES</button>
+            <button id="yesBtn">YES</button>
             <button id="noBtn" onmouseover="moveNoButton()" onclick="moveNoButton()">NO</button>
         </div>
     </div>
@@ -300,7 +300,6 @@ And every one of them would end with me loving you.`;
         function moveNoButton() {
             triggerMusic(); 
             
-            // Clean breakdown calculation on first interaction to avoid sudden snapping jumps
             if (isFirstMove) {
                 noBtn.style.right = 'auto'; // Clear right property alignment
                 isFirstMove = false;
@@ -314,7 +313,6 @@ And every one of them would end with me loving you.`;
             const maxX = areaWidth - btnWidth;
             const maxY = areaHeight - btnHeight;
 
-            // Compute precise safe positions within bounding box
             const targetX = maxX > 0 ? Math.floor(Math.random() * maxX) : 10;
             const targetY = maxY > 0 ? Math.floor(Math.random() * maxY) : 10;
 
@@ -322,6 +320,7 @@ And every one of them would end with me loving you.`;
             noBtn.style.top = targetY + 'px';
         }
 
+        // Clean event listener registration
         document.getElementById('yesBtn').addEventListener('click', showPopup);
 
         function showPopup() {
@@ -349,15 +348,15 @@ And every one of them would end with me loving you.`;
             }, 400);
         }
 
-        // Typewriter Engine
+        // Typewriter Engine (Updated with slower speed configuration)
         function typeWriter(text, index, element) {
             if (!element) return;
             if (index < text.length) {
                 element.innerHTML += text.charAt(index);
                 
-                let delay = 40; 
-                if (text.charAt(index) === '…' || text.charAt(index) === '.') delay = 600;
-                if (text.charAt(index) === ',') delay = 250;
+                let delay = 75; // Slower basic typing rhythm (up from 40)
+                if (text.charAt(index) === '…' || text.charAt(index) === '.') delay = 1100; // Dramatic full-stop pause (up from 600)
+                if (text.charAt(index) === ',') delay = 550; // Natural structural pause (up from 250)
 
                 setTimeout(() => {
                     typeWriter(text, index + 1, element);
