@@ -242,7 +242,8 @@
             width: 90%;
             margin: 0 auto;
             padding: 40px;
-            background-color: rgba(23, 16, 12, 0.94); 
+            /* UPDATED: Replaced brown background with cloudy.png */
+            background: url('cloudy.png') no-repeat center center/cover; 
             border-radius: 12px;
             text-align: center;
             z-index: 10;
@@ -269,6 +270,8 @@
             letter-spacing: 0.5px;
             white-space: pre-line;
             display: block;
+            /* Optional: Adding a slight text shadow makes text more readable over images */
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
         }
 
         #loveVideo { display: none; }
@@ -336,7 +339,7 @@
     <!-- Phase 3: Final Timeline Video Screen layout -->
     <div class="message-screen" id="successStage">
         <h2>Forever & Always</h2>
-        <div style="margin-bottom: 20px; font-size: 1.6rem; color:#d4af37;">🕯️ 📖 🕯️</div>
+        <!-- UPDATED: Removed the book and candles emoji line here -->
         <p id="typewriterText"></p>
     </div>
 
