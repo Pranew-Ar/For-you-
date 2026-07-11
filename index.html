@@ -38,36 +38,70 @@
             100% { transform: translateY(-10vh) scale(1.2) translateX(50px); opacity: 0; }
         }
 
-        /* Main Proposal Box */
+        /* Main Proposal Box - Transformed into the Lace Silk Parchment style */
         .container {
             text-align: center;
             position: relative;
             z-index: 10;
-            padding: 40px 30px;
-            background-color: rgba(255, 245, 245, 0.95); 
-            border-radius: 20px;
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3);
+            padding: 50px 35px;
+            background-color: #fcf8f2; 
+            border: 8px double #d4af37; 
+            border-radius: 4px;
+            box-shadow: 0 0 0 4px #fcf8f2, 0 15px 35px rgba(0, 0, 0, 0.4);
             width: 85%;
-            max-width: 420px;
-            backdrop-filter: blur(5px);
+            max-width: 440px;
             box-sizing: border-box;
+            background-image: radial-gradient(rgba(212, 175, 55, 0.05) 1px, transparent 0);
+            background-size: 8px 8px;
+        }
+
+        /* Scattered Rose Petal Decorative Elements inside the container */
+        .container::before {
+            content: '🌸';
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 1.2rem;
+            opacity: 0.6;
+        }
+        
+        .container::after {
+            content: '🌸';
+            position: absolute;
+            bottom: 15px;
+            right: 20px;
+            font-size: 1.2rem;
+            opacity: 0.6;
+            transform: rotate(45deg);
         }
 
         .subtitle {
-            font-size: 0.95rem;
-            color: #7f8c8d;
+            font-size: 0.85rem;
+            color: #8a7355;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 15px;
-            font-style: italic;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+            font-weight: bold;
         }
 
         h1 {
-            font-size: 2rem;
-            color: #d63031;
+            font-size: 2.2rem;
+            color: #802b2b;
             margin-top: 0;
-            margin-bottom: 35px;
-            line-height: 1.3;
+            margin-bottom: 25px;
+            line-height: 1.4;
+            font-style: italic;
+            font-weight: normal;
+        }
+
+        /* Decorative Leaf/Rose icon row above buttons */
+        .deco-row {
+            display: flex;
+            justify-content: space-around;
+            padding: 0 12%;
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+            opacity: 0.9;
         }
 
         /* Container for absolute symmetry */
@@ -83,49 +117,56 @@
             font-size: 1.1rem;
             font-weight: bold;
             border: none;
-            border-radius: 25px;
+            border-radius: 4px;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
+            font-family: 'Georgia', serif;
+            letter-spacing: 1px;
         }
 
+        /* Aesthetic styling for minimalist text buttons */
         #yesBtn {
-            background: linear-gradient(135deg, #2ecc71, #27ae60);
-            color: white;
-            left: 12%;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            background: transparent;
+            color: #556b2f;
+            left: 15%;
+            transition: transform 0.2s ease;
         }
 
         #yesBtn:hover {
             transform: translateY(-50%) scale(1.15);
-            box-shadow: 0 8px 20px rgba(46, 204, 113, 0.4);
+            text-shadow: 0 0 5px rgba(85, 107, 47, 0.3);
         }
 
         #noBtn {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            color: white;
-            right: 12%;
+            background: transparent;
+            color: #802b2b;
+            right: 15%;
             transition: left 0.15s ease, top 0.15s ease, right 0.15s ease;
         }
 
-        /* Alert / Confirmation Modal */
+        /* Alert / Confirmation Modal - Transformed into the Antique Book style */
         .popup-modal {
             display: none;
             position: fixed;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0.7);
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            background: #fdfaf4; 
+            padding: 40px 30px;
+            border-left: 24px solid #4a1525; 
+            border-top: 2px solid #d4af37;
+            border-right: 2px solid #d4af37;
+            border-bottom: 2px solid #d4af37;
+            border-radius: 4px;
+            box-shadow: 5px 20px 50px rgba(0,0,0,0.6);
             z-index: 100;
             text-align: center;
             opacity: 0;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            max-width: 320px;
+            max-width: 360px;
             width: 85%;
+            box-sizing: border-box;
         }
 
         .popup-modal.active {
@@ -136,16 +177,19 @@
 
         .popup-modal h3 {
             margin-top: 0;
-            color: #d63031;
-            font-size: 1.8rem;
-            margin-bottom: 10px;
+            color: #4a1525;
+            font-size: 1.9rem;
+            margin-bottom: 15px;
+            font-style: italic;
+            font-weight: normal;
         }
 
         .popup-modal p {
-            color: #34495e;
-            font-size: 1.1rem;
-            line-height: 1.5;
-            margin-bottom: 20px;
+            color: #4a4a4a;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 25px;
+            font-style: italic;
         }
 
         .popup-modal .popup-btn {
@@ -153,14 +197,14 @@
             top: auto !important;
             transform: none !important;
             display: inline-block !important;
-            background: #d63031;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 20px;
-            font-weight: bold;
+            background: #4a1525;
+            color: #fdfaf4;
+            border: 1px solid #d4af37;
+            padding: 10px 30px;
+            border-radius: 2px;
+            font-weight: normal;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
         /* Final Letter Display */
@@ -227,15 +271,24 @@
         <source src="video.mp4" type="video/mp4">
     </video>
 
+    <!-- Proposal Container Stage -->
     <div class="container" id="proposalStage">
         <div class="subtitle">BEGINNING OF OUR LOVE STORY</div>
         <h1 id="questionText">Will you be my Forever?</h1>
+        
+        <!-- Rose is now on the left (YES) side, Leaf branch is on the right (NO) side -->
+        <div class="deco-row">
+            <span>🌹</span>
+            <span>🌿</span>
+        </div>
+
         <div class="btn-container" id="btnArea">
             <button id="yesBtn">YES</button>
             <button id="noBtn" onmouseover="moveNoButton()" onclick="moveNoButton()">NO</button>
         </div>
     </div>
 
+    <!-- Antique Book Letter Modal -->
     <div class="popup-modal" id="lovePopup">
         <h3>I Found You... ❤️</h3>
         <p>I knew it the second I saw you. Even if we were born in different worlds, or separated by a thousand skies... my heart would still recognize yours. This letter is everything I've been wanting to say to you.</p>
@@ -244,6 +297,7 @@
 
     <div class="message-screen" id="successStage">
         <h2>Forever & Always</h2>
+        <div class="deco-row" style="margin-bottom: 15px; padding: 0;">✨🕯️✨</div>
         <p id="typewriterText"></p>
     </div>
 
@@ -287,7 +341,7 @@
             { time: 9.8, text: "A future and a story with you" },
             { time: 12.8, text: "I want to spend the rest of my life waking up next to you" },
             { time: 16.8, text: "I'm in it for the long haul" },
-            { time: 19.2, text: "I'm not going anywhere without my best friend by my side I love you and I will love you in every World, Every life, every Breath I take belongs to you only you " }
+            { time: 19.2, text: "I'm not going anywhere without my best friend by my side" }
         ];
 
         // Combined final text letter display
@@ -316,8 +370,7 @@ I'm not here to waste your time.
 I'm here to build a life, a future, and a story with you.
 I want to spend the rest of my life waking up next to you.
 I'm in it for the long haul.
-I'm not going anywhere without my best friend by my side.
-I love you and I will love you in every World, Every life, every Breath I take belongs to you only you`;
+I'm not going anywhere without my best friend by my side.`;
 
         function triggerMusic() {
             if (!musicStarted && song) {
@@ -397,13 +450,11 @@ I love you and I will love you in every World, Every life, every Breath I take b
             }, 400);
         }
 
-        // Manages tracking sequences dynamically and handles muting the end sounds
         function handleTimelineTracking() {
             const currentTime = video.currentTime;
             const duration = video.duration;
             let currentLine = "";
 
-            // Dynamic Audio Cut: If within 1.2 seconds of the end, drop volume to 0
             if (duration && (duration - currentTime <= 1.2)) {
                 video.volume = 0;
             } else {
@@ -429,13 +480,12 @@ I love you and I will love you in every World, Every life, every Breath I take b
             }
         }
 
-        // Handles endpoint events and dynamically swaps media pipeline
         function handleVideoEndEvent() {
             if (currentActiveVideo === 1) {
                 currentActiveVideo = 2;
                 video.src = "video2.mp4"; 
                 video.load();
-                video.volume = 1; // Reset volume for next clip
+                video.volume = 1;
                 video.play().catch(e => console.log("Video 2 chain blocked"));
             } else if (currentActiveVideo === 2) {
                 currentActiveVideo = 0; 
