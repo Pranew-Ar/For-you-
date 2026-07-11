@@ -203,8 +203,8 @@
             min-height: 100px;
         }
 
-        /* Hidden video layout element */
-        #loveVideo {
+        /* Hidden video elements */
+        .hidden-video {
             width: 0px;
             height: 0px;
             position: absolute;
@@ -236,9 +236,12 @@
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Hidden Video Player -->
-    <video id="loveVideo" preload="auto">
+    <!-- Hidden Video Players -->
+    <video id="loveVideo1" class="hidden-video" preload="auto">
         <source src="video.mp4" type="video/mp4">
+    </video>
+    <video id="loveVideo2" class="hidden-video" preload="auto">
+        <source src="video2.mp4" type="video/mp4">
     </video>
 
     <div class="container" id="proposalStage">
@@ -268,15 +271,17 @@
         const successStage = document.getElementById('successStage');
         const lovePopup = document.getElementById('lovePopup');
         const song = document.getElementById('romanticSong');
-        const video = document.getElementById('loveVideo');
+        const video1 = document.getElementById('loveVideo1');
+        const video2 = document.getElementById('loveVideo2');
         const textDisplay = document.getElementById('typewriterText');
         const cursor = document.getElementById('cursor');
 
         let musicStarted = false;
         let isFirstMove = true;
+        let currentActiveVideo = 1;
 
-        // Timed subtitles mapped directly to the sequence of the video audio
-        const dialogueTimeline = [
+        // Timed subtitles for Video 1
+        const timelineVideo1 = [
             { time: 0.0, text: "Allow me to love you at your worst" },
             { time: 2.5, text: "When the world caves in upon your shoulders" },
             { time: 5.5, text: "And the universe steals the breath from your lungs" },
@@ -291,6 +296,46 @@
             { time: 37.5, text: "If surviving costs me everything\nLet it be willingly given" },
             { time: 43.8, text: "For loving you especially at your weakest\nIs the only strength I will ever need" }
         ];
+
+        // Timed subtitles for Video 2
+        const timelineVideo2 = [
+            { time: 0.0, text: "This is my promise to you" },
+            { time: 2.5, text: "I am not with you for the short term" },
+            { time: 5.5, text: "I'm not here to waste your time" },
+            { time: 8.0, text: "I'm here to build a life" },
+            { time: 10.0, text: "A future and a story with you" },
+            { time: 13.0, text: "I want to spend the rest of my life waking up next to you" },
+            { time: 17.0, text: "I'm in it for the long haul" },
+            { time: 19.5, text: "I'm not going anywhere without my best friend by my side" }
+        ];
+
+        // The complete consolidated text shown at the conclusion
+        const fullLetterText = `Allow me to love you at your worst
+When the world caves in upon your shoulders
+And the universe steals the breath from your lungs
+
+When the nights grow heavier than your hope
+And even your own name feels unfamiliar
+Let me be the place you fall without fear
+
+I will stand between you and destruction
+Take the impact meant for your heart
+And spend pieces of my own
+If it means you can endure a moment longer
+
+If loving you requires sacrifice, let it be mine.
+If surviving costs me everything, let it be willingly given.
+For loving you especially at your weakest, is the only strength I will ever need.
+
+***
+
+This is my promise to you:
+I am not with you for the short term.
+I'm not here to waste your time.
+I'm here to build a life, a future, and a story with you.
+I want to spend the rest of my life waking up next to you.
+I'm in it for the long haul.
+I'm not going anywhere without my best friend by my side.`;
 
         function triggerMusic() {
             if (!musicStarted && song) {
@@ -361,34 +406,56 @@
                 
                 setTimeout(() => {
                     successStage.style.opacity = '1';
-                    if (video) {
-                        video.play().catch(e => console.log("Video playback blocked"));
-                        // Monitor video execution timeline dynamically
-                        video.addEventListener('timeupdate', syncSubtitles);
+                    if (video1) {
+                        video1.play().catch(e => console.log("Video 1 playback blocked"));
+                        video1.addEventListener('timeupdate', syncSubtitles);
+                        video1.addEventListener('ended', switchVideo);
                     }
                 }, 50);
             }, 400);
         }
 
-        // Monitors playback current runtime and maps the correct lines smoothly
+        // Handles subtitle timing sequences dynamically per video frame progress
         function syncSubtitles() {
-            const currentTime = video.currentTime;
+            let currentTime = 0;
             let currentLine = "";
 
-            for (let i = 0; i < dialogueTimeline.length; i++) {
-                if (currentTime >= dialogueTimeline[i].time) {
-                    currentLine = dialogueTimeline[i].text;
+            if (currentActiveVideo === 1) {
+                currentTime = video1.currentTime;
+                for (let i = 0; i < timelineVideo1.length; i++) {
+                    if (currentTime >= timelineVideo1[i].time) {
+                        currentLine = timelineVideo1[i].text;
+                    }
+                }
+            } else if (currentActiveVideo === 2) {
+                currentTime = video2.currentTime;
+                for (let i = 0; i < timelineVideo2.length; i++) {
+                    if (currentTime >= timelineVideo2[i].time) {
+                        currentLine = timelineVideo2[i].text;
+                    }
                 }
             }
 
-            if (textDisplay.innerText !== currentLine) {
+            if (textDisplay.innerText !== currentLine && currentActiveVideo !== 0) {
                 textDisplay.innerText = currentLine;
             }
+        }
 
-            // Hide blinking cursor layout element when video reaches final segment
-            if (video.ended) {
-                if (cursor) cursor.style.display = 'none';
+        // Shifts runtime sequence immediately to video 2 upon completion of video 1
+        function switchVideo() {
+            currentActiveVideo = 2;
+            if (video2) {
+                video2.play().catch(e => console.log("Video 2 playback blocked"));
+                video2.addEventListener('timeupdate', syncSubtitles);
+                video2.addEventListener('ended', displayFinalLetter);
             }
+        }
+
+        // Final completion event rendering the aggregated plain-text letter
+        function displayFinalLetter() {
+            currentActiveVideo = 0; // Disable live tracking overrides
+            textDisplay.innerText = fullLetterText;
+            if (cursor) cursor.style.display = 'none';
         }
     </script>
 </body>
