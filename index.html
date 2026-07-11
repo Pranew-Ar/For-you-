@@ -70,7 +70,7 @@
             line-height: 1.3;
         }
 
-        /* FIXED: Sturdy, perfectly centered container for absolute symmetry */
+        /* Container for absolute symmetry */
         .btn-container {
             position: relative;
             width: 100%;
@@ -91,7 +91,6 @@
             transform: translateY(-50%);
         }
 
-        /* FIXED: Placed perfectly on the left side */
         #yesBtn {
             background: linear-gradient(135deg, #2ecc71, #27ae60);
             color: white;
@@ -104,7 +103,6 @@
             box-shadow: 0 8px 20px rgba(46, 204, 113, 0.4);
         }
 
-        /* FIXED: Placed perfectly on the right side with transition logic mapped to inline overrides */
         #noBtn {
             background: linear-gradient(135deg, #e74c3c, #c0392b);
             color: white;
@@ -150,7 +148,6 @@
             margin-bottom: 20px;
         }
 
-        /* FIX: Overwrite the global button styles ONLY inside the popup modal */
         .popup-modal .popup-btn {
             position: relative !important;
             top: auto !important;
@@ -202,7 +199,16 @@
             letter-spacing: 0.6px;
             white-space: pre-line;
             text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
-            display: inline;
+            display: block;
+            min-height: 100px;
+        }
+
+        /* Hidden video layout element */
+        #loveVideo {
+            width: 0px;
+            height: 0px;
+            position: absolute;
+            visibility: hidden;
         }
 
         /* Blinking typing indicator */
@@ -229,6 +235,11 @@
     <audio id="romanticSong" loop preload="auto">
         <source src="music.mp3" type="audio/mpeg">
     </audio>
+
+    <!-- Hidden Video Player -->
+    <video id="loveVideo" preload="auto">
+        <source src="video.mp4" type="video/mp4">
+    </video>
 
     <div class="container" id="proposalStage">
         <div class="subtitle">BEGINNING OF OUR LOVE STORY</div>
@@ -257,25 +268,29 @@
         const successStage = document.getElementById('successStage');
         const lovePopup = document.getElementById('lovePopup');
         const song = document.getElementById('romanticSong');
+        const video = document.getElementById('loveVideo');
+        const textDisplay = document.getElementById('typewriterText');
+        const cursor = document.getElementById('cursor');
 
         let musicStarted = false;
         let isFirstMove = true;
 
-        const poemText = `If I could live life seven times over…
-I'd be born beneath seven different skies, breathe in the air of distant lands, and savor the flavors of the world as if each bite held a new beginning.
-I'd chase dreams with seven different hearts, wear seven different names, and follow seven winding paths—each one shaped by its own adventures.
-
-But no matter how different those lives would be…
-In every lifetime, in every language, in every version of me
-I would find you.
-And I would fall in love with you all over again.
-Not by chance, not by fate
-But because my soul would recognize yours every single time.
-
-Seven lives.
-Seven stories.
-A thousand moments.
-And every one of them would end with me loving you.`;
+        // Timed subtitles mapped directly to the sequence of the video audio
+        const dialogueTimeline = [
+            { time: 0.0, text: "Allow me to love you at your worst" },
+            { time: 2.5, text: "When the world caves in upon your shoulders" },
+            { time: 5.5, text: "And the universe steals the breath from your lungs" },
+            { time: 9.5, text: "When the nights grow heavier than your hope" },
+            { time: 12.8, text: "And even your own name feels unfamiliar" },
+            { time: 15.8, text: "Let me be the place you fall without fear" },
+            { time: 19.8, text: "I will stand between you and destruction" },
+            { time: 23.3, text: "Take the impact meant for your heart" },
+            { time: 26.0, text: "And spend pieces of my own" },
+            { time: 28.5, text: "If it means you can endure a moment longer" },
+            { time: 31.8, text: "If loving you requires sacrifice\nLet it be mine" },
+            { time: 37.5, text: "If surviving costs me everything\nLet it be willingly given" },
+            { time: 43.8, text: "For loving you especially at your weakest\nIs the only strength I will ever need" }
+        ];
 
         function triggerMusic() {
             if (!musicStarted && song) {
@@ -296,12 +311,11 @@ And every one of them would end with me loving you.`;
             setTimeout(() => { heart.remove(); }, 4000);
         }, 600);
 
-        // Runs away smoothly inside its boundaries
         function moveNoButton() {
             triggerMusic(); 
             
             if (isFirstMove) {
-                noBtn.style.right = 'auto'; // Clear right property alignment
+                noBtn.style.right = 'auto';
                 isFirstMove = false;
             }
             
@@ -320,7 +334,6 @@ And every one of them would end with me loving you.`;
             noBtn.style.top = targetY + 'px';
         }
 
-        // Clean event listener registration
         document.getElementById('yesBtn').addEventListener('click', showPopup);
 
         function showPopup() {
@@ -331,6 +344,11 @@ And every one of them would end with me loving you.`;
         }
 
         function acceptProposal() {
+            if (song) {
+                song.pause();
+                song.currentTime = 0;
+            }
+
             if (lovePopup) lovePopup.classList.remove('active');
             
             proposalStage.style.transition = 'opacity 0.4s ease';
@@ -343,26 +361,32 @@ And every one of them would end with me loving you.`;
                 
                 setTimeout(() => {
                     successStage.style.opacity = '1';
-                    typeWriter(poemText, 0, document.getElementById('typewriterText'));
+                    if (video) {
+                        video.play().catch(e => console.log("Video playback blocked"));
+                        // Monitor video execution timeline dynamically
+                        video.addEventListener('timeupdate', syncSubtitles);
+                    }
                 }, 50);
             }, 400);
         }
 
-        // Typewriter Engine (Updated with slower speed configuration)
-        function typeWriter(text, index, element) {
-            if (!element) return;
-            if (index < text.length) {
-                element.innerHTML += text.charAt(index);
-                
-                let delay = 75; // Slower basic typing rhythm (up from 40)
-                if (text.charAt(index) === '…' || text.charAt(index) === '.') delay = 1100; // Dramatic full-stop pause (up from 600)
-                if (text.charAt(index) === ',') delay = 550; // Natural structural pause (up from 250)
+        // Monitors playback current runtime and maps the correct lines smoothly
+        function syncSubtitles() {
+            const currentTime = video.currentTime;
+            let currentLine = "";
 
-                setTimeout(() => {
-                    typeWriter(text, index + 1, element);
-                }, delay);
-            } else {
-                const cursor = document.getElementById('cursor');
+            for (let i = 0; i < dialogueTimeline.length; i++) {
+                if (currentTime >= dialogueTimeline[i].time) {
+                    currentLine = dialogueTimeline[i].text;
+                }
+            }
+
+            if (textDisplay.innerText !== currentLine) {
+                textDisplay.innerText = currentLine;
+            }
+
+            // Hide blinking cursor layout element when video reaches final segment
+            if (video.ended) {
                 if (cursor) cursor.style.display = 'none';
             }
         }
