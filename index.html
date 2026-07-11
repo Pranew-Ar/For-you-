@@ -70,7 +70,7 @@
             line-height: 1.3;
         }
 
-        /* FIXED: Sturdy, perfectly centered container for absolute symmetry */
+        /* FIXED: Center container for absolute symmetry */
         .btn-container {
             position: relative;
             width: 100%;
@@ -91,7 +91,6 @@
             transform: translateY(-50%);
         }
 
-        /* FIXED: Placed perfectly on the left side */
         #yesBtn {
             background: linear-gradient(135deg, #2ecc71, #27ae60);
             color: white;
@@ -104,7 +103,6 @@
             box-shadow: 0 8px 20px rgba(46, 204, 113, 0.4);
         }
 
-        /* FIXED: Placed perfectly on the right side with transition logic mapped to inline overrides */
         #noBtn {
             background: linear-gradient(135deg, #e74c3c, #c0392b);
             color: white;
@@ -112,7 +110,7 @@
             transition: left 0.15s ease, top 0.15s ease, right 0.15s ease;
         }
 
-        /* Alert / Confirmation Modal */
+        /* Confirmation Modal */
         .popup-modal {
             display: none;
             position: fixed;
@@ -150,7 +148,6 @@
             margin-bottom: 20px;
         }
 
-        /* FIX: Overwrite the global button styles ONLY inside the popup modal */
         .popup-modal .popup-btn {
             position: relative !important;
             top: auto !important;
@@ -230,6 +227,10 @@
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
+    <audio id="poeticNarration" preload="auto">
+        <source src="narration.mp3" type="audio/mpeg">
+    </audio>
+
     <div class="container" id="proposalStage">
         <div class="subtitle">BEGINNING OF OUR LOVE STORY</div>
         <h1 id="questionText">Will you be my Forever?</h1>
@@ -257,6 +258,7 @@
         const successStage = document.getElementById('successStage');
         const lovePopup = document.getElementById('lovePopup');
         const song = document.getElementById('romanticSong');
+        const narration = document.getElementById('poeticNarration');
 
         let musicStarted = false;
         let isFirstMove = true;
@@ -296,12 +298,11 @@ And every one of them would end with me loving you.`;
             setTimeout(() => { heart.remove(); }, 4000);
         }, 600);
 
-        // Runs away smoothly inside its boundaries
         function moveNoButton() {
             triggerMusic(); 
             
             if (isFirstMove) {
-                noBtn.style.right = 'auto'; // Clear right property alignment
+                noBtn.style.right = 'auto';
                 isFirstMove = false;
             }
             
@@ -320,7 +321,6 @@ And every one of them would end with me loving you.`;
             noBtn.style.top = targetY + 'px';
         }
 
-        // Clean event listener registration
         document.getElementById('yesBtn').addEventListener('click', showPopup);
 
         function showPopup() {
@@ -336,11 +336,6 @@ And every one of them would end with me loving you.`;
             proposalStage.style.transition = 'opacity 0.4s ease';
             proposalStage.style.opacity = '0';
 
-            // Pre-load voices so narration triggers instantly
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.getVoices();
-            }
-
             setTimeout(() => {
                 proposalStage.style.display = 'none';
                 document.body.className = 'vintage-love'; 
@@ -348,89 +343,41 @@ And every one of them would end with me loving you.`;
                 
                 setTimeout(() => {
                     successStage.style.opacity = '1';
-                    // We split the poem by lines/sentences to narrate smoothly
-                    const paragraphs = poemText.split('\n');
-                    startPoemSequence(paragraphs, 0, document.getElementById('typewriterText'));
+                    
+                    // 1. Lower background music volume slightly so narration stands out
+                    if (song) song.volume = 0.25; 
+
+                    // 2. Play the beautiful, emotional voice file
+                    if (narration) {
+                        narration.volume = 1.0;
+                        narration.play().catch(e => console.log("Narration audio error:", e));
+                    }
+
+                    // 3. Begin typing out the lines
+                    typeWriter(poemText, 0, document.getElementById('typewriterText'));
                 }, 50);
             }, 400);
         }
 
-        // Sequential Controller for text rendering + emotional voice narration
-        function startPoemSequence(paragraphs, index, element) {
-            if (index >= paragraphs.length) {
-                const cursor = document.getElementById('cursor');
-                if (cursor) cursor.style.display = 'none';
-                return;
-            }
-
-            let currentLine = paragraphs[index];
-
-            // If it's a completely empty line break, just wait briefly and move on
-            if (currentLine.trim() === "") {
-                element.innerHTML += "\n\n";
-                setTimeout(() => {
-                    startPoemSequence(paragraphs, index + 1, element);
-                }, 800);
-                return;
-            }
-
-            // 1. Narrate the line out loud with specialized "love" formatting parameters
-            speakLine(currentLine);
-
-            // 2. Concurrently type out the line at our slower emotional speed
-            typeLine(currentLine, 0, element, () => {
-                // Once typing finishes, append a line break and move to the next line
-                element.innerHTML += "\n";
+        // Smooth Typewriter Engine
+        function typeWriter(text, index, element) {
+            if (!element) return;
+            if (index < text.length) {
+                element.innerHTML += text.charAt(index);
                 
-                // Slight pause between thoughts
-                setTimeout(() => {
-                    startPoemSequence(paragraphs, index + 1, element);
-                }, 600);
-            });
-        }
-
-        // Deep Typewriter Animation for an individual line
-        function typeLine(text, charIndex, element, onComplete) {
-            if (charIndex < text.length) {
-                element.innerHTML += text.charAt(charIndex);
-                
-                let delay = 75; // Slower basic typing rhythm
-                if (text.charAt(charIndex) === '…' || text.charAt(charIndex) === '.') delay = 1100; 
-                if (text.charAt(charIndex) === ',') delay = 550; 
+                let delay = 60; // Clean, steady typing speed to follow human speech
+                if (text.charAt(index) === '…' || text.charAt(index) === '.') delay = 1000; 
+                if (text.charAt(index) === ',') delay = 450; 
 
                 setTimeout(() => {
-                    typeLine(text, charIndex + 1, element, onComplete);
+                    typeWriter(text, index + 1, element);
                 }, delay);
             } else {
-                if (onComplete) onComplete();
+                const cursor = document.getElementById('cursor');
+                if (cursor) cursor.style.display = 'none';
+                // Return background music to normal volume once poem finishes reading
+                if (song) song.volume = 0.5;
             }
-        }
-
-        // Native Narration Audio Engine
-        function speakLine(textToSpeak) {
-            if (!('speechSynthesis' in window)) return;
-
-            // Stop any previous phrase overlay errors
-            window.speechSynthesis.cancel();
-
-            // Strip styling ellipses for spoken clarity
-            const cleanText = textToSpeak.replace(/…/g, '.');
-            const utterance = new SpeechSynthesisUtterance(cleanText);
-
-            // Find a soft, premium natural voice choice if available on the user machine
-            const voices = window.speechSynthesis.getVoices();
-            let romanticVoice = voices.find(v => v.name.includes('Natural') || v.name.includes('Google US English') || v.name.includes('Zira') || v.name.includes('Samantha'));
-            
-            if (romanticVoice) {
-                utterance.voice = romanticVoice;
-            }
-
-            // Adjust tuning parameters for a gentle, warm, and romantic flow
-            utterance.rate = 0.82;   // Slightly slower tempo for a tender, thoughtful reading 
-            utterance.pitch = 1.05;  // Just a tiny bit higher pitch to sound warm and close
-            utterance.volume = 0.9;  // Soft balance with the background tracking theme
-
-            window.speechSynthesis.speak(utterance);
         }
     </script>
 </body>
