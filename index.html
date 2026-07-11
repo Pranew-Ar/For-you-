@@ -211,20 +211,6 @@
             visibility: hidden;
         }
 
-        /* Blinking typing indicator */
-        .cursor {
-            font-size: 1.3rem;
-            color: #f1c40f;
-            animation: blink 0.8s infinite;
-            font-weight: bold;
-            margin-left: 3px;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
         body.vintage-love {
             background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('lake.jpg') no-repeat center center/cover;
         }
@@ -258,7 +244,7 @@
 
     <div class="message-screen" id="successStage">
         <h2>Forever & Always</h2>
-        <p id="typewriterText"></p><span class="cursor" id="cursor">|</span>
+        <p id="typewriterText"></p>
     </div>
 
     <script>
@@ -270,7 +256,6 @@
         const song = document.getElementById('romanticSong');
         const video = document.getElementById('loveVideo');
         const textDisplay = document.getElementById('typewriterText');
-        const cursor = document.getElementById('cursor');
 
         let musicStarted = false;
         let isFirstMove = true;
@@ -302,7 +287,7 @@
             { time: 9.8, text: "A future and a story with you" },
             { time: 12.8, text: "I want to spend the rest of my life waking up next to you" },
             { time: 16.8, text: "I'm in it for the long haul" },
-            { time: 19.2, text: "I'm not going anywhere without my best friend by my side" }
+            { time: 19.2, text: "I'm not going anywhere without my best friend by my side I love you and I will love you in every World, Every life, every Breath I take belongs to you only you " }
         ];
 
         // Combined final text letter display
@@ -331,7 +316,8 @@ I'm not here to waste your time.
 I'm here to build a life, a future, and a story with you.
 I want to spend the rest of my life waking up next to you.
 I'm in it for the long haul.
-I'm not going anywhere without my best friend by my side.`;
+I'm not going anywhere without my best friend by my side.
+I love you and I will love you in every World, Every life, every Breath I take belongs to you only you`;
 
         function triggerMusic() {
             if (!musicStarted && song) {
@@ -454,7 +440,6 @@ I'm not going anywhere without my best friend by my side.`;
             } else if (currentActiveVideo === 2) {
                 currentActiveVideo = 0; 
                 textDisplay.innerText = fullLetterText;
-                if (cursor) cursor.style.display = 'none';
             }
         }
     </script>
