@@ -15,7 +15,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.3)), url('castle.jpg') no-repeat center center/cover;
+            /* Make sure 'castle.jpg' is saved in your folder for the image to display */
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)), url('castle.jpg') no-repeat center center/cover;
             overflow: hidden;
             position: relative;
         }
@@ -43,7 +44,7 @@
             text-align: center;
             position: relative;
             z-index: 10;
-            padding: 50px 35px;
+            padding: 45px 30px;
             background-color: #fcf8f2; 
             border: 8px double #d4af37; 
             border-radius: 4px;
@@ -88,85 +89,98 @@
             font-size: 2.2rem;
             color: #802b2b;
             margin-top: 0;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             line-height: 1.4;
             font-style: italic;
             font-weight: normal;
         }
 
-        /* Decorative Leaf/Rose icon row above buttons */
-        .deco-row {
+        /* Fixed Split Column Container for Items */
+        .interactive-area {
             display: flex;
             justify-content: space-around;
-            padding: 0 12%;
-            margin-bottom: 20px;
-            font-size: 1.6rem;
-            opacity: 0.9;
+            align-items: center;
+            margin-top: 15px;
+            position: relative;
+            min-height: 120px;
         }
 
-        /* Container for absolute symmetry */
-        .btn-container {
-            position: relative;
-            width: 100%;
-            height: 80px;
-            margin: 0 auto;
+        .column-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 45%;
+            gap: 10px;
+        }
+
+        .deco-icon {
+            font-size: 1.8rem;
+            opacity: 0.95;
+            margin-bottom: 5px;
         }
 
         button {
-            padding: 12px 35px;
+            padding: 10px 25px;
             font-size: 1.1rem;
             font-weight: bold;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
             font-family: 'Georgia', serif;
             letter-spacing: 1px;
+            background: transparent;
         }
 
         /* Aesthetic styling for minimalist text buttons */
         #yesBtn {
-            background: transparent;
             color: #556b2f;
-            left: 15%;
             transition: transform 0.2s ease;
         }
 
         #yesBtn:hover {
-            transform: translateY(-50%) scale(1.15);
+            transform: scale(1.15);
             text-shadow: 0 0 5px rgba(85, 107, 47, 0.3);
         }
 
         #noBtn {
-            background: transparent;
             color: #802b2b;
-            right: 15%;
-            transition: left 0.15s ease, top 0.15s ease, right 0.15s ease;
+            position: absolute;
+            /* Default initial relative spot inside its column zone */
+            transition: left 0.15s ease, top 0.15s ease;
         }
 
-        /* Alert / Confirmation Modal - Transformed into the Antique Book style */
+        /* Antique Book Style Modal Overhaul */
         .popup-modal {
             display: none;
             position: fixed;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0.7);
             background: #fdfaf4; 
-            padding: 40px 30px;
-            border-left: 24px solid #4a1525; 
-            border-top: 2px solid #d4af37;
-            border-right: 2px solid #d4af37;
-            border-bottom: 2px solid #d4af37;
-            border-radius: 4px;
-            box-shadow: 5px 20px 50px rgba(0,0,0,0.6);
+            padding: 40px 35px;
+            /* Enhanced styling to create an open vintage journal notebook appearance */
+            border-left: 20px solid #4a1525; 
+            border-top: 3px solid #d4af37;
+            border-right: 4px solid #c5a028;
+            border-bottom: 5px solid #b38f1e;
+            border-radius: 2px 8px 8px 2px;
+            box-shadow: 0 0 0 2px #4a1525, 10px 25px 50px rgba(0,0,0,0.5);
             z-index: 100;
             text-align: center;
             opacity: 0;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            max-width: 360px;
+            max-width: 400px;
             width: 85%;
             box-sizing: border-box;
+        }
+
+        /* Faux center book page crease shadow */
+        .popup-modal::before {
+            content: '';
+            position: absolute;
+            top: 0; bottom: 0; left: 50%;
+            width: 1px;
+            background: linear-gradient(to right, rgba(0,0,0,0.08), rgba(0,0,0,0.02) 5px, transparent);
+            pointer-events: none;
         }
 
         .popup-modal.active {
@@ -178,33 +192,35 @@
         .popup-modal h3 {
             margin-top: 0;
             color: #4a1525;
-            font-size: 1.9rem;
-            margin-bottom: 15px;
+            font-size: 2rem;
+            margin-bottom: 18px;
             font-style: italic;
             font-weight: normal;
+            letter-spacing: 0.5px;
         }
 
         .popup-modal p {
-            color: #4a4a4a;
+            color: #3a3a3a;
             font-size: 1.05rem;
-            line-height: 1.7;
-            margin-bottom: 25px;
+            line-height: 1.75;
+            margin-bottom: 30px;
             font-style: italic;
         }
 
         .popup-modal .popup-btn {
-            position: relative !important;
-            top: auto !important;
-            transform: none !important;
-            display: inline-block !important;
             background: #4a1525;
             color: #fdfaf4;
             border: 1px solid #d4af37;
-            padding: 10px 30px;
-            border-radius: 2px;
+            padding: 12px 35px;
+            border-radius: 3px;
             font-weight: normal;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            transition: background 0.2s;
+        }
+
+        .popup-modal .popup-btn:hover {
+            background: #5c1d30;
         }
 
         /* Final Letter Display */
@@ -216,6 +232,7 @@
             width: 90%;
             margin: 0 auto;
             padding: 35px;
+            /* Replace 'lake.jpg' in your local directory for this section background */
             background-color: rgba(10, 6, 12, 0.88); 
             border-radius: 20px;
             text-align: center;
@@ -247,7 +264,6 @@
             min-height: 100px;
         }
 
-        /* Hidden single video player wrapper */
         #loveVideo {
             width: 0px;
             height: 0px;
@@ -266,7 +282,6 @@
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Single Hidden Video Player -->
     <video id="loveVideo" preload="auto">
         <source src="video.mp4" type="video/mp4">
     </video>
@@ -276,19 +291,23 @@
         <div class="subtitle">BEGINNING OF OUR LOVE STORY</div>
         <h1 id="questionText">Will you be my Forever?</h1>
         
-        <!-- Rose is now on the left (YES) side, Leaf branch is on the right (NO) side -->
-        <div class="deco-row">
-            <span>🌹</span>
-            <span>🌿</span>
-        </div>
+        <!-- Interactive Layout Grid to maintain separation alignment -->
+        <div class="interactive-area" id="btnArea">
+            <!-- Left Axis (YES Corner) -->
+            <div class="column-box">
+                <span class="deco-icon">🌹</span>
+                <button id="yesBtn">YES</button>
+            </div>
 
-        <div class="btn-container" id="btnArea">
-            <button id="yesBtn">YES</button>
-            <button id="noBtn" onmouseover="moveNoButton()" onclick="moveNoButton()">NO</button>
+            <!-- Right Axis (NO Corner) -->
+            <div class="column-box" id="noColumn">
+                <span class="deco-icon">🌿</span>
+                <button id="noBtn" onmouseover="moveNoButton()" onclick="moveNoButton()">NO</button>
+            </div>
         </div>
     </div>
 
-    <!-- Antique Book Letter Modal -->
+    <!-- Antique Open Book Diary Modal -->
     <div class="popup-modal" id="lovePopup">
         <h3>I Found You... ❤️</h3>
         <p>I knew it the second I saw you. Even if we were born in different worlds, or separated by a thousand skies... my heart would still recognize yours. This letter is everything I've been wanting to say to you.</p>
@@ -297,13 +316,14 @@
 
     <div class="message-screen" id="successStage">
         <h2>Forever & Always</h2>
-        <div class="deco-row" style="margin-bottom: 15px; padding: 0;">✨🕯️✨</div>
+        <div style="margin-bottom: 15px; font-size: 1.6rem; opacity: 0.9;">✨🕯️✨</div>
         <p id="typewriterText"></p>
     </div>
 
     <script>
         const noBtn = document.getElementById('noBtn');
         const btnArea = document.getElementById('btnArea');
+        const noColumn = document.getElementById('noColumn');
         const proposalStage = document.getElementById('proposalStage');
         const successStage = document.getElementById('successStage');
         const lovePopup = document.getElementById('lovePopup');
@@ -315,7 +335,14 @@
         let isFirstMove = true;
         let currentActiveVideo = 1;
 
-        // Timed subtitles for Video 1
+        // Position alignment initialization for the moving button
+        function initNoButtonPosition() {
+            const rect = noBtn.getBoundingClientRect();
+            const areaRect = btnArea.getBoundingClientRect();
+            noBtn.style.left = (rect.left - areaRect.left) + 'px';
+            noBtn.style.top = (rect.top - areaRect.top) + 'px';
+        }
+
         const timelineVideo1 = [
             { time: 0.0, text: "Allow me to love you at your worst" },
             { time: 2.5, text: "When the world caves in upon your shoulders" },
@@ -332,7 +359,6 @@
             { time: 43.8, text: "For loving you especially at your weakest\nIs the only strength I will ever need" }
         ];
 
-        // Timed subtitles for Video 2
         const timelineVideo2 = [
             { time: 0.0, text: "This is my promise to you" },
             { time: 2.2, text: "I am not with you for the short term" },
@@ -344,7 +370,6 @@
             { time: 19.2, text: "I'm not going anywhere without my best friend by my side" }
         ];
 
-        // Combined final text letter display
         const fullLetterText = `Allow me to love you at your worst
 When the world caves in upon your shoulders
 And the universe steals the breath from your lungs
@@ -376,11 +401,10 @@ I'm not going anywhere without my best friend by my side.`;
             if (!musicStarted && song) {
                 song.play()
                     .then(() => { musicStarted = true; })
-                    .catch(e => console.log("Audio waiting on interaction context"));
+                    .catch(e => console.log("Audio playing context active"));
             }
         }
 
-        // Heart Spawner Loop
         setInterval(() => {
             const heart = document.createElement('div');
             heart.classList.add('heart-sticker');
@@ -395,7 +419,7 @@ I'm not going anywhere without my best friend by my side.`;
             triggerMusic(); 
             
             if (isFirstMove) {
-                noBtn.style.right = 'auto';
+                initNoButtonPosition();
                 isFirstMove = false;
             }
             
@@ -442,7 +466,7 @@ I'm not going anywhere without my best friend by my side.`;
                 setTimeout(() => {
                     successStage.style.opacity = '1';
                     if (video) {
-                        video.play().catch(e => console.log("Video playback blocked"));
+                        video.play().catch(e => console.log("Video track error"));
                         video.addEventListener('timeupdate', handleTimelineTracking);
                         video.addEventListener('ended', handleVideoEndEvent);
                     }
@@ -486,7 +510,7 @@ I'm not going anywhere without my best friend by my side.`;
                 video.src = "video2.mp4"; 
                 video.load();
                 video.volume = 1;
-                video.play().catch(e => console.log("Video 2 chain blocked"));
+                video.play().catch(e => console.log("Chain clip execution trace failed"));
             } else if (currentActiveVideo === 2) {
                 currentActiveVideo = 0; 
                 textDisplay.innerText = fullLetterText;
