@@ -167,13 +167,15 @@
             background-repeat: no-repeat !important;
             background-position: center center !important;
             
-            /* FIXED: Set to contain to prevent cropping and remove gray background edges */
+            /* Background styles */
             background-size: contain !important; 
             background-color: transparent !important; 
             box-shadow: none; 
             
-            /* Trick to strip out baked-in solid gray background from the image file */
-            mix-blend-mode: multiply;
+            /* 
+             * REMOVED: mix-blend-mode: multiply; 
+             * This was causing the book to turn dark and see-through! 
+             */
             
             z-index: 100;
             opacity: 0;
@@ -190,7 +192,7 @@
 
         .book-right-page {
             position: absolute;
-            /* FIXED: Using percentages forces text to stay strictly inside the right page */
+            /* Using percentages forces text to stay strictly inside the right page */
             top: 12%;
             right: 8%;
             width: 38%;
@@ -209,7 +211,7 @@
             margin: 0 0 12px 0;
             color: #2b1a0e; 
             font-size: 2.2rem;
-            /* FIXED: Feather pen script font */
+            /* Feather pen script font */
             font-family: 'Great Vibes', cursive;
             font-weight: normal;
         }
@@ -220,7 +222,7 @@
             font-size: 1.35rem; 
             line-height: 1.4;
             margin: 0 0 25px 0;
-            /* FIXED: Feather pen script font */
+            /* Feather pen script font */
             font-family: 'Great Vibes', cursive;
         }
 
@@ -234,7 +236,7 @@
             font-size: 1.4rem;
             cursor: pointer;
             transition: all 0.2s;
-            /* FIXED: Feather pen script font */
+            /* Feather pen script font */
             font-family: 'Great Vibes', cursive;
         }
         .popup-modal .popup-btn:hover { 
