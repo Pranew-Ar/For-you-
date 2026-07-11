@@ -48,7 +48,6 @@
             z-index: 10;
             padding: 50px 30px;
             
-            /* Background styles */
             background-image: linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.15)), url('vintage-room.png') !important;
             background-repeat: no-repeat !important;
             background-position: center center !important;
@@ -63,7 +62,6 @@
             box-sizing: border-box;
         }
 
-        /* Isolating text elements */
         .subtitle, h1, .interactive-area {
             position: relative;
             z-index: 15;
@@ -165,7 +163,9 @@
             background-image: url('vintage-book.png') !important;
             background-repeat: no-repeat !important;
             background-position: center center !important;
-            background-size: contain !important; 
+            
+            /* FIXED: Force the image to match the modal bounds exactly */
+            background-size: 100% 100% !important; 
             background-color: transparent !important; 
             box-shadow: none; 
             
@@ -184,25 +184,25 @@
 
         .book-right-page {
             position: absolute;
-            /* FIXED BOUNDARIES: Pushed further from the right and narrowed the width */
-            top: 15%;
-            right: 22%;
-            width: 27%;
-            height: 70%;
+            /* FIXED: Anchor to the spine (left) and lock the width to prevent right overflow */
+            top: 12%;
+            left: 53%; /* Starts slightly past the center fold */
+            width: 38%; /* Leaves roughly 9% gap on the right edge */
+            height: 76%;
+            
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
             box-sizing: border-box;
-            padding: 5px;
+            padding: 0 15px; /* Added internal padding to keep text off the raw edges */
             background: transparent !important;
         }
 
         .popup-modal h3 {
             margin: 0 0 10px 0;
             color: #2b1a0e; 
-            /* Slightly smaller to fit the narrower page */
             font-size: 1.8rem;
             font-family: 'Great Vibes', cursive;
             font-weight: normal;
@@ -210,18 +210,18 @@
 
         .popup-modal p {
             color: #3b281b; 
-            /* Slightly smaller to fit the narrower page */
             font-size: 1.1rem; 
-            line-height: 1.3;
+            line-height: 1.35;
             margin: 0 0 20px 0;
             font-family: 'Great Vibes', cursive;
+            word-wrap: break-word; /* Ensure long words break safely */
         }
 
         .popup-modal .popup-btn {
-            background: transparent;
-            color: #2b1a0e;
+            background: #2b1a0e; /* Set to solid dark matching the screenshot */
+            color: #fdfaf4;
             border: 1px solid #2b1a0e;
-            padding: 5px 20px;
+            padding: 6px 24px;
             border-radius: 3px;
             font-weight: bold;
             font-size: 1.2rem;
@@ -230,8 +230,7 @@
             font-family: 'Great Vibes', cursive;
         }
         .popup-modal .popup-btn:hover { 
-            background: #2b1a0e; 
-            color: #fdfaf4; 
+            background: #4a2d18; 
         }
 
         /* Final Scroll Letter Display Screen */
@@ -285,9 +284,12 @@
                 height: 240px;
             }
             .book-right-page {
-                top: 10%; right: 15%;
-                width: 35%; height: 80%;
+                top: 10%; 
+                left: 53%;
+                width: 40%; 
+                height: 80%;
                 overflow-y: auto;
+                padding: 0 10px;
             }
             .popup-modal h3 { font-size: 1.3rem; margin-bottom: 5px; }
             .popup-modal p { font-size: 0.9rem; line-height: 1.2; margin-bottom: 8px; }
