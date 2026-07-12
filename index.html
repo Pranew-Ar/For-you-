@@ -41,24 +41,49 @@
             100% { transform: translateY(-10vh) scale(1.2) translateX(50px); opacity: 0; }
         }
 
-        /* Fog / Cloud Particle Effect */
+        /* --- UPDATED: Realistic Fluffy Cloud Structure --- */
         .fog-particle {
             position: absolute;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0) 70%);
-            border-radius: 50%;
-            filter: blur(12px);
+            background: rgba(255, 255, 255, 0.55); /* Bright enough to contrast, translucent enough to blend */
+            border-radius: 100px; /* Wide pill-shaped base */
+            filter: blur(22px); /* Heavy blur for wispy, foggy edges */
             pointer-events: none;
             z-index: 1; 
             animation: driftFog linear infinite;
             opacity: 0;
         }
 
+        /* CSS Pseudo-elements to create the irregular 'puffs' on top of the cloud */
+        .fog-particle::before, .fog-particle::after {
+            content: '';
+            position: absolute;
+            background: inherit; /* Copies the white color from the main particle */
+            border-radius: 50%;
+        }
+
+        /* Left/Center large puff */
+        .fog-particle::before {
+            width: 55%;
+            height: 160%;
+            top: -65%;
+            left: 15%;
+        }
+
+        /* Right smaller puff */
+        .fog-particle::after {
+            width: 40%;
+            height: 120%;
+            top: -35%;
+            right: 15%;
+        }
+
         @keyframes driftFog {
             0% { transform: translate(-20vw, 5vh) scale(1); opacity: 0; }
-            20% { opacity: 0.95; } 
-            80% { opacity: 0.8; }
+            20% { opacity: 0.75; } /* Fades in smoothly to a dense fog */
+            80% { opacity: 0.6; }
             100% { transform: translate(120vw, -10vh) scale(2.5); opacity: 0; }
         }
+        /* ------------------------------------------------- */
 
         /* Front Proposal Container */
         .container {
@@ -420,44 +445,42 @@
             setTimeout(() => { heart.remove(); }, 4000);
         }, 650);
 
-        // --- NEW: Instant Fog System ---
+        // Instant Fog System
         function createFogCloud(isInitialLoad = false) {
             const fog = document.createElement('div');
             fog.classList.add('fog-particle');
             
-            const size = Math.random() * 150 + 200; 
-            fog.style.width = size + 'px';
-            fog.style.height = (size * 0.6) + 'px'; 
+            // --- UPDATED: Shape logic for clouds ---
+            // Make the base width larger, and height much shorter so it looks like a wide cloud bank
+            const width = Math.random() * 200 + 250; 
+            fog.style.width = width + 'px';
+            fog.style.height = (width * 0.35) + 'px'; 
+            // ---------------------------------------
             
             fog.style.left = "-20vw"; 
             fog.style.top = (Math.random() * 80 + 10) + "vh"; 
             
-            const animDuration = Math.random() * 15 + 15; // 15 to 30 seconds
+            const animDuration = Math.random() * 15 + 15; 
             fog.style.animationDuration = animDuration + "s"; 
             
-            // If it's the initial load, fast-forward the animation using negative delay
-            // so the clouds are already in the middle of the screen instantly.
             if (isInitialLoad) {
                 const randomDelay = Math.random() * animDuration; 
                 fog.style.animationDelay = "-" + randomDelay + "s";
             }
             
             document.body.appendChild(fog);
-            
-            // Clean up when animation is done
             setTimeout(() => { fog.remove(); }, (animDuration * 1000) + 1000);
         }
 
-        // 1. Immediately spawn 6 clouds spread across the screen on load
+        // Immediately spawn 6 clouds on load
         for (let i = 0; i < 6; i++) {
             createFogCloud(true);
         }
 
-        // 2. Continue spawning fresh clouds every 1.5 seconds naturally
+        // Continue spawning fresh clouds organically
         setInterval(() => {
             createFogCloud(false);
         }, 1500); 
-        // --------------------------------
 
         function moveNoButton() {
             triggerMusic(); 
