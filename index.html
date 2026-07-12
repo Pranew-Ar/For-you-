@@ -29,7 +29,7 @@
             color: #ff4757;
             font-size: 24px;
             pointer-events: none;
-            z-index: 2;
+            z-index: 3;
             animation: floatUp 4s linear infinite;
             opacity: 0;
         }
@@ -40,6 +40,27 @@
             90% { opacity: 0.4; }
             100% { transform: translateY(-10vh) scale(1.2) translateX(50px); opacity: 0; }
         }
+
+        /* --- NEW: Fog / Cloud Particle Effect --- */
+        .fog-particle {
+            position: absolute;
+            /* Creates a soft, semi-transparent white/gray cloud */
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 70%);
+            border-radius: 50%;
+            filter: blur(15px); /* Softens the edges to look like gas/fog */
+            pointer-events: none;
+            z-index: 1; /* Keeps fog behind the main proposal box but over the background */
+            animation: driftFog linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes driftFog {
+            0% { transform: translate(-20vw, 5vh) scale(1); opacity: 0; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.5; }
+            100% { transform: translate(120vw, -10vh) scale(2.5); opacity: 0; }
+        }
+        /* ---------------------------------------- */
 
         /* Front Proposal Container */
         .container {
@@ -164,7 +185,6 @@
             background-repeat: no-repeat !important;
             background-position: center center !important;
             
-            /* FIXED: Force the image to match the modal bounds exactly */
             background-size: 100% 100% !important; 
             background-color: transparent !important; 
             box-shadow: none; 
@@ -184,10 +204,9 @@
 
         .book-right-page {
             position: absolute;
-            /* FIXED: Anchor to the spine (left) and lock the width to prevent right overflow */
             top: 12%;
-            left: 53%; /* Starts slightly past the center fold */
-            width: 38%; /* Leaves roughly 9% gap on the right edge */
+            left: 53%; 
+            width: 38%; 
             height: 76%;
             
             display: flex;
@@ -196,7 +215,7 @@
             align-items: center;
             text-align: center;
             box-sizing: border-box;
-            padding: 0 15px; /* Added internal padding to keep text off the raw edges */
+            padding: 0 15px; 
             background: transparent !important;
         }
 
@@ -214,11 +233,11 @@
             line-height: 1.35;
             margin: 0 0 20px 0;
             font-family: 'Great Vibes', cursive;
-            word-wrap: break-word; /* Ensure long words break safely */
+            word-wrap: break-word; 
         }
 
         .popup-modal .popup-btn {
-            background: #2b1a0e; /* Set to solid dark matching the screenshot */
+            background: #2b1a0e; 
             color: #fdfaf4;
             border: 1px solid #2b1a0e;
             padding: 6px 24px;
@@ -242,7 +261,6 @@
             width: 90%;
             margin: 0 auto;
             padding: 40px;
-            /* UPDATED: Replaced brown background with cloudy.png */
             background: url('cloudy.png') no-repeat center center/cover; 
             border-radius: 12px;
             text-align: center;
@@ -272,7 +290,6 @@
             letter-spacing: 0.5px;
             white-space: pre-line;
             display: block;
-            /* Optional: Adding a slight text shadow makes text more readable over images */
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
         }
 
@@ -341,7 +358,6 @@
     <!-- Phase 3: Final Timeline Video Screen layout -->
     <div class="message-screen" id="successStage">
         <h2>Forever & Always</h2>
-        <!-- UPDATED: Removed the book and candles emoji line here -->
         <p id="typewriterText"></p>
     </div>
 
@@ -401,6 +417,7 @@
             }
         }
 
+        // --- EXISTING: Floating Hearts Generator ---
         setInterval(() => {
             const heart = document.createElement('div');
             heart.classList.add('heart-sticker');
@@ -410,6 +427,30 @@
             document.body.appendChild(heart);
             setTimeout(() => { heart.remove(); }, 4000);
         }, 650);
+
+        // --- NEW: Drifting Fog/Cloud Generator ---
+        setInterval(() => {
+            const fog = document.createElement('div');
+            fog.classList.add('fog-particle');
+            
+            // Randomize size so some clouds are big and some are small
+            const size = Math.random() * 150 + 200; // Between 200px and 350px
+            fog.style.width = size + 'px';
+            fog.style.height = (size * 0.6) + 'px'; // Making them slightly oval/flat like real clouds
+            
+            // Start off-screen on the left, randomize vertical position
+            fog.style.left = "-20vw"; 
+            fog.style.top = (Math.random() * 80 + 10) + "vh"; 
+            
+            // Randomize how fast the fog drifts across the screen (15 to 30 seconds)
+            fog.style.animationDuration = (Math.random() * 15 + 15) + "s"; 
+            
+            document.body.appendChild(fog);
+            
+            // Clean up the DOM after the animation finishes
+            setTimeout(() => { fog.remove(); }, 30000); 
+        }, 1500); // Spawns a new cloud layer every 1.5 seconds
+        // ------------------------------------------
 
         function moveNoButton() {
             triggerMusic(); 
