@@ -52,7 +52,7 @@
         }
 
         /* ---------------------------------
-           HEAVY & THICK CLOUD ENGINE
+           UNIFIED & SLOW-DRIFT CLOUD ENGINE
            --------------------------------- */
         .fog-particle {
             position: absolute;
@@ -60,34 +60,16 @@
             pointer-events: none;
             z-index: 2;
             will-change: transform, opacity;
-        }
-
-        /* Highly Visible, Heavy White Clouds for Stage 1 (Castle) */
-        .fog-particle.light {
             background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(220, 235, 250, 0.5) 45%, transparent 80%);
             filter: blur(35px);
-            animation: driftFogLight linear infinite;
+            animation: driftFog linear infinite;
         }
 
-        /* Overcast Dark-Grey/White Clouds for Stage 2 (Lake) */
-        .fog-particle.heavy {
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, rgba(200, 215, 230, 0.65) 50%, transparent 85%);
-            filter: blur(45px);
-            animation: driftFogHeavy linear infinite;
-        }
-
-        @keyframes driftFogLight {
+        @keyframes driftFog {
             0% { transform: translate(-40vw, 0vh) scale(0.9); opacity: 0; }
             15% { opacity: 0.85; } 
             85% { opacity: 0.85; }
             100% { transform: translate(125vw, -10vh) scale(2.2); opacity: 0; }
-        }
-
-        @keyframes driftFogHeavy {
-            0% { transform: translate(-40vw, 0vh) scale(1.1); opacity: 0; }
-            15% { opacity: 0.98; }
-            85% { opacity: 0.95; }
-            100% { transform: translate(125vw, -10vh) scale(2.8); opacity: 0; }
         }
 
         /* Container Cards */
@@ -384,7 +366,6 @@
         let musicStarted = false;
         let isFirstMove = true;
         let currentActiveVideo = 1;
-        let currentStage = 1; 
 
         function initNoButtonPosition() {
             const rect = noBtn.getBoundingClientRect();
@@ -438,20 +419,20 @@
             setTimeout(() => { heart.remove(); }, 3800);
         }, 1200);
 
-        // Huge Cloud Spawner
-        function createFogCloud(isInitialLoad = false, type = 'light') {
+        /* Slow & Graceful Cloud Spawner */
+        function createFogCloud(isInitialLoad = false) {
             const fog = document.createElement('div');
-            fog.classList.add('fog-particle', type);
+            fog.classList.add('fog-particle');
             
-            // Much larger clouds (400px - 750px width)
             const width = Math.random() * 350 + 400; 
             fog.style.width = width + 'px';
             fog.style.height = (width * 0.65) + 'px'; 
             
             fog.style.left = "-40vw"; 
-            fog.style.top = (Math.random() * 85 - 10) + "vh"; // Covers full vertical height
+            fog.style.top = (Math.random() * 85 - 10) + "vh";
 
-            const animDuration = type === 'light' ? (Math.random() * 8 + 12) : (Math.random() * 6 + 9); 
+            // SLOW SPEED: Duration increased to 25 - 40 seconds
+            const animDuration = Math.random() * 15 + 25; 
             fog.style.animationDuration = animDuration + "s"; 
             
             if (isInitialLoad) {
@@ -463,19 +444,15 @@
             setTimeout(() => { fog.remove(); }, (animDuration * 1000) + 500);
         }
 
-        // Spawn 18 thick clouds across the Castle background immediately
+        // Spawn 18 identical dense clouds immediately on load (Castle BG)
         for (let i = 0; i < 18; i++) {
-            createFogCloud(true, 'light');
+            createFogCloud(true);
         }
 
-        // Rapid stream interval so the cloud coverage never thins out
+        // Steady continuous spawner
         setInterval(() => {
-            if (currentStage === 1) {
-                createFogCloud(false, 'light'); 
-            } else if (currentStage === 2) {
-                createFogCloud(false, 'heavy'); 
-            }
-        }, 1200); 
+            createFogCloud(false); 
+        }, 1800); 
 
         function moveNoButton(e) {
             if (e && e.type === 'touchstart') {
@@ -510,14 +487,11 @@
             setTimeout(() => {
                 proposalStage.style.display = 'none';
                 document.body.className = 'vintage-love'; 
-                
-                currentStage = 2;
 
+                // Reset and spawn the exact same 18 dense slow clouds on Stage 2 (Lake BG)
                 document.querySelectorAll('.fog-particle').forEach(c => c.remove());
-
-                // Spawn 22 heavy storm clouds instantly for Stage 2
-                for (let i = 0; i < 22; i++) {
-                    createFogCloud(true, 'heavy');
+                for (let i = 0; i < 18; i++) {
+                    createFogCloud(true);
                 }
 
                 successStage.style.display = 'block';
