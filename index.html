@@ -1,12 +1,13 @@
+The Love Story
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For You</title>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
-    
     <style>
+        /* Base Styling */
         body, html {
             margin: 0;
             padding: 0;
@@ -16,526 +17,176 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.25)), url('castle.jpg') no-repeat center center/cover;
+            background-color: #ffe6e6;
+            transition: background 2s ease;
             overflow: hidden;
-            position: relative;
-            touch-action: manipulation;
         }
 
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 25vh;
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0) 100%);
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .heart-sticker {
-            position: absolute;
-            color: #ff4757;
-            font-size: 22px;
-            pointer-events: none;
-            z-index: 5;
-            animation: floatUp 4s linear infinite;
-            opacity: 0;
-            will-change: transform, opacity;
-            transform: translateZ(0);
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(100vh) scale(0.6) translateZ(0); opacity: 0; }
-            15% { opacity: 0.8; }
-            80% { opacity: 0.5; }
-            100% { transform: translateY(-10vh) scale(1.1) translateX(30px) translateZ(0); opacity: 0; }
-        }
-
-        /* ---------------------------------
-           UNIFIED & ULTRA-SLOW CLOUD ENGINE
-           --------------------------------- */
-        .fog-particle {
-            position: absolute;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 2;
-            will-change: transform, opacity;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(220, 235, 250, 0.5) 45%, transparent 80%);
-            filter: blur(35px);
-            animation: driftFog linear infinite;
-        }
-
-        @keyframes driftFog {
-            0% { transform: translate(-40vw, 0vh) scale(0.9); opacity: 0; }
-            15% { opacity: 0.85; } 
-            85% { opacity: 0.85; }
-            100% { transform: translate(125vw, -10vh) scale(2.2); opacity: 0; }
-        }
-
-        /* Container Cards */
         .container {
             text-align: center;
             position: relative;
             z-index: 10;
-            padding: 35px 20px;
-            background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.3)), url('vintage-room.png') !important;
-            background-repeat: no-repeat !important;
-            background-position: center center !important;
-            background-size: cover !important;
-            background-color: rgba(20, 15, 10, 0.85); 
-            border: none; 
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
-            width: 88%;
-            max-width: 420px;
-            box-sizing: border-box;
-            will-change: opacity;
-        }
-
-        .subtitle, h1, .interactive-area {
-            position: relative;
-            z-index: 15;
-        }
-
-        .subtitle {
-            font-size: 0.85rem;
-            color: #ffffff; 
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 20px;
-            font-weight: bold;
-            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
+            padding: 20px;
         }
 
         h1 {
-            font-size: 1.9rem;
-            color: #ffffff; 
-            margin-top: 0;
-            margin-bottom: 25px;
-            line-height: 1.35;
-            font-style: italic;
-            font-weight: normal;
-            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.95);
+            font-size: 3rem;
+            color: #d63031;
+            margin-bottom: 40px;
+            transition: color 2s ease, opacity 0.5s ease;
         }
 
-        .interactive-area {
+        .btn-container {
             display: flex;
-            justify-content: space-around;
-            align-items: flex-start;
-            margin-top: 15px;
-            width: 100%;
-            height: 110px;
+            justify-content: center;
+            gap: 30px;
             position: relative;
-        }
-
-        .column-box {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 45%;
-            gap: 10px;
-        }
-
-        .deco-icon {
-            font-size: 1.8rem;
-            opacity: 0.95;
-            height: 30px;
+            height: 60px;
         }
 
         button {
-            padding: 10px 26px;
-            font-size: 1.1rem;
+            padding: 15px 35px;
+            font-size: 1.2rem;
             font-weight: bold;
+            border: none;
+            border-radius: 25px;
             cursor: pointer;
-            font-family: 'Georgia', serif;
-            letter-spacing: 2px;
-            outline: none;
-            background: rgba(0, 0, 0, 0.75);
-            border-radius: 25px; 
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6); 
-            transition: transform 0.15s ease, background 0.2s ease;
-            -webkit-tap-highlight-color: transparent;
-            will-change: transform, left, top;
+            transition: transform 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         #yesBtn {
-            color: #a8ffa8; 
-            border: 2px solid rgba(140, 230, 140, 0.7);
-            text-shadow: 0 0 8px rgba(140, 230, 140, 0.8);
+            background-color: #2ecc71;
+            color: white;
         }
-        
-        #yesBtn:active {
-            transform: scale(1.08);
-            background: rgba(140, 230, 140, 0.25);
+
+        #yesBtn:hover {
+            transform: scale(1.1);
         }
 
         #noBtn {
-            color: #ff8c8c; 
-            border: 2px solid rgba(255, 107, 107, 0.7);
-            text-shadow: 0 0 8px rgba(255, 107, 107, 0.8);
+            background-color: #e74c3c;
+            color: white;
             position: absolute;
-            transition: left 0.1s linear, top 0.1s linear;
-            z-index: 20;
+            left: 55%; /* Initial positioning next to Yes */
+            transition: left 0.1s ease, top 0.1s ease;
         }
 
-        /* Book Modal Display */
-        .popup-modal {
-            display: none;
-            position: fixed;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%) scale(0.8);
-            width: 90vw;
-            max-width: 750px;
-            height: 55vh;
-            max-height: 420px;
-            
-            background-image: url('vintage-book.png') !important;
-            background-repeat: no-repeat !important;
-            background-position: center center !important;
-            background-size: 100% 100% !important; 
-            background-color: transparent !important; 
-            
-            z-index: 100;
-            opacity: 0;
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            box-sizing: border-box;
-            will-change: transform, opacity;
-        }
-
-        .popup-modal.active {
-            display: block;
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .book-right-page {
-            position: absolute;
-            top: 10%;
-            left: 52%; 
-            width: 42%; 
-            height: 80%;
-            
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            box-sizing: border-box;
-            padding: 0 8px; 
-            background: transparent !important;
-            overflow-y: auto;
-        }
-
-        .popup-modal h3 {
-            margin: 0 0 6px 0;
-            color: #2b1a0e; 
-            font-size: 1.4rem;
-            font-family: 'Great Vibes', cursive;
-            font-weight: normal;
-        }
-
-        .popup-modal p {
-            color: #3b281b; 
-            font-size: 0.9rem; 
-            line-height: 1.25;
-            margin: 0 0 12px 0;
-            font-family: 'Great Vibes', cursive;
-            word-wrap: break-word; 
-        }
-
-        .popup-modal .popup-btn {
-            background: #2b1a0e; 
-            color: #fdfaf4;
-            border: 1px solid #2b1a0e;
-            padding: 5px 18px;
-            border-radius: 3px;
-            font-weight: bold;
-            font-size: 1rem;
-            cursor: pointer;
-            font-family: 'Great Vibes', cursive;
-        }
-
-        /* Message Screen */
+        /* Success / Vintage Theme Styling */
         .message-screen {
             display: none;
             opacity: 0;
-            transition: opacity 0.8s ease;
+            transition: opacity 2s ease;
             max-width: 600px;
-            width: 88%;
             margin: 0 auto;
-            padding: 25px 20px;
-            background: rgba(15, 20, 25, 0.88) url('cloudy.png') no-repeat center center/cover; 
-            border-radius: 10px;
-            text-align: center;
-            z-index: 10;
-            border: none;
-            max-height: 82vh;
-            overflow-y: auto;
-            box-sizing: border-box;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
-            will-change: opacity;
         }
 
         .message-screen h2 {
             font-size: 2.5rem;
-            color: #ffffff;
-            font-family: 'Great Vibes', cursive;
-            font-weight: normal;
-            margin-top: 0;
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+            color: #dfb76c; /* Vintage Gold */
+            margin-bottom: 20px;
+            font-style: italic;
         }
 
         .message-screen p {
-            font-size: 1rem;
-            color: #f5f2eb;
-            line-height: 1.6;
-            letter-spacing: 0.5px;
-            white-space: pre-wrap;
-            display: block;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
-            border: none;
-            outline: none;
-            user-select: none;
+            font-size: 1.3rem;
+            color: #f5f6fa;
+            line-height: 1.8;
+            letter-spacing: 1px;
         }
 
-        #loveVideo { display: none; }
-
+        /* Dark Vintage Background Class */
         body.vintage-love {
-            background: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.5)), url('lake.jpg') no-repeat center center/cover;
-        }
-
-        @media (max-width: 600px) {
-            h1 { font-size: 1.5rem; }
-            .popup-modal { width: 94vw; height: 48vh; }
-            .popup-modal h3 { font-size: 1.15rem; }
-            .popup-modal p { font-size: 0.82rem; }
-            .message-screen h2 { font-size: 2rem; }
+            background: radial-gradient(circle, #2c1a1d 0%, #0f080a 100%);
         }
     </style>
 </head>
 <body>
 
-    <audio id="romanticSong" loop preload="metadata">
-        <source src="music.mp3" type="audio/mpeg">
+    <!-- Audio Element (Replace URL with your choice of romantic song) -->
+    <!-- Note: Many browsers require a user click (like clicking 'YES') to allow audio to autoplay -->
+    <audio id="romanticSong" loop>
+        <source src="https://www.youtube.com/watch?v=G7d3iJ60Ms0&list=RDG7d3iJ60Ms0&start_radio=1" type="audio/mpeg">
     </audio>
 
-    <video id="loveVideo" preload="metadata" playsinline webkit-playsinline muted>
-        <source src="video.mp4" type="video/mp4">
-    </video>
-
+    <!-- Main Proposal Screen -->
     <div class="container" id="proposalStage">
-        <div class="subtitle">I Love You...!</div>
         <h1 id="questionText">Will you be my Forever?</h1>
-        
-        <div class="interactive-area" id="btnArea">
-            <div class="column-box">
-                <span class="deco-icon">🌹</span>
-                <button id="yesBtn">YES</button>
-            </div>
-            <div class="column-box" id="noColumn">
-                <span class="deco-icon">🌿</span>
-                <button id="noBtn" onmouseover="moveNoButton(event)" ontouchstart="moveNoButton(event)">NO</button>
-            </div>
+        <div class="btn-container">
+            <button id="yesBtn" onclick="acceptProposal()">YES</button>
+            <button id="noBtn" onmouseover="moveNoButton()" onclick="moveNoButton()">NO</button>
         </div>
     </div>
 
-    <div class="popup-modal" id="lovePopup">
-        <div class="book-right-page">
-            <h3>I Found You... ❤️</h3>
-            <p>I knew it the second I saw you. Even if we were born in different worlds, or separated by a thousand skies... my heart would still recognize yours. This letter is everything I've been wanting to say to you.</p>
-            <button class="popup-btn" onclick="acceptProposal()">Read it ✨</button>
-        </div>
-    </div>
-
+    <!-- Romantic Success Screen -->
     <div class="message-screen" id="successStage">
         <h2>Forever & Always</h2>
-        <p id="typewriterText"></p>
+        <p>
+            "If I could live life five times over…
+I'd be born beneath five different skies, breathe in the air of distant lands, and savor the flavors of the world as if each bite held a new beginning.
+I'd chase dreams with five different hearts, wear five different names, and follow five winding paths—each one shaped by its own adventures.
+
+But no matter how different those lives would be…
+In every lifetime, in every language, in every version of me
+I would find you.
+And I would fall in love with you all over again.
+Not by chance, not by fate
+But because my soul would recognize yours every single time.
+
+Five lives.
+Five stories.
+A thousand moments.
+And every one of them would end with me loving you."
+        </p>
     </div>
 
     <script>
         const noBtn = document.getElementById('noBtn');
-        const btnArea = document.getElementById('btnArea');
         const proposalStage = document.getElementById('proposalStage');
         const successStage = document.getElementById('successStage');
-        const lovePopup = document.getElementById('lovePopup');
+        const body = document.body;
         const song = document.getElementById('romanticSong');
-        const video = document.getElementById('loveVideo');
-        const textDisplay = document.getElementById('typewriterText');
 
-        let musicStarted = false;
-        let isFirstMove = true;
-        let currentActiveVideo = 1;
+        // Function to run away when hovering or trying to click 'NO'
+        function moveNoButton() {
+            // Calculate random positions within the visible window boundaries
+            const padding = 100; 
+            const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+            const maxY = window.innerHeight - noBtn.offsetHeight - padding;
 
-        function initNoButtonPosition() {
-            const rect = noBtn.getBoundingClientRect();
-            const areaRect = btnArea.getBoundingClientRect();
-            noBtn.style.left = (rect.left - areaRect.left) + 'px';
-            noBtn.style.top = (rect.top - areaRect.top) + 'px';
+            // Generate random coordinates
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+
+            // Apply new coordinates
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
         }
 
-        const timelineVideo1 = [
-            { time: 0.0, text: "Allow me to love you at your worst" },
-            { time: 2.5, text: "When the world caves in upon your shoulders" },
-            { time: 5.5, text: "And the universe steals the breath from your lungs" },
-            { time: 9.5, text: "When the nights grow heavier than your hope" },
-            { time: 12.8, text: "And even your own name feels unfamiliar" },
-            { time: 15.8, text: "Let me be the place you fall without fear" },
-            { time: 19.8, text: "I will stand between you and destruction" },
-            { time: 23.3, text: "Take the impact meant for your heart" },
-            { time: 26.0, text: "And spend pieces of my own" },
-            { time: 28.5, text: "If it means you can endure a moment longer" },
-            { time: 31.8, text: "If loving you requires sacrifice\nLet it be mine" },
-            { time: 37.5, text: "If surviving costs me everything\nLet it be willingly given" },
-            { time: 43.8, text: "For loving you especially at your weakest\nIs the only strength I will ever need" }
-        ];
-
-        const timelineVideo2 = [
-            { time: 0.0, text: "This is my promise to you" },
-            { time: 2.2, text: "I am not with you for the short term" },
-            { time: 5.2, text: "I'm not here to waste your time" },
-            { time: 7.8, text: "I'm here to build a life" },
-            { time: 9.8, text: "A future and a story with you" },
-            { time: 12.8, text: "I want to spend the rest of my life waking up next to you" },
-            { time: 16.8, text: "I'm in it for the long haul" },
-            { time: 19.2, text: "I'm not going anywhere without my best friend by my side I love you , I will always love you in every life in every world, I belong to you my soul my heart my breath it all belongs to you only you my love" }
-        ];
-
-        const fullLetterText = `Allow me to love you at your worst\nWhen the world caves in upon your shoulders\nAnd the universe steals the breath from your lungs\n\nWhen the nights grow heavier than your hope\nAnd even your own name feels unfamiliar\nLet me be the place you fall without fear\n\nI will stand between you and destruction\nTake the impact meant for your heart\nAnd spend pieces of my own\nIf it means you can endure a moment longer\n\nIf loving you requires sacrifice, let it be mine.\nIf surviving costs me everything, let it be willingly given.\nFor loving you especially at your weakest, is the only strength I will ever need.\n\n***\n\nThis is my promise to you:\nI am not with you for the short term.\nI'm not here to waste your time.\nI'm here to build a life, a future, and a story with you.\nI want to spend the rest of my life waking up next to you.\nI'm in it for the long haul.\nI'm not going anywhere without my best friend by my side I love you , I will always love you in every life in every world, I belong to you my soul my heart my breath it all belongs to you only you my love.`;
-
-        function triggerMusic() {
-            if (!musicStarted && song) {
-                song.play().then(() => { musicStarted = true; }).catch(() => {});
-            }
-        }
-
-        setInterval(() => {
-            const heart = document.createElement('div');
-            heart.classList.add('heart-sticker');
-            heart.innerHTML = ['❤️','💖','✨','🌸'][Math.floor(Math.random() * 4)];
-            heart.style.left = Math.random() * 95 + "vw";
-            heart.style.animationDuration = (Math.random() * 2 + 3.5) + "s";
-            document.body.appendChild(heart);
-            setTimeout(() => { heart.remove(); }, 3800);
-        }, 1200);
-
-        /* Ultra-Slow Cloud Engine */
-        function createFogCloud(isInitialLoad = false) {
-            const fog = document.createElement('div');
-            fog.classList.add('fog-particle');
-            
-            const width = Math.random() * 350 + 400; 
-            fog.style.width = width + 'px';
-            fog.style.height = (width * 0.65) + 'px'; 
-            
-            fog.style.left = "-40vw"; 
-            fog.style.top = (Math.random() * 85 - 10) + "vh";
-
-            // ULTRA SLOW SPEED: Duration increased to 60 - 100 seconds
-            const animDuration = Math.random() * 40 + 60; 
-            fog.style.animationDuration = animDuration + "s"; 
-            
-            if (isInitialLoad) {
-                const randomDelay = Math.random() * animDuration; 
-                fog.style.animationDelay = "-" + randomDelay + "s";
-            }
-            
-            document.body.appendChild(fog);
-            setTimeout(() => { fog.remove(); }, (animDuration * 1000) + 500);
-        }
-
-        // Spawn 18 clouds pre-placed across the screen initially
-        for (let i = 0; i < 18; i++) {
-            createFogCloud(true);
-        }
-
-        // Smooth continuous spawning interval
-        setInterval(() => {
-            createFogCloud(false); 
-        }, 3500); 
-
-        function moveNoButton(e) {
-            if (e && e.type === 'touchstart') {
-                e.preventDefault(); 
-            }
-            triggerMusic(); 
-            if (isFirstMove) {
-                initNoButtonPosition();
-                isFirstMove = false;
-            }
-            const areaWidth = btnArea.clientWidth;
-            const areaHeight = btnArea.clientHeight;
-            const maxX = areaWidth - noBtn.offsetWidth;
-            const maxY = areaHeight - noBtn.offsetHeight;
-
-            noBtn.style.left = (maxX > 0 ? Math.floor(Math.random() * maxX) : 5) + 'px';
-            noBtn.style.top = (maxY > 0 ? Math.floor(Math.random() * maxY) : 5) + 'px';
-        }
-
-        document.getElementById('yesBtn').addEventListener('click', () => {
-            triggerMusic();
-            if (lovePopup) lovePopup.classList.add('active');
-        });
-
+        // Function when 'YES' is clicked
         function acceptProposal() {
-            if (song) { song.pause(); song.currentTime = 0; }
-            if (lovePopup) lovePopup.classList.remove('active');
-            
-            proposalStage.style.transition = 'opacity 0.3s ease';
+            // 1. Play the music
+            song.play().catch(error => {
+                console.log("Audio playback failed or needs user interaction permission:", error);
+            });
+
+            // 2. Hide the proposal elements smoothly
+            proposalStage.style.transition = 'opacity 0.5s ease';
             proposalStage.style.opacity = '0';
 
             setTimeout(() => {
                 proposalStage.style.display = 'none';
-                document.body.className = 'vintage-love'; 
-
-                // Reset and spawn the exact same 18 ultra-slow clouds on Stage 2 (Lake BG)
-                document.querySelectorAll('.fog-particle').forEach(c => c.remove());
-                for (let i = 0; i < 18; i++) {
-                    createFogCloud(true);
-                }
-
+                
+                // 3. Switch to Romantic Dark Vintage theme
+                body.classList.add('vintage-love');
+                
+                // 4. Reveal the beautiful message
                 successStage.style.display = 'block';
                 setTimeout(() => {
                     successStage.style.opacity = '1';
-                    if (video) {
-                        video.muted = false;
-                        video.play().catch(() => {
-                            textDisplay.textContent = fullLetterText;
-                        });
-                        video.addEventListener('timeupdate', handleTimelineTracking);
-                        video.addEventListener('ended', handleVideoEndEvent);
-                    }
                 }, 50);
-            }, 300);
-        }
-
-        function handleTimelineTracking() {
-            const currentTime = video.currentTime;
-            let currentLine = "";
-            if (currentActiveVideo === 1) {
-                for (let i = 0; i < timelineVideo1.length; i++) {
-                    if (currentTime >= timelineVideo1[i].time) currentLine = timelineVideo1[i].text;
-                }
-            } else if (currentActiveVideo === 2) {
-                for (let i = 0; i < timelineVideo2.length; i++) {
-                    if (currentTime >= timelineVideo2[i].time) currentLine = timelineVideo2[i].text;
-                }
-            }
-            if (textDisplay.textContent !== currentLine && currentActiveVideo !== 0) {
-                textDisplay.textContent = currentLine;
-            }
-        }
-
-        function handleVideoEndEvent() {
-            if (currentActiveVideo === 1) {
-                currentActiveVideo = 2;
-                video.src = "video2.mp4"; 
-                video.load();
-                video.play().catch(() => {});
-            } else if (currentActiveVideo === 2) {
-                currentActiveVideo = 0; 
-                textDisplay.textContent = fullLetterText;
-            }
+            }, 500);
         }
     </script>
 </body>
