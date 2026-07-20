@@ -16,20 +16,15 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.25)), url('castle.png') no-repeat center center/cover;
+            /* Explicit fallback color + castle.png background */
+            background-color: #1a1512;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)), url('castle.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
             overflow: hidden;
             position: relative;
             touch-action: manipulation;
-        }
-
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 25vh;
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0) 100%);
-            z-index: 0;
-            pointer-events: none;
         }
 
         .heart-sticker {
@@ -49,28 +44,6 @@
             15% { opacity: 0.8; }
             80% { opacity: 0.5; }
             100% { transform: translateY(-10vh) scale(1.1) translateX(30px) translateZ(0); opacity: 0; }
-        }
-
-        /* ---------------------------------
-           GENTLE & TRANSLUCENT MIST
-           --------------------------------- */
-        .fog-particle {
-            position: absolute;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 2;
-            will-change: transform, opacity;
-            /* Drastically reduced opacity so the background shows through clearly */
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.15) 50%, transparent 80%);
-            filter: blur(25px);
-            animation: driftFog linear infinite;
-        }
-
-        @keyframes driftFog {
-            0% { transform: translate(-40vw, 0vh) scale(0.9); opacity: 0; }
-            15% { opacity: 0.45; } /* Max opacity is now much lower */
-            85% { opacity: 0.45; }
-            100% { transform: translate(125vw, -10vh) scale(2.0); opacity: 0; }
         }
 
         /* Container Cards */
@@ -303,7 +276,11 @@
         #loveVideo { display: none; }
 
         body.vintage-love {
-            background: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.5)), url('lake.jpg') no-repeat center center/cover;
+            background-color: #0f1419;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.5)), url('lake.jpg');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
         }
 
         @media (max-width: 600px) {
@@ -420,42 +397,6 @@
             setTimeout(() => { heart.remove(); }, 3800);
         }, 1200);
 
-        /* Soft & Sparse Fog Engine */
-        function createFogCloud(isInitialLoad = false) {
-            const fog = document.createElement('div');
-            fog.classList.add('fog-particle');
-            
-            // Moderate Cloud Dimensions
-            const width = Math.random() * 300 + 300; 
-            fog.style.width = width + 'px';
-            fog.style.height = (width * 0.6) + 'px'; 
-            
-            fog.style.left = "-40vw"; 
-            fog.style.top = (Math.random() * 85 - 10) + "vh";
-
-            // Ultra-slow speed maintained (60s - 100s)
-            const animDuration = Math.random() * 40 + 60; 
-            fog.style.animationDuration = animDuration + "s"; 
-            
-            if (isInitialLoad) {
-                const randomDelay = Math.random() * animDuration; 
-                fog.style.animationDelay = "-" + randomDelay + "s";
-            }
-            
-            document.body.appendChild(fog);
-            setTimeout(() => { fog.remove(); }, (animDuration * 1000) + 500);
-        }
-
-        // Spawn only 8 delicate clouds so the castle image is completely visible
-        for (let i = 0; i < 8; i++) {
-            createFogCloud(true);
-        }
-
-        // Slowed down the spawning interval to prevent thick build-up
-        setInterval(() => {
-            createFogCloud(false); 
-        }, 6000); 
-
         function moveNoButton(e) {
             if (e && e.type === 'touchstart') {
                 e.preventDefault(); 
@@ -489,12 +430,6 @@
             setTimeout(() => {
                 proposalStage.style.display = 'none';
                 document.body.className = 'vintage-love'; 
-
-                // Reset and maintain matching 8 cloud density for Stage 2 (Lake BG)
-                document.querySelectorAll('.fog-particle').forEach(c => c.remove());
-                for (let i = 0; i < 8; i++) {
-                    createFogCloud(true);
-                }
 
                 successStage.style.display = 'block';
                 setTimeout(() => {
