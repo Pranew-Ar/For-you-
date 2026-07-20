@@ -16,20 +16,20 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Lightened base gradient so castle background image is clearly visible */
-            background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.35)), url('castle.jpg') no-repeat center center/cover;
+            /* Very minimal dark tint so castle.jpg is completely clear */
+            background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.2)), url('castle.jpg') no-repeat center center/cover;
             overflow: hidden;
             position: relative;
             touch-action: manipulation;
         }
 
-        /* Subtle Dark Top Overlay for Atmospheric Tone */
+        /* Gentle top shadow */
         body::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0;
-            height: 35vh;
-            background: linear-gradient(to bottom, rgba(20, 30, 45, 0.4) 0%, rgba(20, 30, 45, 0) 100%);
+            height: 25vh;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0) 100%);
             z-index: 0;
             pointer-events: none;
         }
@@ -54,10 +54,10 @@
             100% { transform: translateY(-10vh) scale(1.1) translateX(30px) translateZ(0); opacity: 0; }
         }
 
-        /* Atmospheric Clouds - Balanced for Background Visibility */
+        /* Dynamic Clouds Engine */
         .fog-particle {
             position: absolute;
-            background: radial-gradient(circle, rgba(240, 245, 255, 0.4) 0%, rgba(180, 200, 220, 0.15) 50%, transparent 80%);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(200, 215, 230, 0.2) 50%, transparent 80%);
             border-radius: 50%;
             pointer-events: none;
             z-index: 1; 
@@ -65,15 +65,15 @@
             opacity: 0;
             will-change: transform, opacity;
             transform: translateZ(0);
-            filter: blur(25px); 
-            mix-blend-mode: screen; /* Blends cloud smoothly into background without blocking it */
+            filter: blur(20px); 
+            mix-blend-mode: screen;
         }
 
         @keyframes driftFog {
-            0% { transform: translate(-25vw, 5vh) scale(0.9) translateZ(0); opacity: 0; }
-            20% { opacity: 0.45; } /* Lower peak opacity so background stays clear */
-            80% { opacity: 0.35; }
-            100% { transform: translate(120vw, -15vh) scale(1.8) translateZ(0); opacity: 0; }
+            0% { transform: translate(-30vw, 5vh) scale(0.8) translateZ(0); opacity: 0; }
+            20% { opacity: var(--max-opacity, 0.2); } 
+            80% { opacity: var(--max-opacity, 0.2); }
+            100% { transform: translate(120vw, -15vh) scale(1.6) translateZ(0); opacity: 0; }
         }
 
         /* Container Cards */
@@ -146,7 +146,6 @@
             height: 30px;
         }
 
-        /* Fast-responding Buttons */
         button {
             padding: 10px 26px;
             font-size: 1.1rem;
@@ -307,7 +306,7 @@
         #loveVideo { display: none; }
 
         body.vintage-love {
-            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.45)), url('lake.jpg') no-repeat center center/cover;
+            background: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.5)), url('lake.jpg') no-repeat center center/cover;
         }
 
         @media (max-width: 600px) {
@@ -371,6 +370,7 @@
         let musicStarted = false;
         let isFirstMove = true;
         let currentActiveVideo = 1;
+        let currentStage = 1; // Stage 1 = Castle, Stage 2 = Lake/Message
 
         function initNoButtonPosition() {
             const rect = noBtn.getBoundingClientRect();
@@ -424,12 +424,11 @@
             setTimeout(() => { heart.remove(); }, 3800);
         }, 1200);
 
-        // Soft Atmospheric Cloud Generator
-        function createFogCloud(isInitialLoad = false) {
+        // Flexible Cloud Generator
+        function createFogCloud(isInitialLoad = false, maxOpacity = 0.2) {
             const fog = document.createElement('div');
             fog.classList.add('fog-particle');
             
-            // Moderate cloud size so they don't cover the whole viewport at once
             const width = Math.random() * 320 + 220; 
             fog.style.width = width + 'px';
             fog.style.height = (width * 0.5) + 'px'; 
@@ -437,10 +436,13 @@
             fog.style.left = "-30vw"; 
             fog.style.top = (Math.random() * 65 + 5) + "vh"; 
             
-            const animDuration = Math.random() * 15 + 15; 
+            fog.style.setProperty('--max-opacity', maxOpacity);
+
+            const animDuration = Math.random() * 14 + 12; 
             fog.style.animationDuration = animDuration + "s"; 
             
             if (isInitialLoad) {
+                // Scatter across screen immediately without delay
                 const randomDelay = Math.random() * animDuration; 
                 fog.style.animationDelay = "-" + randomDelay + "s";
             }
@@ -449,14 +451,19 @@
             setTimeout(() => { fog.remove(); }, (animDuration * 1000) + 500);
         }
 
-        // Reduced active clouds from 18 down to 7 for clarity
-        for (let i = 0; i < 7; i++) {
-            createFogCloud(true);
+        // Stage 1 (Initial Load): Light, subtle clouds (Max Opacity 0.18) so Castle is crisp
+        for (let i = 0; i < 4; i++) {
+            createFogCloud(true, 0.18);
         }
 
+        // Ongoing Spawner tailored per stage
         setInterval(() => {
-            createFogCloud(false);
-        }, 2200); 
+            if (currentStage === 1) {
+                createFogCloud(false, 0.18); 
+            } else if (currentStage === 2) {
+                createFogCloud(false, 0.55); // Rich cloudy atmosphere for Stage 2
+            }
+        }, 2000); 
 
         function moveNoButton(e) {
             if (e && e.type === 'touchstart') {
@@ -492,6 +499,17 @@
                 proposalStage.style.display = 'none';
                 document.body.className = 'vintage-love'; 
                 
+                // Switch to Stage 2 mode
+                currentStage = 2;
+
+                // Clear Stage 1 light clouds
+                document.querySelectorAll('.fog-particle').forEach(c => c.remove());
+
+                // INSTANTLY spawn 10 dense clouds pre-populated across Image 2 (No waiting!)
+                for (let i = 0; i < 10; i++) {
+                    createFogCloud(true, 0.55);
+                }
+
                 successStage.style.display = 'block';
                 setTimeout(() => {
                     successStage.style.opacity = '1';
