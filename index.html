@@ -16,15 +16,36 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Explicit fallback color + castle.png background */
             background-color: #1a1512;
-            background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)), url('castle.jpg');
+            background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.35)), url('castle.png');
             background-repeat: no-repeat;
             background-position: center center;
             background-size: cover;
             overflow: hidden;
             position: relative;
             touch-action: manipulation;
+        }
+
+        /* ---------------------------------
+           SUBTLE & TRANSPARENT MIST CLOUDS
+           --------------------------------- */
+        .fog-particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 2;
+            will-change: transform, opacity;
+            /* Extremely light so the castle shines through clearly */
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.08) 50%, transparent 80%);
+            filter: blur(40px);
+            animation: driftFog linear infinite;
+        }
+
+        @keyframes driftFog {
+            0% { transform: translate(-40vw, 0vh) scale(0.8); opacity: 0; }
+            20% { opacity: 0.25; } 
+            80% { opacity: 0.25; }
+            100% { transform: translate(120vw, -10vh) scale(1.6); opacity: 0; }
         }
 
         .heart-sticker {
@@ -396,6 +417,39 @@
             document.body.appendChild(heart);
             setTimeout(() => { heart.remove(); }, 3800);
         }, 1200);
+
+        /* Subtle & Sparse Mist Generator */
+        function createFogCloud(isInitialLoad = false) {
+            const fog = document.createElement('div');
+            fog.classList.add('fog-particle');
+            
+            const width = Math.random() * 350 + 250; 
+            fog.style.width = width + 'px';
+            fog.style.height = (width * 0.55) + 'px'; 
+            
+            fog.style.left = "-40vw"; 
+            fog.style.top = (Math.random() * 80 - 10) + "vh";
+
+            const animDuration = Math.random() * 30 + 50; 
+            fog.style.animationDuration = animDuration + "s"; 
+            
+            if (isInitialLoad) {
+                const randomDelay = Math.random() * animDuration; 
+                fog.style.animationDelay = "-" + randomDelay + "s";
+            }
+            
+            document.body.appendChild(fog);
+            setTimeout(() => { fog.remove(); }, (animDuration * 1000) + 500);
+        }
+
+        // Spawn only 5 wispy clouds so the castle remains 100% visible
+        for (let i = 0; i < 5; i++) {
+            createFogCloud(true);
+        }
+
+        setInterval(() => {
+            createFogCloud(false); 
+        }, 7000); 
 
         function moveNoButton(e) {
             if (e && e.type === 'touchstart') {
