@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For You</title>
-    <!-- Imported Cursive Font for Feather Pen effect -->
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     
     <style>
-        /* Base Setup - Hardware-accelerated base layer */
         body, html {
             margin: 0;
             padding: 0;
@@ -18,19 +16,31 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.35)), url('castle.jpg') no-repeat center center/cover;
+            /* Darkened the base background to match the moody vibe */
+            background: linear-gradient(rgba(20, 25, 35, 0.6), rgba(10, 15, 20, 0.7)), url('castle.jpg') no-repeat center center/cover;
             overflow: hidden;
             position: relative;
             touch-action: manipulation;
         }
 
-        /* Floating Magic Sticker Effects (GPU Optimized) */
+        /* Stormy Top Overlay */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 40vh;
+            background: linear-gradient(to bottom, rgba(40, 50, 65, 0.9) 0%, rgba(40, 50, 65, 0) 100%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Floating Magic Sticker Effects */
         .heart-sticker {
             position: absolute;
             color: #ff4757;
             font-size: 22px;
             pointer-events: none;
-            z-index: 3;
+            z-index: 5;
             animation: floatUp 4s linear infinite;
             opacity: 0;
             will-change: transform, opacity;
@@ -44,47 +54,27 @@
             100% { transform: translateY(-10vh) scale(1.1) translateX(30px) translateZ(0); opacity: 0; }
         }
 
-        /* Cloud Structure - Enhanced for more fog */
+        /* Ultra-Dense, Volumetric Clouds */
         .fog-particle {
             position: absolute;
-            background: rgba(255, 255, 255, 0.35); /* Increased base opacity */
-            border-radius: 100px;
+            /* Moody, greyish-white cloud color */
+            background: radial-gradient(circle, rgba(160, 175, 190, 0.8) 0%, rgba(120, 135, 150, 0.4) 50%, transparent 80%);
+            border-radius: 50%;
             pointer-events: none;
             z-index: 1; 
             animation: driftFog linear infinite;
             opacity: 0;
             will-change: transform, opacity;
             transform: translateZ(0);
-            box-shadow: 0 0 30px 20px rgba(255, 255, 255, 0.2); /* Added soft edges */
-        }
-
-        .fog-particle::before, .fog-particle::after {
-            content: '';
-            position: absolute;
-            background: inherit;
-            border-radius: 50%;
-            box-shadow: inherit;
-        }
-
-        .fog-particle::before {
-            width: 55%;
-            height: 150%;
-            top: -50%;
-            left: 15%;
-        }
-
-        .fog-particle::after {
-            width: 40%;
-            height: 120%;
-            top: -30%;
-            right: 15%;
+            /* Heavy blur creates the dense, connected cloud look */
+            filter: blur(30px); 
         }
 
         @keyframes driftFog {
-            0% { transform: translate(-20vw, 5vh) scale(1) translateZ(0); opacity: 0; }
-            25% { opacity: 0.65; } /* Increased peak opacity */
-            75% { opacity: 0.55; }
-            100% { transform: translate(120vw, -10vh) scale(2.2) translateZ(0); opacity: 0; } /* Bigger scaling */
+            0% { transform: translate(-30vw, 10vh) scale(0.8) translateZ(0); opacity: 0; }
+            20% { opacity: 0.95; } /* Extremely high opacity */
+            80% { opacity: 0.85; }
+            100% { transform: translate(120vw, -20vh) scale(2.5) translateZ(0); opacity: 0; }
         }
 
         /* Container Cards */
@@ -93,14 +83,14 @@
             position: relative;
             z-index: 10;
             padding: 35px 20px;
-            background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('vintage-room.png') !important;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('vintage-room.png') !important;
             background-repeat: no-repeat !important;
             background-position: center center !important;
             background-size: cover !important;
             background-color: rgba(20, 15, 10, 0.85); 
-            border: none; 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
             border-radius: 8px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9);
             width: 88%;
             max-width: 420px;
             box-sizing: border-box;
@@ -112,19 +102,9 @@
             z-index: 15;
         }
 
-        .container::before, .container::after {
-            content: '🌸';
-            position: absolute;
-            font-size: 1.2rem;
-            opacity: 0.7;
-            z-index: 12;
-        }
-        .container::before { top: 15px; left: 20px; }
-        .container::after { bottom: 15px; right: 20px; transform: rotate(45deg); }
-
         .subtitle {
             font-size: 0.85rem;
-            color: #ffffff; 
+            color: #e0e5ec; 
             text-transform: uppercase;
             letter-spacing: 3px;
             margin-bottom: 20px;
@@ -140,7 +120,7 @@
             line-height: 1.35;
             font-style: italic;
             font-weight: normal;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.95);
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 1);
         }
 
         .interactive-area {
@@ -176,9 +156,9 @@
             font-family: 'Georgia', serif;
             letter-spacing: 2px;
             outline: none;
-            background: rgba(0, 0, 0, 0.75);
+            background: rgba(10, 15, 20, 0.85);
             border-radius: 25px; 
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6); 
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8); 
             transition: transform 0.15s ease, background 0.2s ease;
             -webkit-tap-highlight-color: transparent;
             will-change: transform, left, top;
@@ -186,8 +166,8 @@
 
         #yesBtn {
             color: #a8ffa8; 
-            border: 2px solid rgba(140, 230, 140, 0.7);
-            text-shadow: 0 0 8px rgba(140, 230, 140, 0.8);
+            border: 1px solid rgba(140, 230, 140, 0.5);
+            text-shadow: 0 0 8px rgba(140, 230, 140, 0.5);
         }
         
         #yesBtn:active {
@@ -197,8 +177,8 @@
 
         #noBtn {
             color: #ff8c8c; 
-            border: 2px solid rgba(255, 107, 107, 0.7);
-            text-shadow: 0 0 8px rgba(255, 107, 107, 0.8);
+            border: 1px solid rgba(255, 107, 107, 0.5);
+            text-shadow: 0 0 8px rgba(255, 107, 107, 0.5);
             position: absolute;
             transition: left 0.1s linear, top 0.1s linear;
             z-index: 20;
@@ -328,7 +308,7 @@
         #loveVideo { display: none; }
 
         body.vintage-love {
-            background: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.55)), url('lake.jpg') no-repeat center center/cover;
+            background: linear-gradient(rgba(10, 15, 20, 0.6), rgba(10, 15, 20, 0.8)), url('lake.jpg') no-repeat center center/cover;
         }
 
         @media (max-width: 600px) {
@@ -435,7 +415,6 @@
             }
         }
 
-        // Reduced heart spawn frequency
         setInterval(() => {
             const heart = document.createElement('div');
             heart.classList.add('heart-sticker');
@@ -446,22 +425,25 @@
             setTimeout(() => { heart.remove(); }, 3800);
         }, 1200);
 
-        // Enhanced Fog System for significantly more clouds
+        // Volumetric Cloud Generator
         function createFogCloud(isInitialLoad = false) {
             const fog = document.createElement('div');
             fog.classList.add('fog-particle');
             
-            // Increased the base size of the clouds
-            const width = Math.random() * 220 + 200; 
+            // Massive clouds to cover the screen
+            const width = Math.random() * 500 + 400; 
             fog.style.width = width + 'px';
-            fog.style.height = (width * 0.35) + 'px'; 
-            fog.style.left = "-25vw"; 
-            fog.style.top = (Math.random() * 85 + 5) + "vh"; 
+            fog.style.height = (width * 0.6) + 'px'; 
             
-            const animDuration = Math.random() * 12 + 10; 
+            // Randomize vertical placement heavily towards the top/middle
+            fog.style.left = "-40vw"; 
+            fog.style.top = (Math.random() * 70 - 10) + "vh"; 
+            
+            const animDuration = Math.random() * 25 + 15; 
             fog.style.animationDuration = animDuration + "s"; 
             
             if (isInitialLoad) {
+                // Scatter them across the screen immediately on load
                 const randomDelay = Math.random() * animDuration; 
                 fog.style.animationDelay = "-" + randomDelay + "s";
             }
@@ -470,15 +452,15 @@
             setTimeout(() => { fog.remove(); }, (animDuration * 1000) + 500);
         }
 
-        // Cranked up the initial cloud count from 3 to 10
-        for (let i = 0; i < 10; i++) {
+        // Spawn a massive amount of dense clouds immediately
+        for (let i = 0; i < 18; i++) {
             createFogCloud(true);
         }
 
-        // Lowered the spawn interval from 3500ms to 1200ms to constantly pump out more clouds
+        // Keep pumping out giant clouds
         setInterval(() => {
             createFogCloud(false);
-        }, 1200); 
+        }, 1500); 
 
         function moveNoButton(e) {
             if (e && e.type === 'touchstart') {
@@ -513,6 +495,10 @@
             setTimeout(() => {
                 proposalStage.style.display = 'none';
                 document.body.className = 'vintage-love'; 
+                
+                // Clear the clouds so they don't block the next screen
+                document.querySelectorAll('.fog-particle').forEach(cloud => cloud.remove());
+                
                 successStage.style.display = 'block';
                 setTimeout(() => {
                     successStage.style.opacity = '1';
