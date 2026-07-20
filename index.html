@@ -27,7 +27,7 @@
         }
 
         /* ---------------------------------
-           SUBTLE & TRANSPARENT MIST CLOUDS
+           THICKER & MORE VISIBLE CLOUDS
            --------------------------------- */
         .fog-particle {
             position: absolute;
@@ -35,16 +35,17 @@
             pointer-events: none;
             z-index: 2;
             will-change: transform, opacity;
-            /* Visibility increased so the clouds are more noticeable */
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.15) 50%, transparent 80%);
-            filter: blur(40px);
+            /* Increased alpha values for a much thicker white */
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.4) 50%, transparent 80%);
+            /* Slightly reduced blur to give them more definition */
+            filter: blur(30px);
             animation: driftFog linear infinite;
         }
 
         @keyframes driftFog {
             0% { transform: translate(-40vw, 0vh) scale(0.8); opacity: 0; }
-            20% { opacity: 0.5; } 
-            80% { opacity: 0.5; }
+            20% { opacity: 0.85; } 
+            80% { opacity: 0.85; }
             100% { transform: translate(120vw, -10vh) scale(1.6); opacity: 0; }
         }
 
@@ -418,7 +419,7 @@
             setTimeout(() => { heart.remove(); }, 3800);
         }, 1200);
 
-        /* Subtle & Sparse Mist Generator */
+        /* Thicker & More Visible Mist Generator */
         function createFogCloud(isInitialLoad = false) {
             const fog = document.createElement('div');
             fog.classList.add('fog-particle');
@@ -442,14 +443,15 @@
             setTimeout(() => { fog.remove(); }, (animDuration * 1000) + 500);
         }
 
-        // Spawn only 5 wispy clouds so the castle remains visible
-        for (let i = 0; i < 5; i++) {
+        // Spawn 15 thicker clouds on load (increased from 5)
+        for (let i = 0; i < 15; i++) {
             createFogCloud(true);
         }
 
+        // Spawn a new cloud every 2.5 seconds (decreased from 7 seconds)
         setInterval(() => {
             createFogCloud(false); 
-        }, 7000); 
+        }, 2500); 
 
         function moveNoButton(e) {
             if (e && e.type === 'touchstart') {
