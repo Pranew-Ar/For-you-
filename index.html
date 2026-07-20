@@ -51,44 +51,43 @@
             100% { transform: translateY(-10vh) scale(1.1) translateX(30px) translateZ(0); opacity: 0; }
         }
 
-        /* -------------------------
-           NEW FOOLPROOF CLOUD ENGINE
-           ------------------------- */
+        /* ---------------------------------
+           HEAVY & THICK CLOUD ENGINE
+           --------------------------------- */
         .fog-particle {
             position: absolute;
             border-radius: 50%;
             pointer-events: none;
-            z-index: 2; /* Guaranteed to sit above background and under the card */
+            z-index: 2;
             will-change: transform, opacity;
-            /* Removed mix-blend-mode to prevent browser invisibility bugs */
         }
 
-        /* Stage 1: Gentle misty white clouds */
+        /* Highly Visible, Heavy White Clouds for Stage 1 (Castle) */
         .fog-particle.light {
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.45) 0%, rgba(220, 230, 240, 0.15) 50%, transparent 75%);
-            filter: blur(15px);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(220, 235, 250, 0.5) 45%, transparent 80%);
+            filter: blur(35px);
             animation: driftFogLight linear infinite;
         }
 
-        /* Stage 2: Heavy moody clouds */
+        /* Overcast Dark-Grey/White Clouds for Stage 2 (Lake) */
         .fog-particle.heavy {
-            background: radial-gradient(circle, rgba(240, 245, 255, 0.75) 0%, rgba(180, 200, 220, 0.4) 50%, transparent 80%);
-            filter: blur(25px);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, rgba(200, 215, 230, 0.65) 50%, transparent 85%);
+            filter: blur(45px);
             animation: driftFogHeavy linear infinite;
         }
 
         @keyframes driftFogLight {
-            0% { transform: translate(-30vw, 5vh) scale(0.8); opacity: 0; }
-            20% { opacity: 0.6; } 
-            80% { opacity: 0.6; }
-            100% { transform: translate(120vw, -15vh) scale(1.6); opacity: 0; }
+            0% { transform: translate(-40vw, 0vh) scale(0.9); opacity: 0; }
+            15% { opacity: 0.85; } 
+            85% { opacity: 0.85; }
+            100% { transform: translate(125vw, -10vh) scale(2.2); opacity: 0; }
         }
 
         @keyframes driftFogHeavy {
-            0% { transform: translate(-30vw, 5vh) scale(1.0); opacity: 0; }
-            20% { opacity: 0.95; }
-            80% { opacity: 0.90; }
-            100% { transform: translate(120vw, -15vh) scale(2.2); opacity: 0; }
+            0% { transform: translate(-40vw, 0vh) scale(1.1); opacity: 0; }
+            15% { opacity: 0.98; }
+            85% { opacity: 0.95; }
+            100% { transform: translate(125vw, -10vh) scale(2.8); opacity: 0; }
         }
 
         /* Container Cards */
@@ -439,18 +438,20 @@
             setTimeout(() => { heart.remove(); }, 3800);
         }, 1200);
 
+        // Huge Cloud Spawner
         function createFogCloud(isInitialLoad = false, type = 'light') {
             const fog = document.createElement('div');
             fog.classList.add('fog-particle', type);
             
-            const width = Math.random() * 320 + 260; 
+            // Much larger clouds (400px - 750px width)
+            const width = Math.random() * 350 + 400; 
             fog.style.width = width + 'px';
-            fog.style.height = (width * 0.5) + 'px'; 
+            fog.style.height = (width * 0.65) + 'px'; 
             
-            fog.style.left = "-30vw"; 
-            fog.style.top = (Math.random() * 65 + 5) + "vh"; 
+            fog.style.left = "-40vw"; 
+            fog.style.top = (Math.random() * 85 - 10) + "vh"; // Covers full vertical height
 
-            const animDuration = type === 'light' ? (Math.random() * 8 + 14) : (Math.random() * 6 + 10); 
+            const animDuration = type === 'light' ? (Math.random() * 8 + 12) : (Math.random() * 6 + 9); 
             fog.style.animationDuration = animDuration + "s"; 
             
             if (isInitialLoad) {
@@ -462,18 +463,19 @@
             setTimeout(() => { fog.remove(); }, (animDuration * 1000) + 500);
         }
 
-        // Spawn 7 misty clouds immediately for the Castle
-        for (let i = 0; i < 7; i++) {
+        // Spawn 18 thick clouds across the Castle background immediately
+        for (let i = 0; i < 18; i++) {
             createFogCloud(true, 'light');
         }
 
+        // Rapid stream interval so the cloud coverage never thins out
         setInterval(() => {
             if (currentStage === 1) {
                 createFogCloud(false, 'light'); 
             } else if (currentStage === 2) {
                 createFogCloud(false, 'heavy'); 
             }
-        }, 2200); 
+        }, 1200); 
 
         function moveNoButton(e) {
             if (e && e.type === 'touchstart') {
@@ -513,8 +515,8 @@
 
                 document.querySelectorAll('.fog-particle').forEach(c => c.remove());
 
-                // Spawn 12 thick clouds for the Lake
-                for (let i = 0; i < 12; i++) {
+                // Spawn 22 heavy storm clouds instantly for Stage 2
+                for (let i = 0; i < 22; i++) {
                     createFogCloud(true, 'heavy');
                 }
 
