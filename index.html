@@ -35,17 +35,16 @@
             pointer-events: none;
             z-index: 2;
             will-change: transform, opacity;
-            /* Extremely light so the castle shines through clearly */
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.08) 50%, transparent 80%);
-            filter: blur(40px);
-            animation: driftFog linear infinite;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.15) 50%, transparent 80%);
+            filter: blur(30px);
+            animation: driftFog linear forwards;
         }
 
         @keyframes driftFog {
-            0% { transform: translate(-40vw, 0vh) scale(0.8); opacity: 0; }
-            20% { opacity: 0.25; } 
-            80% { opacity: 0.25; }
-            100% { transform: translate(120vw, -10vh) scale(1.6); opacity: 0; }
+            0% { transform: translateX(0vw) scale(0.8); opacity: 0; }
+            20% { opacity: 0.4; } 
+            80% { opacity: 0.4; }
+            100% { transform: translateX(140vw) scale(1.6); opacity: 0; }
         }
 
         .heart-sticker {
@@ -67,7 +66,6 @@
             100% { transform: translateY(-10vh) scale(1.1) translateX(30px) translateZ(0); opacity: 0; }
         }
 
-        /* Container Cards */
         .container {
             text-align: center;
             position: relative;
@@ -173,7 +171,6 @@
             z-index: 20;
         }
 
-        /* Book Modal Display */
         .popup-modal {
             display: none;
             position: fixed;
@@ -183,13 +180,11 @@
             max-width: 750px;
             height: 55vh;
             max-height: 420px;
-            
             background-image: url('vintage-book.png') !important;
             background-repeat: no-repeat !important;
             background-position: center center !important;
             background-size: 100% 100% !important; 
             background-color: transparent !important; 
-            
             z-index: 100;
             opacity: 0;
             transition: opacity 0.3s ease, transform 0.3s ease;
@@ -209,7 +204,6 @@
             left: 52%; 
             width: 42%; 
             height: 80%;
-            
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -250,7 +244,6 @@
             font-family: 'Great Vibes', cursive;
         }
 
-        /* Message Screen */
         .message-screen {
             display: none;
             opacity: 0;
@@ -373,33 +366,6 @@
             noBtn.style.top = (rect.top - areaRect.top) + 'px';
         }
 
-        const timelineVideo1 = [
-            { time: 0.0, text: "Allow me to love you at your worst" },
-            { time: 2.5, text: "When the world caves in upon your shoulders" },
-            { time: 5.5, text: "And the universe steals the breath from your lungs" },
-            { time: 9.5, text: "When the nights grow heavier than your hope" },
-            { time: 12.8, text: "And even your own name feels unfamiliar" },
-            { time: 15.8, text: "Let me be the place you fall without fear" },
-            { time: 19.8, text: "I will stand between you and destruction" },
-            { time: 23.3, text: "Take the impact meant for your heart" },
-            { time: 26.0, text: "And spend pieces of my own" },
-            { time: 28.5, text: "If it means you can endure a moment longer" },
-            { time: 31.8, text: "If loving you requires sacrifice\nLet it be mine" },
-            { time: 37.5, text: "If surviving costs me everything\nLet it be willingly given" },
-            { time: 43.8, text: "For loving you especially at your weakest\nIs the only strength I will ever need" }
-        ];
-
-        const timelineVideo2 = [
-            { time: 0.0, text: "This is my promise to you" },
-            { time: 2.2, text: "I am not with you for the short term" },
-            { time: 5.2, text: "I'm not here to waste your time" },
-            { time: 7.8, text: "I'm here to build a life" },
-            { time: 9.8, text: "A future and a story with you" },
-            { time: 12.8, text: "I want to spend the rest of my life waking up next to you" },
-            { time: 16.8, text: "I'm in it for the long haul" },
-            { time: 19.2, text: "I'm not going anywhere without my best friend by my side I love you , I will always love you in every life in every world, I belong to you my soul my heart my breath it all belongs to you only you my love" }
-        ];
-
         const fullLetterText = `Allow me to love you at your worst\nWhen the world caves in upon your shoulders\nAnd the universe steals the breath from your lungs\n\nWhen the nights grow heavier than your hope\nAnd even your own name feels unfamiliar\nLet me be the place you fall without fear\n\nI will stand between you and destruction\nTake the impact meant for your heart\nAnd spend pieces of my own\nIf it means you can endure a moment longer\n\nIf loving you requires sacrifice, let it be mine.\nIf surviving costs me everything, let it be willingly given.\nFor loving you especially at your weakest, is the only strength I will ever need.\n\n***\n\nThis is my promise to you:\nI am not with you for the short term.\nI'm not here to waste your time.\nI'm here to build a life, a future, and a story with you.\nI want to spend the rest of my life waking up next to you.\nI'm in it for the long haul.\nI'm not going anywhere without my best friend by my side I love you , I will always love you in every life in every world, I belong to you my soul my heart my breath it all belongs to you only you my love.`;
 
         function triggerMusic() {
@@ -418,7 +384,6 @@
             setTimeout(() => { heart.remove(); }, 3800);
         }, 1200);
 
-        /* Subtle & Sparse Mist Generator */
         function createFogCloud(isInitialLoad = false) {
             const fog = document.createElement('div');
             fog.classList.add('fog-particle');
@@ -427,10 +392,10 @@
             fog.style.width = width + 'px';
             fog.style.height = (width * 0.55) + 'px'; 
             
-            fog.style.left = "-40vw"; 
-            fog.style.top = (Math.random() * 80 - 10) + "vh";
+            fog.style.left = "-20vw"; 
+            fog.style.top = (Math.random() * 70) + "vh";
 
-            const animDuration = Math.random() * 30 + 50; 
+            const animDuration = Math.random() * 30 + 30; 
             fog.style.animationDuration = animDuration + "s"; 
             
             if (isInitialLoad) {
@@ -439,10 +404,9 @@
             }
             
             document.body.appendChild(fog);
-            setTimeout(() => { fog.remove(); }, (animDuration * 1000) + 500);
+            setTimeout(() => { fog.remove(); }, animDuration * 1000);
         }
 
-        // Spawn only 5 wispy clouds so the castle remains 100% visible
         for (let i = 0; i < 5; i++) {
             createFogCloud(true);
         }
@@ -484,49 +448,11 @@
             setTimeout(() => {
                 proposalStage.style.display = 'none';
                 document.body.className = 'vintage-love'; 
-
                 successStage.style.display = 'block';
                 setTimeout(() => {
                     successStage.style.opacity = '1';
-                    if (video) {
-                        video.muted = false;
-                        video.play().catch(() => {
-                            textDisplay.textContent = fullLetterText;
-                        });
-                        video.addEventListener('timeupdate', handleTimelineTracking);
-                        video.addEventListener('ended', handleVideoEndEvent);
-                    }
                 }, 50);
             }, 300);
-        }
-
-        function handleTimelineTracking() {
-            const currentTime = video.currentTime;
-            let currentLine = "";
-            if (currentActiveVideo === 1) {
-                for (let i = 0; i < timelineVideo1.length; i++) {
-                    if (currentTime >= timelineVideo1[i].time) currentLine = timelineVideo1[i].text;
-                }
-            } else if (currentActiveVideo === 2) {
-                for (let i = 0; i < timelineVideo2.length; i++) {
-                    if (currentTime >= timelineVideo2[i].time) currentLine = timelineVideo2[i].text;
-                }
-            }
-            if (textDisplay.textContent !== currentLine && currentActiveVideo !== 0) {
-                textDisplay.textContent = currentLine;
-            }
-        }
-
-        function handleVideoEndEvent() {
-            if (currentActiveVideo === 1) {
-                currentActiveVideo = 2;
-                video.src = "video2.mp4"; 
-                video.load();
-                video.play().catch(() => {});
-            } else if (currentActiveVideo === 2) {
-                currentActiveVideo = 0; 
-                textDisplay.textContent = fullLetterText;
-            }
         }
     </script>
 </body>
