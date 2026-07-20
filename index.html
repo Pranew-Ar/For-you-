@@ -52,7 +52,7 @@
         }
 
         /* ---------------------------------
-           UNIFIED & SLOW-DRIFT CLOUD ENGINE
+           UNIFIED & ULTRA-SLOW CLOUD ENGINE
            --------------------------------- */
         .fog-particle {
             position: absolute;
@@ -419,7 +419,7 @@
             setTimeout(() => { heart.remove(); }, 3800);
         }, 1200);
 
-        /* Slow & Graceful Cloud Spawner */
+        /* Ultra-Slow Cloud Engine */
         function createFogCloud(isInitialLoad = false) {
             const fog = document.createElement('div');
             fog.classList.add('fog-particle');
@@ -431,8 +431,8 @@
             fog.style.left = "-40vw"; 
             fog.style.top = (Math.random() * 85 - 10) + "vh";
 
-            // SLOW SPEED: Duration increased to 25 - 40 seconds
-            const animDuration = Math.random() * 15 + 25; 
+            // ULTRA SLOW SPEED: Duration increased to 60 - 100 seconds
+            const animDuration = Math.random() * 40 + 60; 
             fog.style.animationDuration = animDuration + "s"; 
             
             if (isInitialLoad) {
@@ -444,15 +444,15 @@
             setTimeout(() => { fog.remove(); }, (animDuration * 1000) + 500);
         }
 
-        // Spawn 18 identical dense clouds immediately on load (Castle BG)
+        // Spawn 18 clouds pre-placed across the screen initially
         for (let i = 0; i < 18; i++) {
             createFogCloud(true);
         }
 
-        // Steady continuous spawner
+        // Smooth continuous spawning interval
         setInterval(() => {
             createFogCloud(false); 
-        }, 1800); 
+        }, 3500); 
 
         function moveNoButton(e) {
             if (e && e.type === 'touchstart') {
@@ -488,7 +488,7 @@
                 proposalStage.style.display = 'none';
                 document.body.className = 'vintage-love'; 
 
-                // Reset and spawn the exact same 18 dense slow clouds on Stage 2 (Lake BG)
+                // Reset and spawn the exact same 18 ultra-slow clouds on Stage 2 (Lake BG)
                 document.querySelectorAll('.fog-particle').forEach(c => c.remove());
                 for (let i = 0; i < 18; i++) {
                     createFogCloud(true);
