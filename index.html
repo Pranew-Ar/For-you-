@@ -340,7 +340,7 @@
 </head>
 <body>
 
-    <audio id="romanticSong" loop autoplay preload="auto">
+    <audio id="romanticSong" loop preload="metadata">
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
@@ -391,32 +391,6 @@
         let isFirstMove = true;
         let currentActiveVideo = 1;
 
-        function triggerMusic() {
-            if (!musicStarted && song) {
-                song.play().then(() => { 
-                    musicStarted = true; 
-                    // Remove global listeners once playing successfully
-                    document.removeEventListener('click', triggerMusic);
-                    document.removeEventListener('touchstart', triggerMusic);
-                    document.removeEventListener('keydown', triggerMusic);
-                }).catch(() => {});
-            }
-        }
-
-        // Try playing immediately on load (works if browser allows or on page reloads)
-        window.addEventListener('DOMContentLoaded', () => {
-            if (song) {
-                song.play().then(() => {
-                    musicStarted = true;
-                }).catch(() => {
-                    // Browser blocked unmuted autoplay — attach global touch/click listeners
-                    document.addEventListener('click', triggerMusic, { once: true });
-                    document.addEventListener('touchstart', triggerMusic, { once: true });
-                    document.addEventListener('keydown', triggerMusic, { once: true });
-                });
-            }
-        });
-
         function initNoButtonPosition() {
             const rect = noBtn.getBoundingClientRect();
             const areaRect = btnArea.getBoundingClientRect();
@@ -452,6 +426,12 @@
         ];
 
         const fullLetterText = `Allow me to love you at your worst\nWhen the world caves in upon your shoulders\nAnd the universe steals the breath from your lungs\n\nWhen the nights grow heavier than your hope\nAnd even your own name feels unfamiliar\nLet me be the place you fall without fear\n\nI will stand between you and destruction\nTake the impact meant for your heart\nAnd spend pieces of my own\nIf it means you can endure a moment longer\n\nIf loving you requires sacrifice, let it be mine.\nIf surviving costs me everything, let it be willingly given.\nFor loving you especially at your weakest, is the only strength I will ever need.\n\n***\n\nThis is my promise to you:\nI am not with you for the short term.\nI'm not here to waste your time.\nI'm here to build a life, a future, and a story with you.\nI want to spend the rest of my life waking up next to you.\nI'm in it for the long haul.\nI'm not going anywhere without my best friend by my side I love you , I will always love you in every life in every world, I belong to you my soul my heart my breath it all belongs to you only you my love.`;
+
+        function triggerMusic() {
+            if (!musicStarted && song) {
+                song.play().then(() => { musicStarted = true; }).catch(() => {});
+            }
+        }
 
         // Reduced heart spawn frequency to save CPU cycles
         setInterval(() => {
