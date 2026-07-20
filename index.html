@@ -27,7 +27,7 @@
         }
 
         /* ---------------------------------
-           THICKER & MORE VISIBLE CLOUDS
+           MOBILE-OPTIMIZED CLOUDS
            --------------------------------- */
         .fog-particle {
             position: absolute;
@@ -35,10 +35,8 @@
             pointer-events: none;
             z-index: 2;
             will-change: transform, opacity;
-            /* Increased alpha values for a much thicker white */
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.4) 50%, transparent 80%);
-            /* Slightly reduced blur to give them more definition */
-            filter: blur(30px);
+            /* Replaced CSS blur with a smoother, multi-stop gradient for better mobile performance */
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.4) 40%, rgba(255, 255, 255, 0.1) 65%, transparent 80%);
             animation: driftFog linear infinite;
         }
 
@@ -419,7 +417,7 @@
             setTimeout(() => { heart.remove(); }, 3800);
         }, 1200);
 
-        /* Thicker & More Visible Mist Generator */
+        /* Mobile Performance: Cloud Generation */
         function createFogCloud(isInitialLoad = false) {
             const fog = document.createElement('div');
             fog.classList.add('fog-particle');
@@ -443,15 +441,20 @@
             setTimeout(() => { fog.remove(); }, (animDuration * 1000) + 500);
         }
 
-        // Spawn 15 thicker clouds on load (increased from 5)
-        for (let i = 0; i < 15; i++) {
+        // Detect if the user is on mobile to adjust cloud density
+        const isMobile = window.innerWidth <= 768;
+        const initialCloudCount = isMobile ? 8 : 15; // Fewer clouds on small screens
+        const cloudIntervalSpeed = isMobile ? 3500 : 2500; // Slower spawn rate on mobile
+
+        // Spawn initial clouds
+        for (let i = 0; i < initialCloudCount; i++) {
             createFogCloud(true);
         }
 
-        // Spawn a new cloud every 2.5 seconds (decreased from 7 seconds)
+        // Spawn new clouds based on device speed needs
         setInterval(() => {
             createFogCloud(false); 
-        }, 2500); 
+        }, cloudIntervalSpeed); 
 
         function moveNoButton(e) {
             if (e && e.type === 'touchstart') {
