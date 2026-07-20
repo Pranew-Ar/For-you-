@@ -1,13 +1,14 @@
-The Love Story
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For You</title>
+    <!-- Imported Cursive Font for Feather Pen effect -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    
     <style>
-        /* Base Styling */
+        /* Base Setup - Main castle background remains fully intact */
         body, html {
             margin: 0;
             padding: 0;
@@ -17,176 +18,468 @@ The Love Story
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #ffe6e6;
-            transition: background 2s ease;
+            background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.25)), url('castle.jpg') no-repeat center center/cover;
             overflow: hidden;
+            position: relative;
         }
 
+        /* Floating Magic Sticker Effects */
+        .heart-sticker {
+            position: absolute;
+            color: #ff4757;
+            font-size: 24px;
+            pointer-events: none;
+            z-index: 2;
+            animation: floatUp 4s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            15% { opacity: 0.7; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-10vh) scale(1.2) translateX(50px); opacity: 0; }
+        }
+
+        /* Front Proposal Container */
         .container {
             text-align: center;
             position: relative;
             z-index: 10;
-            padding: 20px;
+            padding: 50px 30px;
+            
+            background-image: linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.15)), url('vintage-room.png') !important;
+            background-repeat: no-repeat !important;
+            background-position: center center !important;
+            background-size: cover !important;
+            background-color: transparent; 
+            
+            border: none; 
+            border-radius: 4px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            width: 85%;
+            max-width: 440px;
+            box-sizing: border-box;
+        }
+
+        .subtitle, h1, .interactive-area {
+            position: relative;
+            z-index: 15;
+        }
+
+        .container::before, .container::after {
+            content: '🌸';
+            position: absolute;
+            font-size: 1.2rem;
+            opacity: 0.7;
+            z-index: 12;
+        }
+        .container::before { top: 15px; left: 20px; }
+        .container::after { bottom: 15px; right: 20px; transform: rotate(45deg); }
+
+        .subtitle {
+            font-size: 0.85rem;
+            color: #ffffff; 
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 25px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
         }
 
         h1 {
-            font-size: 3rem;
-            color: #d63031;
-            margin-bottom: 40px;
-            transition: color 2s ease, opacity 0.5s ease;
+            font-size: 2.2rem;
+            color: #ffffff; 
+            margin-top: 0;
+            margin-bottom: 30px;
+            line-height: 1.4;
+            font-style: italic;
+            font-weight: normal;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.95);
         }
 
-        .btn-container {
+        .interactive-area {
             display: flex;
-            justify-content: center;
-            gap: 30px;
-            position: relative;
-            height: 60px;
+            justify-content: space-around;
+            align-items: flex-start;
+            margin-top: 20px;
+            width: 100%;
+            height: 120px;
+        }
+
+        .column-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 45%;
+            gap: 12px;
+        }
+
+        .deco-icon {
+            font-size: 2rem;
+            opacity: 0.95;
+            height: 35px;
         }
 
         button {
-            padding: 15px 35px;
-            font-size: 1.2rem;
+            padding: 10px 25px;
+            font-size: 1.15rem;
             font-weight: bold;
             border: none;
-            border-radius: 25px;
             cursor: pointer;
-            transition: transform 0.2s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            font-family: 'Georgia', serif;
+            letter-spacing: 1px;
+            background: transparent;
+            outline: none;
         }
 
         #yesBtn {
-            background-color: #2ecc71;
-            color: white;
+            color: #8ce68c; 
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
+            transition: transform 0.2s ease;
         }
-
         #yesBtn:hover {
-            transform: scale(1.1);
+            transform: scale(1.15);
+            text-shadow: 0 0 8px rgba(140, 230, 140, 0.8);
         }
 
         #noBtn {
-            background-color: #e74c3c;
-            color: white;
+            color: #ff6b6b; 
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
             position: absolute;
-            left: 55%; /* Initial positioning next to Yes */
-            transition: left 0.1s ease, top 0.1s ease;
+            transition: left 0.15s ease, top 0.15s ease;
+            z-index: 20;
         }
 
-        /* Success / Vintage Theme Styling */
+        /* Vintage Book Modal Layout Fixes */
+        .popup-modal {
+            display: none;
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.7);
+            width: 800px;
+            height: 450px;
+            
+            background-image: url('vintage-book.png') !important;
+            background-repeat: no-repeat !important;
+            background-position: center center !important;
+            
+            /* FIXED: Force the image to match the modal bounds exactly */
+            background-size: 100% 100% !important; 
+            background-color: transparent !important; 
+            box-shadow: none; 
+            
+            z-index: 100;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-sizing: border-box;
+            border-radius: 4px;
+        }
+
+        .popup-modal.active {
+            display: block;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .book-right-page {
+            position: absolute;
+            /* FIXED: Anchor to the spine (left) and lock the width to prevent right overflow */
+            top: 12%;
+            left: 53%; /* Starts slightly past the center fold */
+            width: 38%; /* Leaves roughly 9% gap on the right edge */
+            height: 76%;
+            
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-sizing: border-box;
+            padding: 0 15px; /* Added internal padding to keep text off the raw edges */
+            background: transparent !important;
+        }
+
+        .popup-modal h3 {
+            margin: 0 0 10px 0;
+            color: #2b1a0e; 
+            font-size: 1.8rem;
+            font-family: 'Great Vibes', cursive;
+            font-weight: normal;
+        }
+
+        .popup-modal p {
+            color: #3b281b; 
+            font-size: 1.1rem; 
+            line-height: 1.35;
+            margin: 0 0 20px 0;
+            font-family: 'Great Vibes', cursive;
+            word-wrap: break-word; /* Ensure long words break safely */
+        }
+
+        .popup-modal .popup-btn {
+            background: #2b1a0e; /* Set to solid dark matching the screenshot */
+            color: #fdfaf4;
+            border: 1px solid #2b1a0e;
+            padding: 6px 24px;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Great Vibes', cursive;
+        }
+        .popup-modal .popup-btn:hover { 
+            background: #4a2d18; 
+        }
+
+        /* Final Scroll Letter Display Screen */
         .message-screen {
             display: none;
             opacity: 0;
-            transition: opacity 2s ease;
-            max-width: 600px;
+            transition: opacity 1.5s ease;
+            max-width: 650px;
+            width: 90%;
             margin: 0 auto;
+            padding: 40px;
+            /* UPDATED: Replaced brown background with cloudy.png */
+            background: url('cloudy.png') no-repeat center center/cover; 
+            border-radius: 12px;
+            text-align: center;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            border: none;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-sizing: border-box;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
         }
 
         .message-screen h2 {
-            font-size: 2.5rem;
-            color: #dfb76c; /* Vintage Gold */
-            margin-bottom: 20px;
-            font-style: italic;
+            font-size: 3.5rem;
+            color: #ffffff;
+            font-family: 'Great Vibes', cursive;
+            font-weight: normal;
+            margin-top: 0;
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
         }
 
         .message-screen p {
-            font-size: 1.3rem;
-            color: #f5f6fa;
+            font-size: 1.15rem;
+            color: #f5f2eb;
             line-height: 1.8;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            white-space: pre-line;
+            display: block;
+            /* Optional: Adding a slight text shadow makes text more readable over images */
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
         }
 
-        /* Dark Vintage Background Class */
+        #loveVideo { display: none; }
+
         body.vintage-love {
-            background: radial-gradient(circle, #2c1a1d 0%, #0f080a 100%);
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('lake.jpg') no-repeat center center/cover;
+        }
+
+        /* Mobile Responsive Handling */
+        @media (max-width: 820px) {
+            .popup-modal {
+                width: 95%;
+                height: 240px;
+            }
+            .book-right-page {
+                top: 10%; 
+                left: 53%;
+                width: 40%; 
+                height: 80%;
+                overflow-y: auto;
+                padding: 0 10px;
+            }
+            .popup-modal h3 { font-size: 1.3rem; margin-bottom: 5px; }
+            .popup-modal p { font-size: 0.9rem; line-height: 1.2; margin-bottom: 8px; }
+            .popup-modal .popup-btn { padding: 5px 15px; font-size: 1rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Audio Element (Replace URL with your choice of romantic song) -->
-    <!-- Note: Many browsers require a user click (like clicking 'YES') to allow audio to autoplay -->
-    <audio id="romanticSong" loop>
-        <source src="https://www.youtube.com/watch?v=G7d3iJ60Ms0&list=RDG7d3iJ60Ms0&start_radio=1" type="audio/mpeg">
+    <audio id="romanticSong" loop preload="auto">
+        <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Main Proposal Screen -->
+    <video id="loveVideo" preload="auto">
+        <source src="video.mp4" type="video/mp4">
+    </video>
+
+    <!-- Phase 1: Container Box Grid -->
     <div class="container" id="proposalStage">
+        <div class="subtitle">BEGINNING OF OUR LOVE STORY</div>
         <h1 id="questionText">Will you be my Forever?</h1>
-        <div class="btn-container">
-            <button id="yesBtn" onclick="acceptProposal()">YES</button>
-            <button id="noBtn" onmouseover="moveNoButton()" onclick="moveNoButton()">NO</button>
+        
+        <div class="interactive-area" id="btnArea">
+            <div class="column-box">
+                <span class="deco-icon">🌹</span>
+                <button id="yesBtn">YES</button>
+            </div>
+            <div class="column-box" id="noColumn">
+                <span class="deco-icon">🌿</span>
+                <button id="noBtn" onmouseover="moveNoButton()" onclick="moveNoButton()">NO</button>
+            </div>
         </div>
     </div>
 
-    <!-- Romantic Success Screen -->
+    <!-- Phase 2: Open Vintage Book Graphic overlay modal layout -->
+    <div class="popup-modal" id="lovePopup">
+        <div class="book-right-page">
+            <h3>I Found You... ❤️</h3>
+            <p>I knew it the second I saw you. Even if we were born in different worlds, or separated by a thousand skies... my heart would still recognize yours. This letter is everything I've been wanting to say to you.</p>
+            <button class="popup-btn" onclick="acceptProposal()">Read it ✨</button>
+        </div>
+    </div>
+
+    <!-- Phase 3: Final Timeline Video Screen layout -->
     <div class="message-screen" id="successStage">
         <h2>Forever & Always</h2>
-        <p>
-            "If I could live life five times over…
-I'd be born beneath five different skies, breathe in the air of distant lands, and savor the flavors of the world as if each bite held a new beginning.
-I'd chase dreams with five different hearts, wear five different names, and follow five winding paths—each one shaped by its own adventures.
-
-But no matter how different those lives would be…
-In every lifetime, in every language, in every version of me
-I would find you.
-And I would fall in love with you all over again.
-Not by chance, not by fate
-But because my soul would recognize yours every single time.
-
-Five lives.
-Five stories.
-A thousand moments.
-And every one of them would end with me loving you."
-        </p>
+        <!-- UPDATED: Removed the book and candles emoji line here -->
+        <p id="typewriterText"></p>
     </div>
 
     <script>
         const noBtn = document.getElementById('noBtn');
+        const btnArea = document.getElementById('btnArea');
         const proposalStage = document.getElementById('proposalStage');
         const successStage = document.getElementById('successStage');
-        const body = document.body;
+        const lovePopup = document.getElementById('lovePopup');
         const song = document.getElementById('romanticSong');
+        const video = document.getElementById('loveVideo');
+        const textDisplay = document.getElementById('typewriterText');
 
-        // Function to run away when hovering or trying to click 'NO'
-        function moveNoButton() {
-            // Calculate random positions within the visible window boundaries
-            const padding = 100; 
-            const maxX = window.innerWidth - noBtn.offsetWidth - padding;
-            const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+        let musicStarted = false;
+        let isFirstMove = true;
+        let currentActiveVideo = 1;
 
-            // Generate random coordinates
-            const randomX = Math.floor(Math.random() * maxX);
-            const randomY = Math.floor(Math.random() * maxY);
-
-            // Apply new coordinates
-            noBtn.style.position = 'fixed';
-            noBtn.style.left = randomX + 'px';
-            noBtn.style.top = randomY + 'px';
+        function initNoButtonPosition() {
+            const rect = noBtn.getBoundingClientRect();
+            const areaRect = btnArea.getBoundingClientRect();
+            noBtn.style.left = (rect.left - areaRect.left) + 'px';
+            noBtn.style.top = (rect.top - areaRect.top) + 'px';
         }
 
-        // Function when 'YES' is clicked
-        function acceptProposal() {
-            // 1. Play the music
-            song.play().catch(error => {
-                console.log("Audio playback failed or needs user interaction permission:", error);
-            });
+        const timelineVideo1 = [
+            { time: 0.0, text: "Allow me to love you at your worst" },
+            { time: 2.5, text: "When the world caves in upon your shoulders" },
+            { time: 5.5, text: "And the universe steals the breath from your lungs" },
+            { time: 9.5, text: "When the nights grow heavier than your hope" },
+            { time: 12.8, text: "And even your own name feels unfamiliar" },
+            { time: 15.8, text: "Let me be the place you fall without fear" },
+            { time: 19.8, text: "I will stand between you and destruction" },
+            { time: 23.3, text: "Take the impact meant for your heart" },
+            { time: 26.0, text: "And spend pieces of my own" },
+            { time: 28.5, text: "If it means you can endure a moment longer" },
+            { time: 31.8, text: "If loving you requires sacrifice\nLet it be mine" },
+            { time: 37.5, text: "If surviving costs me everything\nLet it be willingly given" },
+            { time: 43.8, text: "For loving you especially at your weakest\nIs the only strength I will ever need" }
+        ];
 
-            // 2. Hide the proposal elements smoothly
-            proposalStage.style.transition = 'opacity 0.5s ease';
+        const timelineVideo2 = [
+            { time: 0.0, text: "This is my promise to you" },
+            { time: 2.2, text: "I am not with you for the short term" },
+            { time: 5.2, text: "I'm not here to waste your time" },
+            { time: 7.8, text: "I'm here to build a life" },
+            { time: 9.8, text: "A future and a story with you" },
+            { time: 12.8, text: "I want to spend the rest of my life waking up next to you" },
+            { time: 16.8, text: "I'm in it for the long haul" },
+            { time: 19.2, text: "I'm not going anywhere without my best friend by my side I love you , I will always love you in every life in every world, I belong to you my soul my heart my  breath it all belongs to you only you my love" }
+        ];
+
+        const fullLetterText = `Allow me to love you at your worst\nWhen the world caves in upon your shoulders\nAnd the universe steals the breath from your lungs\n\nWhen the nights grow heavier than your hope\nAnd even your own name feels unfamiliar\nLet me be the place you fall without fear\n\nI will stand between you and destruction\nTake the impact meant for your heart\nAnd spend pieces of my own\nIf it means you can endure a moment longer\n\nIf loving you requires sacrifice, let it be mine.\nIf surviving costs me everything, let it be willingly given.\nFor loving you especially at your weakest, is the only strength I will ever need.\n\n***\n\nThis is my promise to you:\nI am not with you for the short term.\nI'm not here to waste your time.\nI'm here to build a life, a future, and a story with you.\nI want to spend the rest of my life waking up next to you.\nI'm in it for the long haul.\nI'm not going anywhere without my best friend by my side I love you , I will always love you in every life in every world, I belong to you my soul my heart my breath it all belongs to you only you my love.`;
+
+        function triggerMusic() {
+            if (!musicStarted && song) {
+                song.play().then(() => { musicStarted = true; }).catch(e => {});
+            }
+        }
+
+        setInterval(() => {
+            const heart = document.createElement('div');
+            heart.classList.add('heart-sticker');
+            heart.innerHTML = ['❤️','💖','✨','🌸'][Math.floor(Math.random() * 4)];
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = (Math.random() * 2 + 3) + "s";
+            document.body.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 4000);
+        }, 650);
+
+        function moveNoButton() {
+            triggerMusic(); 
+            if (isFirstMove) {
+                initNoButtonPosition();
+                isFirstMove = false;
+            }
+            const areaWidth = btnArea.clientWidth;
+            const areaHeight = btnArea.clientHeight;
+            const maxX = areaWidth - noBtn.offsetWidth;
+            const maxY = areaHeight - noBtn.offsetHeight;
+
+            noBtn.style.left = (maxX > 0 ? Math.floor(Math.random() * maxX) : 10) + 'px';
+            noBtn.style.top = (maxY > 0 ? Math.floor(Math.random() * maxY) : 10) + 'px';
+        }
+
+        document.getElementById('yesBtn').addEventListener('click', () => {
+            triggerMusic();
+            if (lovePopup) lovePopup.classList.add('active');
+        });
+
+        function acceptProposal() {
+            if (song) { song.pause(); song.currentTime = 0; }
+            if (lovePopup) lovePopup.classList.remove('active');
+            
+            proposalStage.style.transition = 'opacity 0.4s ease';
             proposalStage.style.opacity = '0';
 
             setTimeout(() => {
                 proposalStage.style.display = 'none';
-                
-                // 3. Switch to Romantic Dark Vintage theme
-                body.classList.add('vintage-love');
-                
-                // 4. Reveal the beautiful message
+                document.body.className = 'vintage-love'; 
                 successStage.style.display = 'block';
                 setTimeout(() => {
                     successStage.style.opacity = '1';
+                    if (video) {
+                        video.play().catch(e => {});
+                        video.addEventListener('timeupdate', handleTimelineTracking);
+                        video.addEventListener('ended', handleVideoEndEvent);
+                    }
                 }, 50);
-            }, 500);
+            }, 400);
+        }
+
+        function handleTimelineTracking() {
+            const currentTime = video.currentTime;
+            let currentLine = "";
+            if (currentActiveVideo === 1) {
+                for (let i = 0; i < timelineVideo1.length; i++) {
+                    if (currentTime >= timelineVideo1[i].time) currentLine = timelineVideo1[i].text;
+                }
+            } else if (currentActiveVideo === 2) {
+                for (let i = 0; i < timelineVideo2.length; i++) {
+                    if (currentTime >= timelineVideo2[i].time) currentLine = timelineVideo2[i].text;
+                }
+            }
+            if (textDisplay.innerText !== currentLine && currentActiveVideo !== 0) {
+                textDisplay.innerText = currentLine;
+            }
+        }
+
+        function handleVideoEndEvent() {
+            if (currentActiveVideo === 1) {
+                currentActiveVideo = 2;
+                video.src = "video2.mp4"; 
+                video.load();
+                video.play().catch(e => {});
+            } else if (currentActiveVideo === 2) {
+                currentActiveVideo = 0; 
+                textDisplay.innerText = fullLetterText;
+            }
         }
     </script>
 </body>
