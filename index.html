@@ -52,7 +52,7 @@
         }
 
         /* ---------------------------------
-           SOFT & BALANCED PURE WHITE CLOUDS
+           GENTLE & TRANSLUCENT MIST
            --------------------------------- */
         .fog-particle {
             position: absolute;
@@ -60,16 +60,16 @@
             pointer-events: none;
             z-index: 2;
             will-change: transform, opacity;
-            /* Pure soft white cloud color */
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.35) 55%, transparent 80%);
-            filter: blur(30px);
+            /* Drastically reduced opacity so the background shows through clearly */
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.15) 50%, transparent 80%);
+            filter: blur(25px);
             animation: driftFog linear infinite;
         }
 
         @keyframes driftFog {
             0% { transform: translate(-40vw, 0vh) scale(0.9); opacity: 0; }
-            15% { opacity: 0.75; } 
-            85% { opacity: 0.75; }
+            15% { opacity: 0.45; } /* Max opacity is now much lower */
+            85% { opacity: 0.45; }
             100% { transform: translate(125vw, -10vh) scale(2.0); opacity: 0; }
         }
 
@@ -420,13 +420,13 @@
             setTimeout(() => { heart.remove(); }, 3800);
         }, 1200);
 
-        /* Balanced Pure White Cloud Engine */
+        /* Soft & Sparse Fog Engine */
         function createFogCloud(isInitialLoad = false) {
             const fog = document.createElement('div');
             fog.classList.add('fog-particle');
             
             // Moderate Cloud Dimensions
-            const width = Math.random() * 300 + 350; 
+            const width = Math.random() * 300 + 300; 
             fog.style.width = width + 'px';
             fog.style.height = (width * 0.6) + 'px'; 
             
@@ -446,15 +446,15 @@
             setTimeout(() => { fog.remove(); }, (animDuration * 1000) + 500);
         }
 
-        // Spawn 14 moderate clouds for an elegant, less dense overlay
-        for (let i = 0; i < 14; i++) {
+        // Spawn only 8 delicate clouds so the castle image is completely visible
+        for (let i = 0; i < 8; i++) {
             createFogCloud(true);
         }
 
-        // Steady gentle interval
+        // Slowed down the spawning interval to prevent thick build-up
         setInterval(() => {
             createFogCloud(false); 
-        }, 4000); 
+        }, 6000); 
 
         function moveNoButton(e) {
             if (e && e.type === 'touchstart') {
@@ -490,9 +490,9 @@
                 proposalStage.style.display = 'none';
                 document.body.className = 'vintage-love'; 
 
-                // Reset and maintain matching 14 cloud density for Stage 2 (Lake BG)
+                // Reset and maintain matching 8 cloud density for Stage 2 (Lake BG)
                 document.querySelectorAll('.fog-particle').forEach(c => c.remove());
-                for (let i = 0; i < 14; i++) {
+                for (let i = 0; i < 8; i++) {
                     createFogCloud(true);
                 }
 
