@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For You</title>
-    <!-- Imported Cursive Font for Feather Pen effect -->
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     
     <style>
-        /* Base Setup - Main castle background remains fully intact */
         body, html {
             margin: 0;
             padding: 0;
@@ -18,48 +16,81 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.25)), url('castle.jpg') no-repeat center center/cover;
+            background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.25)), url('castle.png') no-repeat center center/cover;
             overflow: hidden;
             position: relative;
+            touch-action: manipulation;
         }
 
-        /* Floating Magic Sticker Effects */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 25vh;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0) 100%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
         .heart-sticker {
             position: absolute;
             color: #ff4757;
-            font-size: 24px;
+            font-size: 22px;
             pointer-events: none;
-            z-index: 2;
+            z-index: 5;
             animation: floatUp 4s linear infinite;
             opacity: 0;
+            will-change: transform, opacity;
+            transform: translateZ(0);
         }
 
         @keyframes floatUp {
-            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
-            15% { opacity: 0.7; }
-            90% { opacity: 0.4; }
-            100% { transform: translateY(-10vh) scale(1.2) translateX(50px); opacity: 0; }
+            0% { transform: translateY(100vh) scale(0.6) translateZ(0); opacity: 0; }
+            15% { opacity: 0.8; }
+            80% { opacity: 0.5; }
+            100% { transform: translateY(-10vh) scale(1.1) translateX(30px) translateZ(0); opacity: 0; }
         }
 
-        /* Front Proposal Container */
+        /* ---------------------------------
+           SOFT & BALANCED PURE WHITE CLOUDS
+           --------------------------------- */
+        .fog-particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 2;
+            will-change: transform, opacity;
+            /* Pure soft white cloud color */
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.35) 55%, transparent 80%);
+            filter: blur(30px);
+            animation: driftFog linear infinite;
+        }
+
+        @keyframes driftFog {
+            0% { transform: translate(-40vw, 0vh) scale(0.9); opacity: 0; }
+            15% { opacity: 0.75; } 
+            85% { opacity: 0.75; }
+            100% { transform: translate(125vw, -10vh) scale(2.0); opacity: 0; }
+        }
+
+        /* Container Cards */
         .container {
             text-align: center;
             position: relative;
             z-index: 10;
-            padding: 50px 30px;
-            
-            background-image: linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.15)), url('vintage-room.png') !important;
+            padding: 35px 20px;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.3)), url('vintage-room.png') !important;
             background-repeat: no-repeat !important;
             background-position: center center !important;
             background-size: cover !important;
-            background-color: transparent; 
-            
+            background-color: rgba(20, 15, 10, 0.85); 
             border: none; 
-            border-radius: 4px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-            width: 85%;
-            max-width: 440px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            width: 88%;
+            max-width: 420px;
             box-sizing: border-box;
+            will-change: opacity;
         }
 
         .subtitle, h1, .interactive-area {
@@ -67,32 +98,22 @@
             z-index: 15;
         }
 
-        .container::before, .container::after {
-            content: '🌸';
-            position: absolute;
-            font-size: 1.2rem;
-            opacity: 0.7;
-            z-index: 12;
-        }
-        .container::before { top: 15px; left: 20px; }
-        .container::after { bottom: 15px; right: 20px; transform: rotate(45deg); }
-
         .subtitle {
             font-size: 0.85rem;
             color: #ffffff; 
             text-transform: uppercase;
-            letter-spacing: 4px;
-            margin-bottom: 25px;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
             font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
         }
 
         h1 {
-            font-size: 2.2rem;
+            font-size: 1.9rem;
             color: #ffffff; 
             margin-top: 0;
-            margin-bottom: 30px;
-            line-height: 1.4;
+            margin-bottom: 25px;
+            line-height: 1.35;
             font-style: italic;
             font-weight: normal;
             text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.95);
@@ -102,9 +123,10 @@
             display: flex;
             justify-content: space-around;
             align-items: flex-start;
-            margin-top: 20px;
+            margin-top: 15px;
             width: 100%;
-            height: 120px;
+            height: 110px;
+            position: relative;
         }
 
         .column-box {
@@ -112,68 +134,73 @@
             flex-direction: column;
             align-items: center;
             width: 45%;
-            gap: 12px;
+            gap: 10px;
         }
 
         .deco-icon {
-            font-size: 2rem;
+            font-size: 1.8rem;
             opacity: 0.95;
-            height: 35px;
+            height: 30px;
         }
 
         button {
-            padding: 10px 25px;
-            font-size: 1.15rem;
+            padding: 10px 26px;
+            font-size: 1.1rem;
             font-weight: bold;
-            border: none;
             cursor: pointer;
             font-family: 'Georgia', serif;
-            letter-spacing: 1px;
-            background: transparent;
+            letter-spacing: 2px;
             outline: none;
+            background: rgba(0, 0, 0, 0.75);
+            border-radius: 25px; 
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6); 
+            transition: transform 0.15s ease, background 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+            will-change: transform, left, top;
         }
 
         #yesBtn {
-            color: #8ce68c; 
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
-            transition: transform 0.2s ease;
-        }
-        #yesBtn:hover {
-            transform: scale(1.15);
+            color: #a8ffa8; 
+            border: 2px solid rgba(140, 230, 140, 0.7);
             text-shadow: 0 0 8px rgba(140, 230, 140, 0.8);
+        }
+        
+        #yesBtn:active {
+            transform: scale(1.08);
+            background: rgba(140, 230, 140, 0.25);
         }
 
         #noBtn {
-            color: #ff6b6b; 
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
+            color: #ff8c8c; 
+            border: 2px solid rgba(255, 107, 107, 0.7);
+            text-shadow: 0 0 8px rgba(255, 107, 107, 0.8);
             position: absolute;
-            transition: left 0.15s ease, top 0.15s ease;
+            transition: left 0.1s linear, top 0.1s linear;
             z-index: 20;
         }
 
-        /* Vintage Book Modal Layout Fixes */
+        /* Book Modal Display */
         .popup-modal {
             display: none;
             position: fixed;
             top: 50%; left: 50%;
-            transform: translate(-50%, -50%) scale(0.7);
-            width: 800px;
-            height: 450px;
+            transform: translate(-50%, -50%) scale(0.8);
+            width: 90vw;
+            max-width: 750px;
+            height: 55vh;
+            max-height: 420px;
             
             background-image: url('vintage-book.png') !important;
             background-repeat: no-repeat !important;
             background-position: center center !important;
-            
-            /* FIXED: Force the image to match the modal bounds exactly */
             background-size: 100% 100% !important; 
             background-color: transparent !important; 
-            box-shadow: none; 
             
             z-index: 100;
             opacity: 0;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: opacity 0.3s ease, transform 0.3s ease;
             box-sizing: border-box;
-            border-radius: 4px;
+            will-change: transform, opacity;
         }
 
         .popup-modal.active {
@@ -184,11 +211,10 @@
 
         .book-right-page {
             position: absolute;
-            /* FIXED: Anchor to the spine (left) and lock the width to prevent right overflow */
-            top: 12%;
-            left: 53%; /* Starts slightly past the center fold */
-            width: 38%; /* Leaves roughly 9% gap on the right edge */
-            height: 76%;
+            top: 10%;
+            left: 52%; 
+            width: 42%; 
+            height: 80%;
             
             display: flex;
             flex-direction: column;
@@ -196,125 +222,111 @@
             align-items: center;
             text-align: center;
             box-sizing: border-box;
-            padding: 0 15px; /* Added internal padding to keep text off the raw edges */
+            padding: 0 8px; 
             background: transparent !important;
+            overflow-y: auto;
         }
 
         .popup-modal h3 {
-            margin: 0 0 10px 0;
+            margin: 0 0 6px 0;
             color: #2b1a0e; 
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             font-family: 'Great Vibes', cursive;
             font-weight: normal;
         }
 
         .popup-modal p {
             color: #3b281b; 
-            font-size: 1.1rem; 
-            line-height: 1.35;
-            margin: 0 0 20px 0;
+            font-size: 0.9rem; 
+            line-height: 1.25;
+            margin: 0 0 12px 0;
             font-family: 'Great Vibes', cursive;
-            word-wrap: break-word; /* Ensure long words break safely */
+            word-wrap: break-word; 
         }
 
         .popup-modal .popup-btn {
-            background: #2b1a0e; /* Set to solid dark matching the screenshot */
+            background: #2b1a0e; 
             color: #fdfaf4;
             border: 1px solid #2b1a0e;
-            padding: 6px 24px;
+            padding: 5px 18px;
             border-radius: 3px;
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1rem;
             cursor: pointer;
-            transition: all 0.2s;
             font-family: 'Great Vibes', cursive;
         }
-        .popup-modal .popup-btn:hover { 
-            background: #4a2d18; 
-        }
 
-        /* Final Scroll Letter Display Screen */
+        /* Message Screen */
         .message-screen {
             display: none;
             opacity: 0;
-            transition: opacity 1.5s ease;
-            max-width: 650px;
-            width: 90%;
+            transition: opacity 0.8s ease;
+            max-width: 600px;
+            width: 88%;
             margin: 0 auto;
-            padding: 40px;
-            /* UPDATED: Replaced brown background with cloudy.png */
-            background: url('cloudy.png') no-repeat center center/cover; 
-            border-radius: 12px;
+            padding: 25px 20px;
+            background: rgba(15, 20, 25, 0.88) url('cloudy.png') no-repeat center center/cover; 
+            border-radius: 10px;
             text-align: center;
             z-index: 10;
-            backdrop-filter: blur(10px);
             border: none;
-            max-height: 85vh;
+            max-height: 82vh;
             overflow-y: auto;
             box-sizing: border-box;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+            will-change: opacity;
         }
 
         .message-screen h2 {
-            font-size: 3.5rem;
+            font-size: 2.5rem;
             color: #ffffff;
             font-family: 'Great Vibes', cursive;
             font-weight: normal;
             margin-top: 0;
-            margin-bottom: 25px;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
         }
 
         .message-screen p {
-            font-size: 1.15rem;
+            font-size: 1rem;
             color: #f5f2eb;
-            line-height: 1.8;
+            line-height: 1.6;
             letter-spacing: 0.5px;
-            white-space: pre-line;
+            white-space: pre-wrap;
             display: block;
-            /* Optional: Adding a slight text shadow makes text more readable over images */
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+            border: none;
+            outline: none;
+            user-select: none;
         }
 
         #loveVideo { display: none; }
 
         body.vintage-love {
-            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('lake.jpg') no-repeat center center/cover;
+            background: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.5)), url('lake.jpg') no-repeat center center/cover;
         }
 
-        /* Mobile Responsive Handling */
-        @media (max-width: 820px) {
-            .popup-modal {
-                width: 95%;
-                height: 240px;
-            }
-            .book-right-page {
-                top: 10%; 
-                left: 53%;
-                width: 40%; 
-                height: 80%;
-                overflow-y: auto;
-                padding: 0 10px;
-            }
-            .popup-modal h3 { font-size: 1.3rem; margin-bottom: 5px; }
-            .popup-modal p { font-size: 0.9rem; line-height: 1.2; margin-bottom: 8px; }
-            .popup-modal .popup-btn { padding: 5px 15px; font-size: 1rem; }
+        @media (max-width: 600px) {
+            h1 { font-size: 1.5rem; }
+            .popup-modal { width: 94vw; height: 48vh; }
+            .popup-modal h3 { font-size: 1.15rem; }
+            .popup-modal p { font-size: 0.82rem; }
+            .message-screen h2 { font-size: 2rem; }
         }
     </style>
 </head>
 <body>
 
-    <audio id="romanticSong" loop preload="auto">
+    <audio id="romanticSong" loop preload="metadata">
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <video id="loveVideo" preload="auto">
+    <video id="loveVideo" preload="metadata" playsinline webkit-playsinline muted>
         <source src="video.mp4" type="video/mp4">
     </video>
 
-    <!-- Phase 1: Container Box Grid -->
     <div class="container" id="proposalStage">
-        <div class="subtitle">BEGINNING OF OUR LOVE STORY</div>
+        <div class="subtitle">I Love You...!</div>
         <h1 id="questionText">Will you be my Forever?</h1>
         
         <div class="interactive-area" id="btnArea">
@@ -324,12 +336,11 @@
             </div>
             <div class="column-box" id="noColumn">
                 <span class="deco-icon">🌿</span>
-                <button id="noBtn" onmouseover="moveNoButton()" onclick="moveNoButton()">NO</button>
+                <button id="noBtn" onmouseover="moveNoButton(event)" ontouchstart="moveNoButton(event)">NO</button>
             </div>
         </div>
     </div>
 
-    <!-- Phase 2: Open Vintage Book Graphic overlay modal layout -->
     <div class="popup-modal" id="lovePopup">
         <div class="book-right-page">
             <h3>I Found You... ❤️</h3>
@@ -338,10 +349,8 @@
         </div>
     </div>
 
-    <!-- Phase 3: Final Timeline Video Screen layout -->
     <div class="message-screen" id="successStage">
         <h2>Forever & Always</h2>
-        <!-- UPDATED: Removed the book and candles emoji line here -->
         <p id="typewriterText"></p>
     </div>
 
@@ -390,14 +399,14 @@
             { time: 9.8, text: "A future and a story with you" },
             { time: 12.8, text: "I want to spend the rest of my life waking up next to you" },
             { time: 16.8, text: "I'm in it for the long haul" },
-            { time: 19.2, text: "I'm not going anywhere without my best friend by my side I love you , I will always love you in every life in every world, I belong to you my soul my heart my  breath it all belongs to you only you my love" }
+            { time: 19.2, text: "I'm not going anywhere without my best friend by my side I love you , I will always love you in every life in every world, I belong to you my soul my heart my breath it all belongs to you only you my love" }
         ];
 
         const fullLetterText = `Allow me to love you at your worst\nWhen the world caves in upon your shoulders\nAnd the universe steals the breath from your lungs\n\nWhen the nights grow heavier than your hope\nAnd even your own name feels unfamiliar\nLet me be the place you fall without fear\n\nI will stand between you and destruction\nTake the impact meant for your heart\nAnd spend pieces of my own\nIf it means you can endure a moment longer\n\nIf loving you requires sacrifice, let it be mine.\nIf surviving costs me everything, let it be willingly given.\nFor loving you especially at your weakest, is the only strength I will ever need.\n\n***\n\nThis is my promise to you:\nI am not with you for the short term.\nI'm not here to waste your time.\nI'm here to build a life, a future, and a story with you.\nI want to spend the rest of my life waking up next to you.\nI'm in it for the long haul.\nI'm not going anywhere without my best friend by my side I love you , I will always love you in every life in every world, I belong to you my soul my heart my breath it all belongs to you only you my love.`;
 
         function triggerMusic() {
             if (!musicStarted && song) {
-                song.play().then(() => { musicStarted = true; }).catch(e => {});
+                song.play().then(() => { musicStarted = true; }).catch(() => {});
             }
         }
 
@@ -405,13 +414,52 @@
             const heart = document.createElement('div');
             heart.classList.add('heart-sticker');
             heart.innerHTML = ['❤️','💖','✨','🌸'][Math.floor(Math.random() * 4)];
-            heart.style.left = Math.random() * 100 + "vw";
-            heart.style.animationDuration = (Math.random() * 2 + 3) + "s";
+            heart.style.left = Math.random() * 95 + "vw";
+            heart.style.animationDuration = (Math.random() * 2 + 3.5) + "s";
             document.body.appendChild(heart);
-            setTimeout(() => { heart.remove(); }, 4000);
-        }, 650);
+            setTimeout(() => { heart.remove(); }, 3800);
+        }, 1200);
 
-        function moveNoButton() {
+        /* Balanced Pure White Cloud Engine */
+        function createFogCloud(isInitialLoad = false) {
+            const fog = document.createElement('div');
+            fog.classList.add('fog-particle');
+            
+            // Moderate Cloud Dimensions
+            const width = Math.random() * 300 + 350; 
+            fog.style.width = width + 'px';
+            fog.style.height = (width * 0.6) + 'px'; 
+            
+            fog.style.left = "-40vw"; 
+            fog.style.top = (Math.random() * 85 - 10) + "vh";
+
+            // Ultra-slow speed maintained (60s - 100s)
+            const animDuration = Math.random() * 40 + 60; 
+            fog.style.animationDuration = animDuration + "s"; 
+            
+            if (isInitialLoad) {
+                const randomDelay = Math.random() * animDuration; 
+                fog.style.animationDelay = "-" + randomDelay + "s";
+            }
+            
+            document.body.appendChild(fog);
+            setTimeout(() => { fog.remove(); }, (animDuration * 1000) + 500);
+        }
+
+        // Spawn 14 moderate clouds for an elegant, less dense overlay
+        for (let i = 0; i < 14; i++) {
+            createFogCloud(true);
+        }
+
+        // Steady gentle interval
+        setInterval(() => {
+            createFogCloud(false); 
+        }, 4000); 
+
+        function moveNoButton(e) {
+            if (e && e.type === 'touchstart') {
+                e.preventDefault(); 
+            }
             triggerMusic(); 
             if (isFirstMove) {
                 initNoButtonPosition();
@@ -422,8 +470,8 @@
             const maxX = areaWidth - noBtn.offsetWidth;
             const maxY = areaHeight - noBtn.offsetHeight;
 
-            noBtn.style.left = (maxX > 0 ? Math.floor(Math.random() * maxX) : 10) + 'px';
-            noBtn.style.top = (maxY > 0 ? Math.floor(Math.random() * maxY) : 10) + 'px';
+            noBtn.style.left = (maxX > 0 ? Math.floor(Math.random() * maxX) : 5) + 'px';
+            noBtn.style.top = (maxY > 0 ? Math.floor(Math.random() * maxY) : 5) + 'px';
         }
 
         document.getElementById('yesBtn').addEventListener('click', () => {
@@ -435,22 +483,32 @@
             if (song) { song.pause(); song.currentTime = 0; }
             if (lovePopup) lovePopup.classList.remove('active');
             
-            proposalStage.style.transition = 'opacity 0.4s ease';
+            proposalStage.style.transition = 'opacity 0.3s ease';
             proposalStage.style.opacity = '0';
 
             setTimeout(() => {
                 proposalStage.style.display = 'none';
                 document.body.className = 'vintage-love'; 
+
+                // Reset and maintain matching 14 cloud density for Stage 2 (Lake BG)
+                document.querySelectorAll('.fog-particle').forEach(c => c.remove());
+                for (let i = 0; i < 14; i++) {
+                    createFogCloud(true);
+                }
+
                 successStage.style.display = 'block';
                 setTimeout(() => {
                     successStage.style.opacity = '1';
                     if (video) {
-                        video.play().catch(e => {});
+                        video.muted = false;
+                        video.play().catch(() => {
+                            textDisplay.textContent = fullLetterText;
+                        });
                         video.addEventListener('timeupdate', handleTimelineTracking);
                         video.addEventListener('ended', handleVideoEndEvent);
                     }
                 }, 50);
-            }, 400);
+            }, 300);
         }
 
         function handleTimelineTracking() {
@@ -465,8 +523,8 @@
                     if (currentTime >= timelineVideo2[i].time) currentLine = timelineVideo2[i].text;
                 }
             }
-            if (textDisplay.innerText !== currentLine && currentActiveVideo !== 0) {
-                textDisplay.innerText = currentLine;
+            if (textDisplay.textContent !== currentLine && currentActiveVideo !== 0) {
+                textDisplay.textContent = currentLine;
             }
         }
 
@@ -475,10 +533,10 @@
                 currentActiveVideo = 2;
                 video.src = "video2.mp4"; 
                 video.load();
-                video.play().catch(e => {});
+                video.play().catch(() => {});
             } else if (currentActiveVideo === 2) {
                 currentActiveVideo = 0; 
-                textDisplay.innerText = fullLetterText;
+                textDisplay.textContent = fullLetterText;
             }
         }
     </script>
