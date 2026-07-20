@@ -315,9 +315,12 @@
             color: #f5f2eb;
             line-height: 1.6;
             letter-spacing: 0.5px;
-            white-space: pre-line;
+            white-space: pre-wrap;
             display: block;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+            border: none;
+            outline: none;
+            user-select: none;
         }
 
         #loveVideo { display: none; }
@@ -464,7 +467,6 @@
             setTimeout(() => { fog.remove(); }, (animDuration * 1000) + 500);
         }
 
-        // Spawn only 3 fog particles to save rendering memory
         for (let i = 0; i < 3; i++) {
             createFogCloud(true);
         }
@@ -512,7 +514,7 @@
                     if (video) {
                         video.muted = false;
                         video.play().catch(() => {
-                            textDisplay.innerText = fullLetterText;
+                            textDisplay.textContent = fullLetterText;
                         });
                         video.addEventListener('timeupdate', handleTimelineTracking);
                         video.addEventListener('ended', handleVideoEndEvent);
@@ -533,8 +535,8 @@
                     if (currentTime >= timelineVideo2[i].time) currentLine = timelineVideo2[i].text;
                 }
             }
-            if (textDisplay.innerText !== currentLine && currentActiveVideo !== 0) {
-                textDisplay.innerText = currentLine;
+            if (textDisplay.textContent !== currentLine && currentActiveVideo !== 0) {
+                textDisplay.textContent = currentLine;
             }
         }
 
@@ -546,7 +548,7 @@
                 video.play().catch(() => {});
             } else if (currentActiveVideo === 2) {
                 currentActiveVideo = 0; 
-                textDisplay.innerText = fullLetterText;
+                textDisplay.textContent = fullLetterText;
             }
         }
     </script>
