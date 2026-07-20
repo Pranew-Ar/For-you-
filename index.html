@@ -44,10 +44,10 @@
             100% { transform: translateY(-10vh) scale(1.1) translateX(30px) translateZ(0); opacity: 0; }
         }
 
-        /* Lightweight Fog/Cloud Structure without costly CSS filters */
+        /* Cloud Structure - Enhanced for more fog */
         .fog-particle {
             position: absolute;
-            background: rgba(255, 255, 255, 0.22);
+            background: rgba(255, 255, 255, 0.35); /* Increased base opacity */
             border-radius: 100px;
             pointer-events: none;
             z-index: 1; 
@@ -55,6 +55,7 @@
             opacity: 0;
             will-change: transform, opacity;
             transform: translateZ(0);
+            box-shadow: 0 0 30px 20px rgba(255, 255, 255, 0.2); /* Added soft edges */
         }
 
         .fog-particle::before, .fog-particle::after {
@@ -62,6 +63,7 @@
             position: absolute;
             background: inherit;
             border-radius: 50%;
+            box-shadow: inherit;
         }
 
         .fog-particle::before {
@@ -80,9 +82,9 @@
 
         @keyframes driftFog {
             0% { transform: translate(-20vw, 5vh) scale(1) translateZ(0); opacity: 0; }
-            25% { opacity: 0.45; }
-            75% { opacity: 0.35; }
-            100% { transform: translate(120vw, -10vh) scale(1.8) translateZ(0); opacity: 0; }
+            25% { opacity: 0.65; } /* Increased peak opacity */
+            75% { opacity: 0.55; }
+            100% { transform: translate(120vw, -10vh) scale(2.2) translateZ(0); opacity: 0; } /* Bigger scaling */
         }
 
         /* Container Cards */
@@ -433,7 +435,7 @@
             }
         }
 
-        // Reduced heart spawn frequency to save CPU cycles
+        // Reduced heart spawn frequency
         setInterval(() => {
             const heart = document.createElement('div');
             heart.classList.add('heart-sticker');
@@ -444,18 +446,19 @@
             setTimeout(() => { heart.remove(); }, 3800);
         }, 1200);
 
-        // Lightweight Fog System
+        // Enhanced Fog System for significantly more clouds
         function createFogCloud(isInitialLoad = false) {
             const fog = document.createElement('div');
             fog.classList.add('fog-particle');
             
-            const width = Math.random() * 120 + 120; 
+            // Increased the base size of the clouds
+            const width = Math.random() * 220 + 200; 
             fog.style.width = width + 'px';
             fog.style.height = (width * 0.35) + 'px'; 
-            fog.style.left = "-20vw"; 
-            fog.style.top = (Math.random() * 80 + 10) + "vh"; 
+            fog.style.left = "-25vw"; 
+            fog.style.top = (Math.random() * 85 + 5) + "vh"; 
             
-            const animDuration = Math.random() * 12 + 14; 
+            const animDuration = Math.random() * 12 + 10; 
             fog.style.animationDuration = animDuration + "s"; 
             
             if (isInitialLoad) {
@@ -467,13 +470,15 @@
             setTimeout(() => { fog.remove(); }, (animDuration * 1000) + 500);
         }
 
-        for (let i = 0; i < 3; i++) {
+        // Cranked up the initial cloud count from 3 to 10
+        for (let i = 0; i < 10; i++) {
             createFogCloud(true);
         }
 
+        // Lowered the spawn interval from 3500ms to 1200ms to constantly pump out more clouds
         setInterval(() => {
             createFogCloud(false);
-        }, 3500); 
+        }, 1200); 
 
         function moveNoButton(e) {
             if (e && e.type === 'touchstart') {
