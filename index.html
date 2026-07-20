@@ -44,29 +44,39 @@
             100% { transform: translateY(-10vh) scale(1.1) translateX(30px) translateZ(0); opacity: 0; }
         }
 
-        /* Shooting Stars Effect (GPU Accelerated) */
+        /* Delicate & Realistic Shooting Stars Effect */
         .shooting-star {
             position: absolute;
-            height: 2px;
-            background: linear-gradient(-45deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
-            border-radius: 999px;
-            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.8));
-            animation: tail 1.8s ease-in-out infinite, shooting 1.8s ease-in-out infinite;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.2), transparent);
+            border-radius: 50%;
+            filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.9));
+            animation: shoot 1.2s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
             pointer-events: none;
             z-index: 2;
-            will-change: transform, opacity;
-            transform: translateZ(0);
+            will-change: transform, opacity, width;
+            transform-origin: left center;
         }
 
-        @keyframes tail {
-            0% { width: 0; }
-            30% { width: 100px; }
-            100% { width: 0; }
-        }
-
-        @keyframes shooting {
-            0% { transform: translateX(0) translateY(0) rotate(-35deg) translateZ(0); opacity: 1; }
-            100% { transform: translateX(320px) translateY(220px) rotate(-35deg) translateZ(0); opacity: 0; }
+        @keyframes shoot {
+            0% {
+                width: 0px;
+                opacity: 0;
+                transform: rotate(-30deg) translateX(0) translateZ(0);
+            }
+            20% {
+                width: 110px;
+                opacity: 1;
+            }
+            80% {
+                width: 60px;
+                opacity: 0.8;
+            }
+            100% {
+                width: 0px;
+                opacity: 0;
+                transform: rotate(-30deg) translateX(450px) translateZ(0);
+            }
         }
 
         /* Lightweight Fog/Cloud Structure without costly CSS filters */
@@ -304,7 +314,7 @@
             font-family: 'Great Vibes', cursive;
         }
 
-        /* Message Screen */
+        /* Message Screen with Fixed Cloudy Background */
         .message-screen {
             display: none;
             opacity: 0;
@@ -313,7 +323,11 @@
             width: 88%;
             margin: 0 auto;
             padding: 25px 20px;
-            background: rgba(15, 20, 25, 0.88) url('cloudy.png') no-repeat center center/cover; 
+            background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('cloudy.png') !important;
+            background-repeat: no-repeat !important;
+            background-position: center center !important;
+            background-size: cover !important;
+            background-color: rgba(15, 20, 25, 0.88); 
             border-radius: 10px;
             text-align: center;
             z-index: 10;
@@ -475,21 +489,21 @@
 
         const fullLetterText = `Allow me to love you at your worst\nWhen the world caves in upon your shoulders\nAnd the universe steals the breath from your lungs\n\nWhen the nights grow heavier than your hope\nAnd even your own name feels unfamiliar\nLet me be the place you fall without fear\n\nI will stand between you and destruction\nTake the impact meant for your heart\nAnd spend pieces of my own\nIf it means you can endure a moment longer\n\nIf loving you requires sacrifice, let it be mine.\nIf surviving costs me everything, let it be willingly given.\nFor loving you especially at your weakest, is the only strength I will ever need.\n\n***\n\nThis is my promise to you:\nI am not with you for the short term.\nI'm not here to waste your time.\nI'm here to build a life, a future, and a story with you.\nI want to spend the rest of my life waking up next to you.\nI'm in it for the long haul.\nI'm not going anywhere without my best friend by my side I love you , I will always love you in every life in every world, I belong to you my soul my heart my breath it all belongs to you only you my love.`;
 
-        // Shooting Star Spawner Function
+        // Natural & Elegant Shooting Star Generator
         function createShootingStar() {
             const star = document.createElement('div');
             star.classList.add('shooting-star');
-            star.style.top = Math.random() * 40 + 'vh';
-            star.style.left = Math.random() * 70 + 'vw';
+            star.style.top = (Math.random() * 35) + 'vh';
+            star.style.left = (Math.random() * 80) + 'vw';
             document.body.appendChild(star);
             
             setTimeout(() => {
                 star.remove();
-            }, 1800);
+            }, 1250);
         }
 
-        // Spawn a shooting star every 2.5 seconds
-        setInterval(createShootingStar, 2500);
+        // Spawn smooth shooting stars at varied intervals
+        setInterval(createShootingStar, 3200);
 
         // Reduced heart spawn frequency to save CPU cycles
         setInterval(() => {
@@ -593,6 +607,7 @@
                     if (currentTime >= timelineVideo2[i].time) currentLine = timelineVideo2[i].text;
                 }
             }
+            // Direct string update with no added typing cursor character
             if (textDisplay.textContent !== currentLine && currentActiveVideo !== 0) {
                 textDisplay.textContent = currentLine;
             }
