@@ -27,7 +27,7 @@
         }
 
         /* ---------------------------------
-           MOBILE-OPTIMIZED NATURAL FOG/CLOUDS
+           RELIABLE ATMOSPHERIC FOG
            --------------------------------- */
         .fog-particle {
             position: absolute;
@@ -35,25 +35,26 @@
             pointer-events: none;
             z-index: 2;
             will-change: transform, opacity;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.1) 40%, transparent 70%);
-            filter: blur(40px);
-            opacity: 0;
+            /* Multi-layer gradient ensures visibility even if hardware blur fails */
+            background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.4) 0%, rgba(220, 220, 220, 0.2) 40%, rgba(200, 200, 200, 0.05) 65%, transparent 80%);
+            -webkit-filter: blur(20px);
+            filter: blur(20px);
             animation: driftFog linear infinite;
         }
 
         @keyframes driftFog {
             0% { 
-                transform: translate(-30vw, 0vh) scale(1); 
+                transform: translate(-30vw, 0vh) scale(0.9); 
                 opacity: 0; 
             }
             20% { 
-                opacity: 0.35; 
+                opacity: 0.65; 
             } 
             80% { 
-                opacity: 0.35; 
+                opacity: 0.65; 
             }
             100% { 
-                transform: translate(110vw, -5vh) scale(1.4); 
+                transform: translate(110vw, -8vh) scale(1.5); 
                 opacity: 0; 
             }
         }
@@ -301,7 +302,14 @@
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
             border: none;
             outline: none;
+            
+            /* PREVENT TYPING CURSOR & SELECTION HIGHLIGHT */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
             user-select: none;
+            caret-color: transparent;
+            pointer-events: none;
         }
 
         #loveVideo { display: none; }
@@ -428,19 +436,19 @@
             setTimeout(() => { heart.remove(); }, 3800);
         }, 1200);
 
-        /* Mobile Performance & Organic Appearance: Cloud Generation */
+        /* Optimized Cloud/Fog Generation */
         function createFogCloud(isInitialLoad = false) {
             const fog = document.createElement('div');
             fog.classList.add('fog-particle');
             
-            const width = Math.random() * 500 + 400; 
+            const width = Math.random() * 400 + 350; 
             fog.style.width = width + 'px';
-            fog.style.height = (width * 0.35) + 'px'; 
+            fog.style.height = (width * 0.4) + 'px'; 
             
             fog.style.left = "-40vw"; 
-            fog.style.top = (Math.random() * 70) + "vh";
+            fog.style.top = (Math.random() * 75) + "vh";
 
-            const animDuration = Math.random() * 25 + 35; 
+            const animDuration = Math.random() * 20 + 30; 
             fog.style.animationDuration = animDuration + "s"; 
             
             if (isInitialLoad) {
@@ -454,7 +462,7 @@
 
         const isMobile = window.innerWidth <= 768;
         const initialCloudCount = isMobile ? 6 : 10;
-        const cloudIntervalSpeed = isMobile ? 4000 : 3000;
+        const cloudIntervalSpeed = isMobile ? 3500 : 2500;
 
         for (let i = 0; i < initialCloudCount; i++) {
             createFogCloud(true);
