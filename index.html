@@ -26,35 +26,51 @@
             touch-action: manipulation;
         }
 
+        /* Ambient Static Cloud Overlay (Visible from 0ms) */
+        #fog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 2;
+            background: radial-gradient(circle at 30% 40%, rgba(220, 220, 225, 0.22) 0%, transparent 60%),
+                        radial-gradient(circle at 70% 60%, rgba(200, 205, 215, 0.25) 0%, transparent 65%);
+        }
+
         /* ---------------------------------
-           RELIABLE ATMOSPHERIC FOG
+           HEAVY, HIGH-VISIBILITY CLOUDS
            --------------------------------- */
         .fog-particle {
             position: absolute;
             border-radius: 50%;
             pointer-events: none;
-            z-index: 2;
+            z-index: 3;
             will-change: transform, opacity;
-            /* Multi-layer gradient ensures visibility even if hardware blur fails */
-            background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.4) 0%, rgba(220, 220, 220, 0.2) 40%, rgba(200, 200, 200, 0.05) 65%, transparent 80%);
-            -webkit-filter: blur(20px);
-            filter: blur(20px);
+            background: radial-gradient(
+                ellipse at center, 
+                rgba(255, 255, 255, 0.65) 0%, 
+                rgba(230, 235, 240, 0.45) 30%, 
+                rgba(200, 210, 220, 0.20) 60%, 
+                transparent 80%
+            );
             animation: driftFog linear infinite;
         }
 
         @keyframes driftFog {
             0% { 
-                transform: translate(-30vw, 0vh) scale(0.9); 
+                transform: translate(-50vw, 0vh) scale(0.9); 
                 opacity: 0; 
             }
-            20% { 
-                opacity: 0.65; 
+            15% { 
+                opacity: 0.85; 
             } 
-            80% { 
-                opacity: 0.65; 
+            85% { 
+                opacity: 0.85; 
             }
             100% { 
-                transform: translate(110vw, -8vh) scale(1.5); 
+                transform: translate(125vw, -8vh) scale(1.7); 
                 opacity: 0; 
             }
         }
@@ -280,6 +296,24 @@
             box-sizing: border-box;
             box-shadow: 0 15px 40px rgba(0,0,0,0.8);
             will-change: opacity;
+            position: relative;
+            
+            /* ABSOLUTE CURSOR SUPPRESSION */
+            -webkit-touch-callout: none !important;
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+        }
+
+        /* Transparent shield prevents touch devices from opening dynamic text carets */
+        .message-screen::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 20;
+            background: transparent;
+            pointer-events: auto;
         }
 
         .message-screen h2 {
@@ -301,15 +335,15 @@
             display: block;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
             border: none;
-            outline: none;
+            outline: none !important;
             
-            /* PREVENT TYPING CURSOR & SELECTION HIGHLIGHT */
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            caret-color: transparent;
-            pointer-events: none;
+            /* HARD KILL ON TYPING CURSOR */
+            caret-color: transparent !important;
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+            pointer-events: none !important;
         }
 
         #loveVideo { display: none; }
@@ -332,6 +366,8 @@
     </style>
 </head>
 <body>
+
+    <div id="fog-overlay"></div>
 
     <audio id="romanticSong" loop preload="metadata">
         <source src="music.mp3" type="audio/mpeg">
@@ -436,22 +472,23 @@
             setTimeout(() => { heart.remove(); }, 3800);
         }, 1200);
 
-        /* Optimized Cloud/Fog Generation */
+        /* Instant, Dense Cloud Generation */
         function createFogCloud(isInitialLoad = false) {
             const fog = document.createElement('div');
             fog.classList.add('fog-particle');
             
-            const width = Math.random() * 400 + 350; 
+            const width = Math.random() * 300 + 500; // Extra large 500px - 800px clouds
             fog.style.width = width + 'px';
-            fog.style.height = (width * 0.4) + 'px'; 
+            fog.style.height = (width * 0.5) + 'px'; 
             
             fog.style.left = "-40vw"; 
-            fog.style.top = (Math.random() * 75) + "vh";
+            fog.style.top = (Math.random() * 90 - 10) + "vh";
 
-            const animDuration = Math.random() * 20 + 30; 
+            const animDuration = Math.random() * 15 + 20; 
             fog.style.animationDuration = animDuration + "s"; 
             
             if (isInitialLoad) {
+                // Negative delay distributes clouds instantly across the entire screen
                 const randomDelay = Math.random() * animDuration; 
                 fog.style.animationDelay = "-" + randomDelay + "s";
             }
@@ -460,9 +497,10 @@
             setTimeout(() => { fog.remove(); }, (animDuration * 1000) + 500);
         }
 
+        // Spawn heavy fog immediately on script run
         const isMobile = window.innerWidth <= 768;
-        const initialCloudCount = isMobile ? 6 : 10;
-        const cloudIntervalSpeed = isMobile ? 3500 : 2500;
+        const initialCloudCount = isMobile ? 12 : 20;
+        const cloudIntervalSpeed = isMobile ? 1800 : 1200;
 
         for (let i = 0; i < initialCloudCount; i++) {
             createFogCloud(true);
