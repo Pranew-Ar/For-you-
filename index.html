@@ -27,7 +27,7 @@
         }
 
         /* ---------------------------------
-           MOBILE-OPTIMIZED CLOUDS
+           MOBILE-OPTIMIZED NATURAL FOG/CLOUDS
            --------------------------------- */
         .fog-particle {
             position: absolute;
@@ -35,16 +35,27 @@
             pointer-events: none;
             z-index: 2;
             will-change: transform, opacity;
-            /* Replaced CSS blur with a smoother, multi-stop gradient for better mobile performance */
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.4) 40%, rgba(255, 255, 255, 0.1) 65%, transparent 80%);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.1) 40%, transparent 70%);
+            filter: blur(40px);
+            opacity: 0;
             animation: driftFog linear infinite;
         }
 
         @keyframes driftFog {
-            0% { transform: translate(-40vw, 0vh) scale(0.8); opacity: 0; }
-            20% { opacity: 0.85; } 
-            80% { opacity: 0.85; }
-            100% { transform: translate(120vw, -10vh) scale(1.6); opacity: 0; }
+            0% { 
+                transform: translate(-30vw, 0vh) scale(1); 
+                opacity: 0; 
+            }
+            20% { 
+                opacity: 0.35; 
+            } 
+            80% { 
+                opacity: 0.35; 
+            }
+            100% { 
+                transform: translate(110vw, -5vh) scale(1.4); 
+                opacity: 0; 
+            }
         }
 
         .heart-sticker {
@@ -417,19 +428,19 @@
             setTimeout(() => { heart.remove(); }, 3800);
         }, 1200);
 
-        /* Mobile Performance: Cloud Generation */
+        /* Mobile Performance & Organic Appearance: Cloud Generation */
         function createFogCloud(isInitialLoad = false) {
             const fog = document.createElement('div');
             fog.classList.add('fog-particle');
             
-            const width = Math.random() * 350 + 250; 
+            const width = Math.random() * 500 + 400; 
             fog.style.width = width + 'px';
-            fog.style.height = (width * 0.55) + 'px'; 
+            fog.style.height = (width * 0.35) + 'px'; 
             
             fog.style.left = "-40vw"; 
-            fog.style.top = (Math.random() * 80 - 10) + "vh";
+            fog.style.top = (Math.random() * 70) + "vh";
 
-            const animDuration = Math.random() * 30 + 50; 
+            const animDuration = Math.random() * 25 + 35; 
             fog.style.animationDuration = animDuration + "s"; 
             
             if (isInitialLoad) {
@@ -441,17 +452,14 @@
             setTimeout(() => { fog.remove(); }, (animDuration * 1000) + 500);
         }
 
-        // Detect if the user is on mobile to adjust cloud density
         const isMobile = window.innerWidth <= 768;
-        const initialCloudCount = isMobile ? 8 : 15; // Fewer clouds on small screens
-        const cloudIntervalSpeed = isMobile ? 3500 : 2500; // Slower spawn rate on mobile
+        const initialCloudCount = isMobile ? 6 : 10;
+        const cloudIntervalSpeed = isMobile ? 4000 : 3000;
 
-        // Spawn initial clouds
         for (let i = 0; i < initialCloudCount; i++) {
             createFogCloud(true);
         }
 
-        // Spawn new clouds based on device speed needs
         setInterval(() => {
             createFogCloud(false); 
         }, cloudIntervalSpeed); 
