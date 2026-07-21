@@ -26,51 +26,57 @@
             touch-action: manipulation;
         }
 
-        /* Ambient Static Cloud Overlay (Visible from 0ms) */
-        #fog-overlay {
+        /* ---------------------------------
+           REALISTIC ORGANIC CLOUD OVERLAY
+           --------------------------------- */
+        .fog-container {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
             pointer-events: none;
             z-index: 2;
-            background: radial-gradient(circle at 30% 40%, rgba(220, 220, 225, 0.22) 0%, transparent 60%),
-                        radial-gradient(circle at 70% 60%, rgba(200, 205, 215, 0.25) 0%, transparent 65%);
+            overflow: hidden;
         }
 
-        /* ---------------------------------
-           HEAVY, HIGH-VISIBILITY CLOUDS
-           --------------------------------- */
+        /* Soft global atmospheric mist layer */
+        .mist-layer {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(200,210,220,0.15) 0%, rgba(150,165,180,0.08) 50%, rgba(100,110,120,0.2) 100%);
+            mix-blend-mode: screen;
+        }
+
         .fog-particle {
             position: absolute;
-            border-radius: 50%;
             pointer-events: none;
             z-index: 3;
             will-change: transform, opacity;
             background: radial-gradient(
                 ellipse at center, 
-                rgba(255, 255, 255, 0.65) 0%, 
-                rgba(230, 235, 240, 0.45) 30%, 
-                rgba(200, 210, 220, 0.20) 60%, 
-                transparent 80%
+                rgba(255, 255, 255, 0.35) 0%, 
+                rgba(210, 220, 230, 0.20) 40%, 
+                rgba(180, 195, 210, 0.05) 70%, 
+                transparent 100%
             );
+            /* APPLIES ORGANIC TURBULENCE TO REMOVE CIRCULAR EDGES */
+            filter: url(#cloud-distortion);
+            mix-blend-mode: screen;
             animation: driftFog linear infinite;
         }
 
         @keyframes driftFog {
             0% { 
-                transform: translate(-50vw, 0vh) scale(0.9); 
+                transform: translate(-40vw, 0vh) scale(1) rotate(0deg); 
                 opacity: 0; 
             }
             15% { 
-                opacity: 0.85; 
+                opacity: 0.65; 
             } 
             85% { 
-                opacity: 0.85; 
+                opacity: 0.65; 
             }
             100% { 
-                transform: translate(125vw, -8vh) scale(1.7); 
+                transform: translate(120vw, -10vh) scale(1.4) rotate(8deg); 
                 opacity: 0; 
             }
         }
@@ -298,7 +304,6 @@
             will-change: opacity;
             position: relative;
             
-            /* ABSOLUTE CURSOR SUPPRESSION */
             -webkit-touch-callout: none !important;
             -webkit-user-select: none !important;
             -moz-user-select: none !important;
@@ -306,7 +311,6 @@
             user-select: none !important;
         }
 
-        /* Transparent shield prevents touch devices from opening dynamic text carets */
         .message-screen::after {
             content: '';
             position: absolute;
@@ -337,7 +341,6 @@
             border: none;
             outline: none !important;
             
-            /* HARD KILL ON TYPING CURSOR */
             caret-color: transparent !important;
             -webkit-user-select: none !important;
             -moz-user-select: none !important;
@@ -367,7 +370,17 @@
 </head>
 <body>
 
-    <div id="fog-overlay"></div>
+    <!-- SVG TURBULENCE FILTER FOR ORGANIC CLOUD DISTORTION -->
+    <svg style="display: none;">
+        <filter id="cloud-distortion">
+            <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="4" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="90" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+    </svg>
+
+    <div class="fog-container" id="fogContainer">
+        <div class="mist-layer"></div>
+    </div>
 
     <audio id="romanticSong" loop preload="metadata">
         <source src="music.mp3" type="audio/mpeg">
@@ -415,6 +428,7 @@
         const song = document.getElementById('romanticSong');
         const video = document.getElementById('loveVideo');
         const textDisplay = document.getElementById('typewriterText');
+        const fogContainer = document.getElementById('fogContainer');
 
         let musicStarted = false;
         let isFirstMove = true;
@@ -472,35 +486,33 @@
             setTimeout(() => { heart.remove(); }, 3800);
         }, 1200);
 
-        /* Instant, Dense Cloud Generation */
+        /* Organic Cloud Particle Generator */
         function createFogCloud(isInitialLoad = false) {
             const fog = document.createElement('div');
             fog.classList.add('fog-particle');
             
-            const width = Math.random() * 300 + 500; // Extra large 500px - 800px clouds
+            const width = Math.random() * 300 + 450; 
             fog.style.width = width + 'px';
-            fog.style.height = (width * 0.5) + 'px'; 
+            fog.style.height = (width * 0.55) + 'px'; 
             
             fog.style.left = "-40vw"; 
-            fog.style.top = (Math.random() * 90 - 10) + "vh";
+            fog.style.top = (Math.random() * 80 - 10) + "vh";
 
-            const animDuration = Math.random() * 15 + 20; 
+            const animDuration = Math.random() * 20 + 25; 
             fog.style.animationDuration = animDuration + "s"; 
             
             if (isInitialLoad) {
-                // Negative delay distributes clouds instantly across the entire screen
                 const randomDelay = Math.random() * animDuration; 
                 fog.style.animationDelay = "-" + randomDelay + "s";
             }
             
-            document.body.appendChild(fog);
+            fogContainer.appendChild(fog);
             setTimeout(() => { fog.remove(); }, (animDuration * 1000) + 500);
         }
 
-        // Spawn heavy fog immediately on script run
         const isMobile = window.innerWidth <= 768;
-        const initialCloudCount = isMobile ? 12 : 20;
-        const cloudIntervalSpeed = isMobile ? 1800 : 1200;
+        const initialCloudCount = isMobile ? 6 : 10;
+        const cloudIntervalSpeed = isMobile ? 3000 : 2000;
 
         for (let i = 0; i < initialCloudCount; i++) {
             createFogCloud(true);
