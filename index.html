@@ -27,7 +27,7 @@
         }
 
         /* ---------------------------------
-           REALISTIC ORGANIC CLOUD OVERLAY (+12-15% DENSITY)
+           REALISTIC ORGANIC CLOUD OVERLAY
            --------------------------------- */
         .fog-container {
             position: fixed;
@@ -38,7 +38,6 @@
             overflow: hidden;
         }
 
-        /* Soft global atmospheric mist layer (Slightly deepened) */
         .mist-layer {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -58,7 +57,6 @@
                 rgba(180, 195, 210, 0.08) 70%, 
                 transparent 100%
             );
-            /* APPLIES ORGANIC TURBULENCE TO REMOVE CIRCULAR EDGES */
             filter: url(#cloud-distortion);
             mix-blend-mode: screen;
             animation: driftFog linear infinite;
@@ -69,12 +67,8 @@
                 transform: translate(-40vw, 0vh) scale(1) rotate(0deg); 
                 opacity: 0; 
             }
-            15% { 
-                opacity: 0.75; 
-            } 
-            85% { 
-                opacity: 0.75; 
-            }
+            15% { opacity: 0.75; } 
+            85% { opacity: 0.75; }
             100% { 
                 transform: translate(120vw, -10vh) scale(1.4) rotate(8deg); 
                 opacity: 0; 
@@ -283,70 +277,51 @@
             font-family: 'Great Vibes', cursive;
         }
 
-        /* Message Screen */
+        /* Message Screen & Vintage Letter Styling */
         .message-screen {
             display: none;
             opacity: 0;
             transition: opacity 0.8s ease;
-            max-width: 600px;
+            max-width: 650px;
             width: 88%;
             margin: 0 auto;
-            padding: 25px 20px;
+            padding: 30px 25px;
             background: rgba(15, 20, 25, 0.88) url('cloudy.png') no-repeat center center/cover; 
             border-radius: 10px;
             text-align: center;
             z-index: 10;
-            border: none;
+            border: 1px solid rgba(245, 242, 235, 0.15);
             max-height: 82vh;
             overflow-y: auto;
             box-sizing: border-box;
             box-shadow: 0 15px 40px rgba(0,0,0,0.8);
             will-change: opacity;
             position: relative;
-            
-            -webkit-touch-callout: none !important;
-            -webkit-user-select: none !important;
-            -moz-user-select: none !important;
-            -ms-user-select: none !important;
-            user-select: none !important;
-        }
-
-        .message-screen::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            z-index: 20;
-            background: transparent;
-            pointer-events: auto;
         }
 
         .message-screen h2 {
-            font-size: 2.5rem;
-            color: #ffffff;
+            font-size: 2.8rem;
+            color: #fdfaf4;
             font-family: 'Great Vibes', cursive;
             font-weight: normal;
             margin-top: 0;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
         }
 
+        /* Vintage Cursive Styling for your custom message */
         .message-screen p {
-            font-size: 1rem;
-            color: #f5f2eb;
-            line-height: 1.6;
-            letter-spacing: 0.5px;
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.55rem;
+            color: #f5e6d3;
+            line-height: 1.5;
+            letter-spacing: 0.8px;
             white-space: pre-wrap;
             display: block;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.95);
             border: none;
             outline: none !important;
-            
-            caret-color: transparent !important;
-            -webkit-user-select: none !important;
-            -moz-user-select: none !important;
-            -ms-user-select: none !important;
-            user-select: none !important;
-            pointer-events: none !important;
+            margin-bottom: 12px;
         }
 
         #loveVideo { display: none; }
@@ -364,7 +339,8 @@
             .popup-modal { width: 94vw; height: 48vh; }
             .popup-modal h3 { font-size: 1.15rem; }
             .popup-modal p { font-size: 0.82rem; }
-            .message-screen h2 { font-size: 2rem; }
+            .message-screen h2 { font-size: 2.2rem; }
+            .message-screen p { font-size: 1.25rem; }
         }
     </style>
 </head>
@@ -382,8 +358,14 @@
         <div class="mist-layer"></div>
     </div>
 
+    <!-- Initial background song -->
     <audio id="romanticSong" loop preload="metadata">
         <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Final page song -->
+    <audio id="lifetimeSong" loop preload="metadata">
+        <source src="Lifetime.mpeg" type="audio/mpeg">
     </audio>
 
     <video id="loveVideo" preload="metadata" playsinline webkit-playsinline muted>
@@ -415,7 +397,7 @@
     </div>
 
     <div class="message-screen" id="successStage">
-        <h2>Forever & Always</h2>
+        <h2>Our Tomorrow</h2>
         <p id="typewriterText"></p>
     </div>
 
@@ -426,6 +408,7 @@
         const successStage = document.getElementById('successStage');
         const lovePopup = document.getElementById('lovePopup');
         const song = document.getElementById('romanticSong');
+        const lifetimeSong = document.getElementById('lifetimeSong');
         const video = document.getElementById('loveVideo');
         const textDisplay = document.getElementById('typewriterText');
         const fogContainer = document.getElementById('fogContainer');
@@ -468,7 +451,24 @@
             { time: 19.2, text: "I'm not going anywhere without my best friend by my side I love you , I will always love you in every life in every world." }
         ];
 
-        const fullLetterText = `Allow me to love you at your worst\nWhen the world caves in upon your shoulders\nAnd the universe steals the breath from your lungs\n\nWhen the nights grow heavier than your hope\nAnd even your own name feels unfamiliar\nLet me be the place you fall without fear\n\nI will stand between you and destruction\nTake the impact meant for your heart\nAnd spend pieces of my own\nIf it means you can endure a moment longer\n\nIf loving you requires sacrifice, let it be mine.\nIf surviving costs me everything, let it be willingly given.\nFor loving you especially at your weakest, is the only strength I will ever need.\n\n***\n\nThis is my promise to you:\nI am not with you for the short term.\nI'm not here to waste your time.\nI'm here to build a life, a future, and a story with you.\nI want to spend the rest of my life waking up next to you.\nI'm in it for the long haul.\nI'm not going anywhere without my best friend by my side I love you , I will always love you in every life in every world.`;
+        /* YOUR CUSTOM MESSAGE */
+        const customFutureMessage = `To the one who holds my tomorrow,
+
+If you are reading this, imagine it as a letter sent back to you from the future a quiet promise whispered across time. They say the future is uncertain, but standing where I am today, looking toward everything ahead, there is one constant I know with absolute certainty...
+
+If I could live life seven times over…
+I’d be born beneath seven different skies, breathe the air of distant lands, and savor the flavors of the world as if each bite held a brand-new beginning.
+
+I’d chase dreams with seven different hearts, carry seven different names, and follow seven winding paths—each one shaped by its own adventures.
+
+Yet across every timeline, and through every span of years…
+In every lifetime, in every language, in every version of me, I would still find you.
+
+And I would fall in love with you all over again.
+Not by chance, and not just by fate
+but because my soul would recognize yours, across any distance, every single time.
+
+So whatever the future holds, whichever path the universe pulls us toward, know this: my choice will always be you. Yesterday, today, and in every tomorrow that hasn't happened yet.`;
 
         function triggerMusic() {
             if (!musicStarted && song) {
@@ -562,7 +562,7 @@
                     if (video) {
                         video.muted = false;
                         video.play().catch(() => {
-                            textDisplay.textContent = fullLetterText;
+                            showFinalCustomMessage();
                         });
                         video.addEventListener('timeupdate', handleTimelineTracking);
                         video.addEventListener('ended', handleVideoEndEvent);
@@ -593,10 +593,23 @@
                 currentActiveVideo = 2;
                 video.src = "video2.mp4"; 
                 video.load();
-                video.play().catch(() => {});
+                video.play().catch(() => showFinalCustomMessage());
             } else if (currentActiveVideo === 2) {
                 currentActiveVideo = 0; 
-                textDisplay.textContent = fullLetterText;
+                showFinalCustomMessage();
+            }
+        }
+
+        function showFinalCustomMessage() {
+            textDisplay.textContent = customFutureMessage;
+            
+            // Pause any video audio if playing
+            if (video) { video.pause(); }
+
+            // Play the Lifetime.mpeg audio on page reveal
+            if (lifetimeSong) {
+                lifetimeSong.currentTime = 0;
+                lifetimeSong.play().catch(() => {});
             }
         }
     </script>
