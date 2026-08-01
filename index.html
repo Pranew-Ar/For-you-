@@ -413,8 +413,14 @@
         <source src="Lifetime.mpeg" type="audio/mpeg">
     </audio>
 
+    <!-- Main Active Video Player -->
     <video id="loveVideo" preload="metadata" playsinline webkit-playsinline muted>
         <source src="video.mp4" type="video/mp4">
+    </video>
+
+    <!-- Preloader for Video 2 to eliminate playback lag -->
+    <video id="preloadVideo2" preload="auto" style="display: none;" muted>
+        <source src="video2.mp4" type="video/mp4">
     </video>
 
     <!-- Stage 1: Proposal Screen -->
@@ -604,6 +610,10 @@ So whatever the future holds, whichever path the universe pulls us toward, know 
             if (song) { song.pause(); song.currentTime = 0; }
             if (lovePopup) lovePopup.classList.remove('active');
             
+            // Start buffering video2.mp4 into memory early while video 1 plays
+            const preloadVid = document.getElementById('preloadVideo2');
+            if (preloadVid) { preloadVid.load(); }
+
             proposalStage.style.transition = 'opacity 0.3s ease';
             proposalStage.style.opacity = '0';
 
